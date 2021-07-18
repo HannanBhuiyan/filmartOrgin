@@ -129,6 +129,33 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-book"></i>
                         <p>
+                           Slider
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('sliders.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Slider</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sliders.create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add New Slider</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>
                             Store Room
                             <i class="fas fa-angle-left right"></i>
                         </p>
@@ -159,6 +186,12 @@
                     <a href="{{ route('admin.profile') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>My Profile</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/') }}" class="nav-link" target="_blank">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Visit Site</p>
                     </a>
                 </li>
             </ul>

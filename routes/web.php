@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\StoreRoomController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\SubSubCategoryController;
+use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ProductController;
 
 
@@ -78,6 +79,15 @@ Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function(
     Route::get('products/softDelete/{id}', [ProductController::class, 'ProductSoftDelete'])->name('softDelete.delete');
     Route::get('products/inactive/{id}', [ProductController::class, 'inactive'])->name('products.inactive');
     Route::get('products/active/{id}', [ProductController::class, 'active'])->name('products.active');
+
+    // sliders controller
+
+    Route::resource('sliders', SliderController::class);
+
+    Route::get('sliders/inactive/{id}', [SliderController::class, 'inactive'])->name('sliders.inactive');
+    Route::get('sliders/active/{id}', [SliderController::class, 'active'])->name('sliders.active');
+
+
 
 
 });

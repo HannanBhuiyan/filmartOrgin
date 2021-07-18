@@ -61,9 +61,9 @@
                                     </td>
                                     <td>
                                         @if( $item->status == 1)
-                                            <a href="{{ route('products.inactive', ['id' => $item->id]) }}"  class="btn btn-success">Active</a>
+                                            <a href="{{ route('products.inactive', ['id' => $item->id]) }}"  class="btn btn-success">inactive</a>
                                         @else
-                                            <a href="{{ route('products.active', ['id' => $item->id]) }}" class="btn btn-primary">Inactive</a>
+                                            <a href="{{ route('products.active', ['id' => $item->id]) }}" class="btn btn-primary">active</a>
                                         @endif
                                     </td>
                                     <td>

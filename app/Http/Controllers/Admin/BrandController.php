@@ -130,7 +130,7 @@ class BrandController extends Controller
                 'brand_slug_bn' => str_replace(' ', '-', $request->brand_name_bn),
                 'brand_slug_en' =>  strtolower(str_replace(' ', '-',$request->brand_name_en )),
                 'brand_image' => $last_image,
-                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now(),
             ]);
             return redirect()->route('brands.index');
 
@@ -140,7 +140,7 @@ class BrandController extends Controller
                 'brand_name_en' => $request->brand_name_en,
                 'brand_slug_bn' => str_replace(' ', '-', $request->brand_name_bn),
                 'brand_slug_en' =>  strtolower(str_replace(' ', '-',$request->brand_name_en )),
-                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now(),
             ]);
             return redirect()->route('brands.index');
         }

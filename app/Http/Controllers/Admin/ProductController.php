@@ -149,10 +149,7 @@ class ProductController extends Controller
                 "created_at" => Carbon::now(),
             ]);
         }
-
         return redirect()->back()->with('success', 'Product added successfully');
-
-
     }
 
     /**
@@ -165,7 +162,6 @@ class ProductController extends Controller
     {
         $viewProducts = Product::findOrFail($id);
          return view('admin.product.product-view', compact('viewProducts'));
-
     }
 
     /**
@@ -176,12 +172,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-
-
-
-
     }
-
     /**
      * Update the specified resource in storage.
      *
