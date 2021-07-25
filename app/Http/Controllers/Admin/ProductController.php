@@ -22,7 +22,6 @@ class ProductController extends Controller
      */
     public function index()
     {
-
         $items = Product::latest()->get();
         return view('admin.product.all-product', compact('items'));
     }
@@ -34,7 +33,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-
 
         $categorys = Category::orderBy('id' , 'DESC')->get();
         return view('admin.product.add-new-product', compact('categorys'));
@@ -95,7 +93,6 @@ class ProductController extends Controller
             "product_thumbnail.required" => "Field is required",
 
         ]);
-
         $image = $request->file('product_thumbnail');
         $img_ext = strtolower($image->getClientOriginalExtension());
         $hex_name = hexdec(uniqid());
@@ -103,7 +100,6 @@ class ProductController extends Controller
         $location = 'backend/images/product/thumbnail/';
         $last_image = $location. $img_name;
         Image::make($image)->resize(917, 1000)->save($last_image);
-
         $product_id = Product::insertGetId([
             "category_id" => $request->category_id,
             "subcategory_id" => $request->subcategory_id,
@@ -134,21 +130,23 @@ class ProductController extends Controller
             "created_at" => Carbon::now(),
 
         ]);
-
         $multiImages = $request->file('MultiImage');
-        foreach($multiImages as $img){
-            $img_ext = strtolower($img->getClientOriginalExtension());
-            $hex_name = hexdec(uniqid());
-            $img_name = $hex_name . '.' . $img_ext;
-            $location = 'backend/images/product/multiImage/';
-            $multi_image = $location. $img_name;
-            Image::make($img)->resize(917, 1000)->save($multi_image );
-            MultiImage::insert([
-                'product_id' => $product_id,
-                'photo_name' => $multi_image,
-                "created_at" => Carbon::now(),
-            ]);
+        if ($multiImages){
+            foreach($multiImages as $img){
+                $img_ext = strtolower($img->getClientOriginalExtension());
+                $hex_name = hexdec(uniqid());
+                $img_name = $hex_name . '.' . $img_ext;
+                $location = 'backend/images/product/multiImage/';
+                $multi_image = $location. $img_name;
+                Image::make($img)->resize(917, 1000)->save($multi_image );
+                MultiImage::insert([
+                    'product_id' => $product_id,
+                    'photo_name' => $multi_image,
+                    "created_at" => Carbon::now(),
+                ]);
+            }
         }
+
         return redirect()->back()->with('success', 'Product added successfully');
     }
 

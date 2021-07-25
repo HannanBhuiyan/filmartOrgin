@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\SubSubCategoryController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\FontEnd\LanguageController;
 
 
 // fontEnd route
@@ -81,13 +82,9 @@ Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function(
     Route::get('products/active/{id}', [ProductController::class, 'active'])->name('products.active');
 
     // sliders controller
-
     Route::resource('sliders', SliderController::class);
-
     Route::get('sliders/inactive/{id}', [SliderController::class, 'inactive'])->name('sliders.inactive');
     Route::get('sliders/active/{id}', [SliderController::class, 'active'])->name('sliders.active');
-
-
 
 
 });
@@ -109,3 +106,14 @@ Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>
 });
 
 Route::get('/', [FontEntController::class, 'index']);
+Route::get('/single/product/{id}/{slug}', [FontEntController::class, 'singleProduct']);
+
+
+
+
+// ===================== Frontend Language route ======================================================
+
+Route::get('/bangle/language/', [LanguageController::class, 'Bangle'])->name('bangle.language');
+Route::get('/english/language/', [LanguageController::class, 'English'])->name('english.language');
+
+

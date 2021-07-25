@@ -22,7 +22,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-10 m-auto">
+                    <div class="col-md-12 m-auto">
                         <table class="table table-bordered text-center" id="table_id">
                             <thead>
                             <tr>

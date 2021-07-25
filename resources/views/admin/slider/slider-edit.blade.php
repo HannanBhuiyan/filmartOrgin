@@ -68,7 +68,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group text-center mt-4">
-                                        <input type="submit"  name="submit" value="Add" class="btn btn-warning btn-lg">
+                                        <input type="submit"  name="submit" value="Update" class="btn btn-warning btn-lg">
                                     </div>
                                 </form>
                             </div>
