@@ -108,6 +108,9 @@ Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>
 Route::get('/', [FontEntController::class, 'index']);
 Route::get('/single/product/{id}/{slug}', [FontEntController::class, 'singleProduct']);
 
+//==================== tag wise product show ==========================
+
+Route::get('//product/tags/{tag}', [FontEntController::class, 'tagWiseProductsShow']);
 
 
 

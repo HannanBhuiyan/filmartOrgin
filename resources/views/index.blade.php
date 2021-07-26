@@ -1,62 +1,25 @@
 @extends('layouts.fontend.fontend-master')
 @section('title', 'Home')
 @section('content')
+
+
     <!-- ============================================== HEADER : END ============================================== -->
     <div class="body-content outer-top-xs" id="top-banner-and-menu">
+
+        @php
+            function bn_replace($str){
+                 $en = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0');
+                 $bn =  array('১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '০');
+                 $str = str_replace($en, $bn, $str);
+                 return $str;
+             }
+        @endphp
         <div class="container">
             <div class="row">
                 <!-- ============================================== SIDEBAR ============================================== -->
                 <div class="col-xs-12 col-sm-12 col-md-3 sidebar">
-                    <!-- ================================== TOP NAVIGATION ================================== -->
-                    <div class="side-menu animate-dropdown outer-bottom-xs">
-                        <div class="head"><i class="icon fa fa-align-justify fa-fw"></i> Categories</div>
-                        <nav class="yamm megamenu-horizontal" role="navigation">
-                            <ul class="nav">
 
-                                @foreach($categorys as $cat)
-                                <li class="dropdown menu-item">
-                                        @if(session()->get('language') == 'bangle')
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon {{ $cat->category_icon }}" aria-hidden="true"></i>
-                                                {{ $cat->category_name_bn }}
-                                            </a>
-                                        @else
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon {{ $cat->category_icon }}" aria-hidden="true"></i>
-                                                {{ $cat->category_name_en }}
-                                            </a>
-                                        @endif
-                                    <!-- ================================== MEGAMENU VERTICAL ================================== -->
-                                    <ul class="dropdown-menu mega-menu">
-                                        <li class="yamm-content">
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-lg-4">
-                                                    <ul>
-                                                        @php
-                                                            $subCategorys = \App\Models\SubCategory::where('category_id', $cat->id)->orderBy('subcategory_name_en', 'ASC')->get();
-                                                        @endphp
-                                                        @foreach($subCategorys as $subcat)
-                                                            <li>
-                                                                @if(session()->get('language') == 'bangle')
-                                                                    <a href="#">{{ $subcat->subcategory_name_bn }}</a>
-                                                                @else
-                                                                    <a href="#">{{ $subcat->subcategory_name_en }}</a>
-                                                                @endif
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                                <div class="dropdown-banner-holder">
-                                                    <a href="#"><img alt="" src="{{ asset('fontend') }}/assets/images/banners/banner-side.png" /></a>
-                                                </div>
-                                            </div><!-- /.row -->
-                                        </li><!-- /.yamm-content -->
-                                    </ul><!-- /.dropdown-menu -->
-                                    <!-- ================================== MEGAMENU VERTICAL ================================== -->            </li><!-- /.menu-item -->
-                                @endforeach
-                            </ul><!-- /.nav -->
-                        </nav><!-- /.megamenu-horizontal -->
-                    </div><!-- /.side-menu -->
-                    <!-- ================================== TOP NAVIGATION : END ================================== -->
-
+                    @include('layouts.fontend.inc.main-category')
 
                     <!-- ============================================== HOT DEALS ============================================== -->
                     <div class="sidebar-widget hot-deals wow fadeInUp outer-bottom-xs">
@@ -75,23 +38,13 @@
                                                 $amount = $hot_deal->selling_price - $hot_deal->discount_price;
                                                 $parsentage = ($amount /$hot_deal->selling_price)*100;
                                             @endphp
-                                            @if($hot_deal->discount_price == NULL)
-                                                <div class="sale-offer-tag" style="background-color:#fdd922 !important;">
-                                                    @if(session()->get('language') == 'bangle')
-                                                        <span>নতুন</span>
-                                                    @else
-                                                        <span>New</span>
-                                                    @endif
-                                                </div>
-                                            @else
-                                                <div class="sale-offer-tag">
-                                                    @if(session()->get('language') == 'bangle')
-                                                        <span>{{ bn_replace(round($parsentage))  }}%<br>অফার</span>
-                                                    @else
-                                                        <span>{{round($parsentage)}}%<br>off</span>
-                                                    @endif
-                                                </div>
-                                            @endif
+                                            <div class="sale-offer-tag">
+                                                @if(session()->get('language') == 'bangle')
+                                                    <span>{{ bn_replace(round($parsentage))  }}%<br>অফার</span>
+                                                @else
+                                                    <span>{{round($parsentage)}}%<br>off</span>
+                                                @endif
+                                            </div>
                                             <div class="timing-wrapper">
                                                 <div class="box-wrapper">
                                                     <div class="date box">
@@ -260,30 +213,9 @@
                     </div><!-- /.sidebar-widget -->
                     <!-- ============================================== SPECIAL OFFER : END ============================================== -->
 
+                  @include('layouts.fontend.inc.products-tags');
 
 
-
-
-
-
-                    <!-- ============================================== PRODUCT TAGS ============================================== -->
-                    <div class="sidebar-widget product-tag wow fadeInUp">
-                        <h3 class="section-title">Product tags</h3>
-                        <div class="sidebar-widget-body outer-top-xs">
-                            <div class="tag-list">
-                                <a class="item" title="Phone" href="category.html">Phone</a>
-                                <a class="item active" title="Vest" href="category.html">Vest</a>
-                                <a class="item" title="Smartphone" href="category.html">Smartphone</a>
-                                <a class="item" title="Furniture" href="category.html">Furniture</a>
-                                <a class="item" title="T-shirt" href="category.html">T-shirt</a>
-                                <a class="item" title="Sweatpants" href="category.html">Sweatpants</a>
-                                <a class="item" title="Sneaker" href="category.html">Sneaker</a>
-                                <a class="item" title="Toys" href="category.html">Toys</a>
-                                <a class="item" title="Rose" href="category.html">Rose</a>
-                            </div><!-- /.tag-list -->
-                        </div><!-- /.sidebar-widget-body -->
-                    </div><!-- /.sidebar-widget -->
-                    <!-- ============================================== PRODUCT TAGS : END ============================================== -->
                     <!-- ============================================== SPECIAL DEALS ============================================== -->
 
                     <div class="sidebar-widget outer-bottom-small wow fadeInUp">
@@ -533,14 +465,7 @@
                                 @endforeach
                             </ul><!-- /.nav-tabs -->
                         </div>
-                        @php
-                           function bn_replace($str){
-                                $en = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0');
-                                $bn =  array('১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '০');
-                                $str = str_replace($en, $bn, $str);
-                                return $str;
-                            }
-                        @endphp
+
                         <div class="tab-content outer-top-xs">
                             <div class="tab-pane in active" id="all">
                                 <div class="product-slider">
@@ -949,6 +874,7 @@
                         </div><!-- /.row -->
                     </div><!-- /.wide-banners -->
                     <!-- ============================================== WIDE PRODUCTS : END ============================================== -->
+
                     <!-- ============================================== BEST SELLER ============================================== -->
 
                     <div class="best-deal wow fadeInUp outer-bottom-xs">
@@ -964,12 +890,9 @@
                                                         <div class="product-image">
                                                             <div class="image">
                                                                 <a href="#">
-                                                                    <img src="{{ asset('fontend') }}/assets/images/products/p20.jpg" alt="">
+                                                                    <img src="assets/images/products/p20.jpg" alt="">
                                                                 </a>
                                                             </div><!-- /.image -->
-
-
-
                                                         </div><!-- /.product-image -->
                                                     </div><!-- /.col -->
                                                     <div class="col2 col-xs-7">
@@ -977,16 +900,12 @@
                                                             <h3 class="name"><a href="#">Floral Print Buttoned</a></h3>
                                                             <div class="rating rateit-small"></div>
                                                             <div class="product-price">
-				<span class="price">
-					$450.99				</span>
-
+				                                                <span class="price">$450.99</span>
                                                             </div><!-- /.product-price -->
-
                                                         </div>
                                                     </div><!-- /.col -->
                                                 </div><!-- /.product-micro-row -->
                                             </div><!-- /.product-micro -->
-
                                         </div>
                                         <div class="product">
                                             <div class="product-micro">
@@ -995,11 +914,9 @@
                                                         <div class="product-image">
                                                             <div class="image">
                                                                 <a href="#">
-                                                                    <img src="{{ asset('fontend') }}/assets/images/products/p21.jpg" alt="">
+                                                                    <img src="assets/images/products/p21.jpg" alt="">
                                                                 </a>
                                                             </div><!-- /.image -->
-
-
                                                         </div><!-- /.product-image -->
                                                     </div><!-- /.col -->
                                                     <div class="col2 col-xs-7">
@@ -1007,211 +924,12 @@
                                                             <h3 class="name"><a href="#">Floral Print Buttoned</a></h3>
                                                             <div class="rating rateit-small"></div>
                                                             <div class="product-price">
-				<span class="price">
-					$450.99				</span>
-
+				                                                <span class="price">$450.99</span>
                                                             </div><!-- /.product-price -->
-
                                                         </div>
                                                     </div><!-- /.col -->
                                                 </div><!-- /.product-micro-row -->
                                             </div><!-- /.product-micro -->
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="products best-product">
-                                        <div class="product">
-                                            <div class="product-micro">
-                                                <div class="row product-micro-row">
-                                                    <div class="col col-xs-5">
-                                                        <div class="product-image">
-                                                            <div class="image">
-                                                                <a href="#">
-                                                                    <img src="{{ asset('fontend') }}/assets/images/products/p22.jpg" alt="">
-                                                                </a>
-                                                            </div><!-- /.image -->
-
-
-                                                        </div><!-- /.product-image -->
-                                                    </div><!-- /.col -->
-                                                    <div class="col2 col-xs-7">
-                                                        <div class="product-info">
-                                                            <h3 class="name"><a href="#">Floral Print Buttoned</a></h3>
-                                                            <div class="rating rateit-small"></div>
-                                                            <div class="product-price">
-				<span class="price">
-					$450.99				</span>
-
-                                                            </div><!-- /.product-price -->
-
-                                                        </div>
-                                                    </div><!-- /.col -->
-                                                </div><!-- /.product-micro-row -->
-                                            </div><!-- /.product-micro -->
-
-                                        </div>
-                                        <div class="product">
-                                            <div class="product-micro">
-                                                <div class="row product-micro-row">
-                                                    <div class="col col-xs-5">
-                                                        <div class="product-image">
-                                                            <div class="image">
-                                                                <a href="#">
-                                                                    <img src="{{ asset('fontend') }}/assets/images/products/p23.jpg" alt="">
-                                                                </a>
-                                                            </div><!-- /.image -->
-
-
-
-                                                        </div><!-- /.product-image -->
-                                                    </div><!-- /.col -->
-                                                    <div class="col2 col-xs-7">
-                                                        <div class="product-info">
-                                                            <h3 class="name"><a href="#">Floral Print Buttoned</a></h3>
-                                                            <div class="rating rateit-small"></div>
-                                                            <div class="product-price">
-				<span class="price">
-					$450.99				</span>
-
-                                                            </div><!-- /.product-price -->
-
-                                                        </div>
-                                                    </div><!-- /.col -->
-                                                </div><!-- /.product-micro-row -->
-                                            </div><!-- /.product-micro -->
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="products best-product">
-                                        <div class="product">
-                                            <div class="product-micro">
-                                                <div class="row product-micro-row">
-                                                    <div class="col col-xs-5">
-                                                        <div class="product-image">
-                                                            <div class="image">
-                                                                <a href="#">
-                                                                    <img src="{{ asset('fontend') }}/assets/images/products/p24.jpg" alt="">
-                                                                </a>
-                                                            </div><!-- /.image -->
-
-
-
-                                                        </div><!-- /.product-image -->
-                                                    </div><!-- /.col -->
-                                                    <div class="col2 col-xs-7">
-                                                        <div class="product-info">
-                                                            <h3 class="name"><a href="#">Floral Print Buttoned</a></h3>
-                                                            <div class="rating rateit-small"></div>
-                                                            <div class="product-price">
-				<span class="price">
-					$450.99				</span>
-
-                                                            </div><!-- /.product-price -->
-
-                                                        </div>
-                                                    </div><!-- /.col -->
-                                                </div><!-- /.product-micro-row -->
-                                            </div><!-- /.product-micro -->
-
-                                        </div>
-                                        <div class="product">
-                                            <div class="product-micro">
-                                                <div class="row product-micro-row">
-                                                    <div class="col col-xs-5">
-                                                        <div class="product-image">
-                                                            <div class="image">
-                                                                <a href="#">
-                                                                    <img src="{{ asset('fontend') }}/assets/images/products/p25.jpg" alt="">
-                                                                </a>
-                                                            </div><!-- /.image -->
-
-
-                                                        </div><!-- /.product-image -->
-                                                    </div><!-- /.col -->
-                                                    <div class="col2 col-xs-7">
-                                                        <div class="product-info">
-                                                            <h3 class="name"><a href="#">Floral Print Buttoned</a></h3>
-                                                            <div class="rating rateit-small"></div>
-                                                            <div class="product-price">
-				<span class="price">
-					$450.99				</span>
-
-                                                            </div><!-- /.product-price -->
-
-                                                        </div>
-                                                    </div><!-- /.col -->
-                                                </div><!-- /.product-micro-row -->
-                                            </div><!-- /.product-micro -->
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="products best-product">
-                                        <div class="product">
-                                            <div class="product-micro">
-                                                <div class="row product-micro-row">
-                                                    <div class="col col-xs-5">
-                                                        <div class="product-image">
-                                                            <div class="image">
-                                                                <a href="#">
-                                                                    <img src="{{ asset('fontend') }}/assets/images/products/p26.jpg" alt="">
-                                                                </a>
-                                                            </div><!-- /.image -->
-
-
-
-                                                        </div><!-- /.product-image -->
-                                                    </div><!-- /.col -->
-                                                    <div class="col2 col-xs-7">
-                                                        <div class="product-info">
-                                                            <h3 class="name"><a href="#">Floral Print Buttoned</a></h3>
-                                                            <div class="rating rateit-small"></div>
-                                                            <div class="product-price">
-				<span class="price">
-					$450.99				</span>
-
-                                                            </div><!-- /.product-price -->
-
-                                                        </div>
-                                                    </div><!-- /.col -->
-                                                </div><!-- /.product-micro-row -->
-                                            </div><!-- /.product-micro -->
-
-                                        </div>
-                                        <div class="product">
-                                            <div class="product-micro">
-                                                <div class="row product-micro-row">
-                                                    <div class="col col-xs-5">
-                                                        <div class="product-image">
-                                                            <div class="image">
-                                                                <a href="#">
-                                                                    <img src="{{ asset('fontend') }}/assets/images/products/p27.jpg" alt="">
-                                                                </a>
-                                                            </div><!-- /.image -->
-
-
-                                                        </div><!-- /.product-image -->
-                                                    </div><!-- /.col -->
-                                                    <div class="col2 col-xs-7">
-                                                        <div class="product-info">
-                                                            <h3 class="name"><a href="#">Floral Print Buttoned</a></h3>
-                                                            <div class="rating rateit-small"></div>
-                                                            <div class="product-price">
-				<span class="price">
-					$450.99				</span>
-
-                                                            </div><!-- /.product-price -->
-
-                                                        </div>
-                                                    </div><!-- /.col -->
-                                                </div><!-- /.product-micro-row -->
-                                            </div><!-- /.product-micro -->
-
                                         </div>
                                     </div>
                                 </div>
@@ -1219,6 +937,10 @@
                         </div><!-- /.sidebar-widget-body -->
                     </div><!-- /.sidebar-widget -->
                     <!-- ============================================== BEST SELLER : END ============================================== -->
+
+
+
+
 
                     <!-- ============================================== BLOG SLIDER ============================================== -->
                     <section class="section latest-blog outer-bottom-vs wow fadeInUp">

@@ -13,12 +13,15 @@ class FontEntController extends Controller
     public function index()
     {
         $tabAllProducts = Product::where('status',1)->get();
-        $categorys = Category::orderBy('category_name_en', 'ASC')->get();
         $featureds = Product::where('featured', 1)->where('status', 1)->orderBy('id', 'DESC')->get();
-        $hot_deals = Product::where('hot_deals', 1)->where('status', 1)->orderBy('id', 'DESC')->get();
+        $hot_deals = Product::where('hot_deals', 1)->where('status', 1)->where('discount_price', '!=', NULL)->orderBy('id', 'DESC')->get();
         $spacial_offers = Product::where('spacial_offer',1)->where('status',1)->limit(5)->orderBy('id', 'DESC')->get();
         $spacial_deals = Product::where('spacial_deals',1)->where('status',1)->limit(5)->orderBy('id', 'DESC')->get();
-        return view('index', compact('tabAllProducts', 'categorys', 'featureds', 'hot_deals', 'spacial_offers', 'spacial_deals'));
+
+//        $skip_category_0 = Category::skip(0)->first();
+//        $skip_category_1 = Category::skip(1)->first();
+
+        return view('index', compact('tabAllProducts', 'featureds', 'hot_deals', 'spacial_offers', 'spacial_deals'));
     }
 
     public function singleProduct($id, $slug){
@@ -26,4 +29,14 @@ class FontEntController extends Controller
         $multiImg = MultiImage::where('product_id', $id)->get();
         return view('single-page', compact('multiImg', 'product'));
     }
+
+    // tags wise product show
+    public function tagWiseProductsShow($tag){
+        $categorys = Category::orderBy('id', 'DESC')->get();
+        $products = Product::where('status', 1)->where('product_tags_en', $tag)->orWhere('product_tags_bn',$tag)->orderBy('id','DESC')->paginate(10);
+        return view('layouts.fontend.products-tag-page', compact('products', 'categorys'));
+    }
+
+
+
 }
