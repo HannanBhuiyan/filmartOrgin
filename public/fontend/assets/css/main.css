@@ -14,7 +14,13 @@ Text Domain:  Flipmart
 
 
 
-
+.subCatTitle a {
+    padding-left: 0px !important;
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+}
 
 .green-text {
   color: #abd07e !important;

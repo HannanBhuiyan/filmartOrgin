@@ -38,5 +38,21 @@ class FontEntController extends Controller
     }
 
 
+    public function subcategoryWiseProductShow($id){
+        $categorys = Category::orderBy('id', 'DESC')->get();
+        $products = Product::where('status', 1)->where('subcategory_id', $id)->orderBy('id','DESC')->paginate(10);
+        return view('layouts.fontend.subcategory-product', compact('products', 'categorys'));
+    }
+
+    // sub sub category wise product show
+    public function subSubcategoryWiseProductShow($id){
+        $categorys = Category::orderBy('id', 'DESC')->get();
+        $products = Product::where('status', 1)->where('subsubcategory_id', $id)->orderBy('id','DESC')->paginate(10);
+        return view('layouts.fontend.subcategory-product', compact('products', 'categorys'));
+    }
+
+
+
+
 
 }

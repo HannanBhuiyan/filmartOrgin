@@ -110,9 +110,12 @@ Route::get('/single/product/{id}/{slug}', [FontEntController::class, 'singleProd
 
 //==================== tag wise product show ==========================
 
-Route::get('//product/tags/{tag}', [FontEntController::class, 'tagWiseProductsShow']);
+Route::get('/product/tags/{tag}', [FontEntController::class, 'tagWiseProductsShow']);
 
+// ============================ subCategory wise product show ====================================
 
+Route::get('subCategory/product/{id}', [FontEntController::class, 'subcategoryWiseProductShow']);
+Route::get('subSubCategory/product/{id}', [FontEntController::class, 'subSubcategoryWiseProductShow']);
 
 // ===================== Frontend Language route ======================================================
 

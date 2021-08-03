@@ -1,68 +1,26 @@
 
 <!-- ============================================== BRANDS CAROUSEL ============================================== -->
 <div id="brands-carousel" class="logo-slider wow fadeInUp">
-
     <div class="logo-slider-inner">
         <div id="brand-slider" class="owl-carousel brand-slider custom-carousel owl-theme">
-            <div class="item m-t-15">
-                <a href="#" class="image">
-                    <img src="{{asset('fontend')}}/assets/images/brands/brand1.png" alt="">
-                </a>
-            </div><!--/.item-->
-
-            <div class="item m-t-10">
-                <a href="#" class="image">
-                    <img src="{{ asset('fontend') }}/assets/images/brands/brand2.png" alt="">
-                </a>
-            </div><!--/.item-->
-
-            <div class="item">
-                <a href="#" class="image">
-                    <img src="{{ asset('fontend') }}/assets/images/brands/brand3.png" alt="">
-                </a>
-            </div><!--/.item-->
-
-            <div class="item">
-                <a href="#" class="image">
-                    <img src="{{ asset('fontend') }}/assets/images/brands/brand4.png" alt="">
-                </a>
-            </div><!--/.item-->
-
-            <div class="item">
-                <a href="#" class="image">
-                    <img src="{{ asset('fontend') }}/assets/images/brands/brand5.png" alt="">
-                </a>
-            </div><!--/.item-->
-
-            <div class="item">
-                <a href="#" class="image">
-                    <img src="{{ asset('fontend') }}/assets/images/brands/brand6.png" alt="">
-                </a>
-            </div><!--/.item-->
-
-            <div class="item">
-                <a href="#" class="image">
-                    <img src="{{ asset('fontend') }}/assets/images/brands/brand2.png" alt="">
-                </a>
-            </div><!--/.item-->
-
-            <div class="item">
-                <a href="#" class="image">
-                    <img src="{{ asset('fontend') }}/assets/images/brands/brand4.png" alt="">
-                </a>
-            </div><!--/.item-->
-
-            <div class="item">
-                <a href="#" class="image">
-                    <img src="{{ asset('fontend') }}/assets/images/brands/brand1.png" alt="">
-                </a>
-            </div><!--/.item-->
-
-            <div class="item">
-                <a href="#" class="image">
-                    <img src="{{ asset('fontend') }}/assets/images/brands/brand5.png" alt="">
-                </a>
-            </div><!--/.item-->
+            @php
+                $brands = \App\Models\Brand::orderBy("id", 'DESC')->get();
+            @endphp
+            @forelse($brands as $brand)
+                <div class="item m-t-15">
+                    <img src="{{asset($brand->brand_image)}}" alt="brandImage">
+                </div><!--/.item-->
+                @empty
+                    @if(session()->get('language') == 'bangle')
+                    <h4 class="text-danger font-weight-bold">
+                        ব্র্যান্ডের লোগো পাওয়া যায়নি
+                    </h4>
+                    @else
+                    <h4 class="text-danger font-weight-bold">
+                        Brand logo not found
+                    </h4>
+                    @endif
+           @endforelse
         </div><!-- /.owl-carousel #logo-slider -->
     </div><!-- /.logo-slider-inner -->
 

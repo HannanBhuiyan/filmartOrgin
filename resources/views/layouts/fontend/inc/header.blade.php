@@ -361,7 +361,8 @@
                         </ul><!-- /.dropdown-menu-->
                     </div><!-- /.dropdown-cart -->
 
-                    <!-- ============================================================= SHOPPING CART DROPDOWN : END============================================================= -->				</div><!-- /.top-cart-row -->
+                    <!-- ============================================================= SHOPPING CART DROPDOWN : END============================================================= -->
+                </div><!-- /.top-cart-row -->
             </div><!-- /.row -->
 
         </div><!-- /.container -->
@@ -413,34 +414,27 @@
 
                                                         @foreach($subCategorys as $subcat)
                                                             <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
-                                                                @if(session()->get('language') == 'bangle')
-                                                                <h2 class="title">
-                                                                        {{ $subcat->subcategory_name_bn }}
-                                                                </h2>
-                                                                @else
-                                                                    <h2 class="title">
-                                                                        {{ $subcat->subcategory_name_en }}
-                                                                    </h2>
-                                                                @endif
+                                                                <div class="subCatTitle">
+                                                                    @if(session()->get('language') == 'bangle')
+                                                                        <a href="{{ url('subCategory/product/'.$subcat->id) }}">{{ $subcat->subcategory_name_bn }}</a>
+                                                                    @else
+                                                                        <a href="{{ url('subCategory/product/'.$subcat->id) }}">{{ $subcat->subcategory_name_en }}</a>
+                                                                    @endif
 
+                                                                </div>
                                                                 <ul class="links">
                                                                     @php
-                                                                        $subSubCategorys = \App\Models\SubSubCategory::where('subcategory_id', $subcat->id)->orderBy('subsubcategory_name_en', 'ASC')->get();
+                                                                     $subSubCategorys = \App\Models\SubSubCategory::where('subcategory_id', $subcat->id)->orderBy('subsubcategory_name_en', 'ASC')->get();
                                                                     @endphp
                                                                     @foreach($subSubCategorys as $subSubCate)
                                                                             <li>
                                                                                 @if(session()->get('language') == 'bangle')
-                                                                                    <a href="#">
-                                                                                        {{ $subSubCate->subsubcategory_name_bn }}
-                                                                                    </a>
+                                                                                    <a href="{{ url('subSubCategory/product/'.$subSubCate->id) }}">{{ $subSubCate->subsubcategory_name_bn }}</a>
                                                                                 @else
-                                                                                    <a href="#">
-                                                                                        {{ $subSubCate->subsubcategory_name_en }}
-                                                                                    </a>
-                                                                                @endif
+                                                                                    <a href="{{ url('subSubCategory/product/'.$subSubCate->id) }}"> {{ $subSubCate->subsubcategory_name_en }}</a>
+                                                                               @endif
                                                                             </li>
                                                                     @endforeach
-
                                                                 </ul>
                                                             </div><!-- /.col -->
 
