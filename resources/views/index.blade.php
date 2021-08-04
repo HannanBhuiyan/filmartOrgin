@@ -22,116 +22,7 @@
                     @include('layouts.fontend.inc.main-category')
 
                     <!-- ============================================== HOT DEALS ============================================== -->
-                    <div class="sidebar-widget hot-deals wow fadeInUp outer-bottom-xs">
-                        <h3 class="section-title">
-                          @if(session()->get('language') == 'bangle') গরম চুক্তি @else hot deals @endif
-                        </h3>
-                        <div class="owl-carousel sidebar-carousel custom-carousel owl-theme outer-top-ss">
-                            @forelse($hot_deals as $hot_deal)
-                                <div class="item">
-                                    <div class="products">
-                                        <div class="hot-deal-wrapper">
-                                            <div class="image">
-                                                <img src="{{ asset($hot_deal->product_thumbnail) }}" alt="">
-                                            </div>
-                                            @php
-                                                $amount = $hot_deal->selling_price - $hot_deal->discount_price;
-                                                $parsentage = ($amount /$hot_deal->selling_price)*100;
-                                            @endphp
-                                            <div class="sale-offer-tag">
-                                                @if(session()->get('language') == 'bangle')
-                                                    <span>{{ bn_replace(round($parsentage))  }}%<br>অফার</span>
-                                                @else
-                                                    <span>{{round($parsentage)}}%<br>off</span>
-                                                @endif
-                                            </div>
-                                            <div class="timing-wrapper">
-                                                <div class="box-wrapper">
-                                                    <div class="date box">
-                                                        <span class="key">120</span>
-                                                        <span class="value">DAYS</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="box-wrapper">
-                                                    <div class="hour box">
-                                                        <span class="key">20</span>
-                                                        <span class="value">HRS</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="box-wrapper">
-                                                    <div class="minutes box">
-                                                        <span class="key">36</span>
-                                                        <span class="value">MINS</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="box-wrapper hidden-md">
-                                                    <div class="seconds box">
-                                                        <span class="key">60</span>
-                                                        <span class="value">SEC</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div><!-- /.hot-deal-wrapper -->
-                                        <div class="product-info text-left m-t-20">
-                                            <h3 class="name">
-                                                @if(session()->get('language') == 'bangle')
-                                                    <a href="{{ url('/single/product/'. $hot_deal->id . '/' .$hot_deal->product_slug_bn) }}">{{ $hot_deal->product_title_bn }}</a>
-                                                @else
-                                                    <a href="{{ url('/single/product/'. $hot_deal->id . '/' .$hot_deal->product_slug_en) }}">{{ $hot_deal->product_title_en }}</a>
-                                                @endif
-                                            </h3>
-                                            <div class="rating rateit-small"></div>
-                                            <div class="product-price">
-                                                @if( $hot_deal->discount_price == NULL)
-                                                    @if(session()->get('language') == 'bangle')
-                                                        <span class="price">৳{{ bn_replace($hot_deal->selling_price) }} </span>
-                                                    @else
-                                                        <span class="price">${{ $hot_deal->selling_price }} </span>
-                                                    @endif
-                                                @else
-                                                    @if(session()->get('language') == 'bangle')
-                                                        <span class="price">৳{{ bn_replace( $hot_deal->discount_price)  }} </span>
-                                                        <span class="price-before-discount">${{ bn_replace($hot_deal->selling_price) }}</span>
-                                                    @else
-                                                        <span class="price">${{ $hot_deal->discount_price }} </span>
-                                                        <span class="price-before-discount">${{ $hot_deal->selling_price }}</span>
-                                                    @endif
-                                                @endif
-                                            </div><!-- /.product-price -->
-                                        </div><!-- /.product-info -->
-                                        <div class="cart clearfix animate-effect">
-                                            <div class="action">
-                                                <div class="add-cart-button btn-group">
-                                                        <button data-toggle="dropdown" class="btn btn-primary icon" type="button" title="Add Cart">
-                                                                <i class="fa fa-shopping-cart"></i>
-                                                        </button>
-                                                    {{--  button--}}
-                                                    @if(session()->get('language') == 'bangle')
-                                                        <button class="btn btn-primary cart-btn" type="button">
-                                                            <a style="background: none!important" href="{{ url('/single/product/'. $hot_deal->id . '/' .$hot_deal->product_slug_bn) }}">
-                                                                কার্ট যোগ করুন
-                                                            </a>
-                                                        </button>
-                                                    @else
-                                                        <button class="btn btn-primary cart-btn" type="button">
-                                                            <a style="background: none!important" href="{{ url('/single/product/'. $hot_deal->id . '/' .$hot_deal->product_slug_en ) }}">
-                                                                Add to cart
-                                                            </a>
-                                                        </button>
-                                                    @endif
-                                                </div>
-                                            </div><!-- /.action -->
-                                        </div><!-- /.cart -->
-                                    </div>
-                                </div>
-                            @empty
-                            @endforelse
-
-                        </div><!-- /.sidebar-widget -->
-                    </div>
+                        @include('layouts.fontend.inc.hot-deals');
                     <!-- ============================================== HOT DEALS: END ============================================== -->
 
 
@@ -293,56 +184,13 @@
                             </div>
                         </div><!-- /.sidebar-widget-body -->
                     </div><!-- /.sidebar-widget -->
-                    <!-- ============================================== SPECIAL DEALS : END ============================================== -->
-                    <!-- ============================================== NEWSLETTER ============================================== -->
-                    <div class="sidebar-widget newsletter wow fadeInUp outer-bottom-small">
-                        <h3 class="section-title">Newsletters</h3>
-                        <div class="sidebar-widget-body outer-top-xs">
-                            <p>Sign Up for Our Newsletter!</p>
-                            <form role="form">
-                                <div class="form-group">
-                                    <label class="sr-only" for="exampleInputEmail1">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Subscribe to our newsletter">
-                                </div>
-                                <button class="btn btn-primary">Subscribe</button>
-                            </form>
-                        </div><!-- /.sidebar-widget-body -->
-                    </div><!-- /.sidebar-widget -->
-                    <!-- ============================================== NEWSLETTER: END ============================================== -->
-
-                    <!-- ============================================== Testimonials============================================== -->
-                    <div class="sidebar-widget  wow fadeInUp outer-top-vs ">
-                        <div id="advertisement" class="advertisement">
-                            <div class="item">
-                                <div class="avatar"><img src="{{ asset('fontend') }}/assets/images/testimonials/member1.png" alt="Image"></div>
-                                <div class="testimonials"><em>"</em> Vtae sodales aliq uam morbi non sem lacus port mollis. Nunc condime tum metus eud molest sed consectetuer.<em>"</em></div>
-                                <div class="clients_author">John Doe	<span>Abc Company</span>	</div><!-- /.container-fluid -->
-                            </div><!-- /.item -->
-
-                            <div class="item">
-                                <div class="avatar"><img src="{{ asset('fontend') }}/assets/images/testimonials/member3.png" alt="Image"></div>
-                                <div class="testimonials"><em>"</em>Vtae sodales aliq uam morbi non sem lacus port mollis. Nunc condime tum metus eud molest sed consectetuer.<em>"</em></div>
-                                <div class="clients_author">Stephen Doe	<span>Xperia Designs</span>	</div>
-                            </div><!-- /.item -->
-
-                            <div class="item">
-                                <div class="avatar"><img src="{{ asset('fontend') }}/assets/images/testimonials/member2.png" alt="Image"></div>
-                                <div class="testimonials"><em>"</em> Vtae sodales aliq uam morbi non sem lacus port mollis. Nunc condime tum metus eud molest sed consectetuer.<em>"</em></div>
-                                <div class="clients_author">Saraha Smith	<span>Datsun &amp; Co</span>	</div><!-- /.container-fluid -->
-                            </div><!-- /.item -->
-
-                        </div><!-- /.owl-carousel -->
-                    </div>
-
-                    <!-- ============================================== Testimonials: END ============================================== -->
-
+                    <!-- ================== SPECIAL DEALS : END ============= -->
+                    <!-- ============= Testimonials ============== -->
+                        @include('layouts.fontend.inc.testmonial');
+                    <!-- ============== Testimonials: END ============ -->
                     <div class="home-banner">
                         <img src="{{ asset('fontend') }}/assets/images/banners/LHS-banner.jpg" alt="Image">
                     </div>
-
-
-
-
                 </div><!-- /.sidemenu-holder -->
                 <!-- ============================================== SIDEBAR : END ============================================== -->
 
