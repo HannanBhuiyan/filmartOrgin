@@ -67,7 +67,7 @@
                             </div><!-- /.gallery-holder -->
                             <div class='col-sm-6 col-md-7 product-info-block'>
                                 <div class="product-info">
-                                    <h1 class="name">
+                                    <h1 class="name" id="Pname">
                                         @if(session()->get('language') == 'bangle')
                                             {{ $product->product_name_bn }}
                                         @else
@@ -166,11 +166,12 @@
 
                                         <div class="row" style="margin:20px 0px">
                                             <div class="col-sm-6">
-                                                <div class="input-group mb-3">
-                                                    <label class="input-group-text">Select Color</label>
-                                                    <select class="form-control">
-                                                        <option value>Choose...</option>
 
+                                                @if($product->product_color_bn == null)
+                                                @else
+                                                    <div class="input-group mb-3">
+                                                        <label class="input-group-text">Select Color</label>
+                                                        <select class="form-control" id="color">
                                                             @if(session()->get('language') == 'bangle')
                                                                 @foreach ($product_color_bn as $color_bn)
                                                                     <option value="{{ $color_bn }}">{{ $color_bn }}</option>
@@ -179,31 +180,34 @@
                                                                 @foreach ($product_color_en as $color_en)
                                                                     <option value="{{ $color_en }}">{{ $color_en }}</option>
                                                                 @endforeach
-                                                           @endif
-
-
-
-                                                    </select>
-                                                </div>
+                                                            @endif
+                                                        </select>
+                                                    </div>
+                                                @endif
                                             </div>
 
                                             <div class="col-sm-6">
-                                                <div class="input-group mb-3">
-                                                    <label class="input-group-text">Select Size</label>
-                                                    <select class="form-control">
-                                                        <option value>Choose...</option>
-                                                        @if(session()->get('language') == 'bangle')
-                                                            @foreach ($product_size_bn as $size_bn)
-                                                                <option value="{{ $size_bn }}">{{ $size_bn }}</option>
-                                                            @endforeach
-                                                        @else
-                                                            @foreach ($product_size_en as $size_en)
-                                                                <option value="{{ $size_en }}">{{ $size_en }}</option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                </div>
+                                                @if($product->product_size_bn == null)
+                                                @else
+                                                    <div class="input-group mb-3">
+                                                        <label class="input-group-text">Select Size</label>
+                                                        <select class="form-control" id="size">
+                                                            @if(session()->get('language') == 'bangle')
+                                                                @foreach ($product_size_bn as $size_bn)
+                                                                    <option value="{{ $size_bn }}">{{ $size_bn }}</option>
+                                                                @endforeach
+                                                            @else
+                                                                @foreach ($product_size_en as $size_en)
+                                                                    <option value="{{ $size_en }}">{{ $size_en }}</option>
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
+                                                    </div>
+                                                @endif
                                             </div>
+                                            {{-- hidden id for card   --}}
+                                            <input type="hidden" id="product_id" value="{{ $product->id }}">
+
                                         </div><!-- /.row -->
 
                                         {{-- ============================ product dropdown ended  ================================= --}}
@@ -219,16 +223,12 @@
                                             <div class="col-sm-2">
                                                 <div class="cart-quantity">
                                                     <div class="quant-input">
-                                                        <div class="arrows">
-                                                            <div class="arrow plus gradient"><span class="ir"><i class="icon fa fa-sort-asc"></i></span></div>
-                                                            <div class="arrow minus gradient"><span class="ir"><i class="icon fa fa-sort-desc"></i></span></div>
-                                                        </div>
-                                                        <input type="text" value="1">
+                                                        <input type="number" id="quantity" class="form-control" value="1" min="1">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-7">
-                                                <a href="#" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</a>
+                                                <button type="submit" onclick="addToCard()" class="btn btn-danger addCardBtn"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</button>
                                             </div>
                                         </div><!-- /.row -->
                                     </div><!-- /.quantity-container -->
@@ -244,7 +244,7 @@
                                     <li class="active"><a data-toggle="tab" href="#description">DESCRIPTION</a></li>
                                     <li><a data-toggle="tab" href="#review">REVIEW</a></li>
                                     <li><a data-toggle="tab" href="#tags">TAGS</a></li>
-                                </ul><!-- /.nav-tabs #product-tabs -->
+                                </ul>
                             </div>
                             <div class="col-sm-9">
 
@@ -260,7 +260,7 @@
                                                 @endif
                                             </p>
                                         </div>
-                                    </div><!-- /.tab-pane -->
+                                    </div>
 
                                     <div id="review" class="tab-pane">
                                         <div class="product-tab">
@@ -274,8 +274,8 @@
                                                         <div class="text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aliquam suscipit."</div>
                                                     </div>
 
-                                                </div><!-- /.reviews -->
-                                            </div><!-- /.product-reviews -->
+                                                </div>
+                                            </div>
 
 
 
@@ -320,8 +320,8 @@
                                                                 <td><input type="radio" name="quality" class="radio" value="5"></td>
                                                             </tr>
                                                             </tbody>
-                                                        </table><!-- /.table .table-bordered -->
-                                                    </div><!-- /.table-responsive -->
+                                                        </table>
+                                                    </div>
                                                 </div><!-- /.review-table -->
 
                                                 <div class="review-form">
@@ -384,14 +384,14 @@
                                                     <label>&nbsp;</label>
                                                     <span class="text col-md-offset-3">Use spaces to separate tags. Use single quotes (') for phrases.</span>
                                                 </div>
-                                            </form><!-- /.form-cnt -->
+                                            </form>
 
-                                        </div><!-- /.product-tab -->
-                                    </div><!-- /.tab-pane -->
+                                        </div>
+                                    </div>
 
-                                </div><!-- /.tab-content -->
-                            </div><!-- /.col -->
-                        </div><!-- /.row -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- ============================================== UPSELL PRODUCTS ============================================== -->

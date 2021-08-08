@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="keywords" content="MediaCenter, Template, eCommerce">
     <meta name="robots" content="all">
 
@@ -181,10 +182,6 @@
             background: #fff;
             outline: none;
         }
-
-
-
-
     </style>
 
 </head>
@@ -301,7 +298,8 @@
                             </div>
                         </form>
                     </div><!-- /.search-area -->
-                    <!-- ============================================================= SEARCH AREA : END ============================================================= -->				</div><!-- /.top-search-holder -->
+                    <!-- =============== ============= SEARCH AREA : END ==== ===================== -->
+                </div><!-- /.top-search-holder -->
 
                 <div class="col-xs-12 col-sm-12 col-md-2 animate-dropdown top-cart-row">
                     <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
@@ -312,11 +310,11 @@
                                 <div class="basket">
                                     <i class="glyphicon glyphicon-shopping-cart"></i>
                                 </div>
-                                <div class="basket-item-count"><span class="count">2</span></div>
+                                <div class="basket-item-count"><span class="count" id="miniCartQuantity"></span></div>
                                 <div class="total-price-basket">
                                     <span class="lbl">cart -</span>
                                     <span class="total-price">
-						<span class="sign">$</span><span class="value">600.00</span>
+						<span class="sign">$</span><span class="value" id="miniCartTotal"></span>
 					</span>
                                 </div>
 
@@ -325,30 +323,16 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <div class="cart-item product-summary">
-                                    <div class="row">
-                                        <div class="col-xs-4">
-                                            <div class="image">
-                                                <a href="detail.html"><img src="{{ asset('fontend') }}/assets/images/cart.jpg" alt=""></a>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-7">
+                                <div id="miniCart"></div>
 
-                                            <h3 class="name"><a href="index8a95.html?page-detail">Simple Product</a></h3>
-                                            <div class="price">$600.00</div>
-                                        </div>
-                                        <div class="col-xs-1 action">
-                                            <a href="#"><i class="fa fa-trash"></i></a>
-                                        </div>
-                                    </div>
-                                </div><!-- /.cart-item -->
+
                                 <div class="clearfix"></div>
-                                <hr>
+
 
                                 <div class="clearfix cart-total">
                                     <div class="pull-right">
 
-                                        <span class="text">Sub Total :</span><span class='price'>$600.00</span>
+                                        <span class="text">Sub Total :</span><span class='price' id="miniCartTotal"></span>
 
                                     </div>
                                     <div class="clearfix"></div>

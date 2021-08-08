@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SubSubCategoryController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\FontEnd\LanguageController;
+use App\Http\Controllers\FontEnd\CardController;
 
 
 // fontEnd route
@@ -108,12 +109,25 @@ Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>
 Route::get('/', [FontEntController::class, 'index']);
 Route::get('/single/product/{id}/{slug}', [FontEntController::class, 'singleProduct']);
 
-//==================== tag wise product show ==========================
 
+// ====================== card settings start ================================
+
+Route::get('/product/card/view/{id}', [CardController::class, 'productCardView']);
+Route::post('/product/card/add/{id}', [CardController::class, 'productAddToCard']);
+Route::get('/ProductMiniCardView/', [CardController::class, 'ProductMiniCardView']);
+Route::get('/miniCartRemove/{rowId}', [CardController::class, 'miniCartRemove']);
+
+
+// ==================== card settings end ==============================
+
+
+//==================== tag wise product show ==========================
 Route::get('/product/tags/{tag}', [FontEntController::class, 'tagWiseProductsShow']);
 
-// ============================ subCategory wise product show ====================================
 
+
+
+// ============================ subCategory wise product show ====================================
 Route::get('subCategory/product/{id}', [FontEntController::class, 'subcategoryWiseProductShow']);
 Route::get('subSubCategory/product/{id}', [FontEntController::class, 'subSubcategoryWiseProductShow']);
 

@@ -13,7 +13,37 @@ Text Domain:  Flipmart
 /*===================================================================================*/
 
 
+.addCardBtn {
+    padding:14px;
+    margin-left: 40px;
+    outline: none !important;
+    border: none !important;
+}
+button.btn.btn-lg.btn-danger {
+    outline: none !important;
+    border: none !important;
+}
+button.btn.btn-lg.btn-warning {
+    outline: none !important;
+    border: none !important;
+}
 
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 17px 15px !important;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    font-size: 15px !important;
+}
+
+.form-control {
+    height: 50px !important;
+}
+.form-group {
+    margin-bottom: 17px !important;
+}
 .subCatTitle a {
     padding-left: 0px !important;
     display: block;
@@ -280,7 +310,6 @@ img[src="assets/images/blank.gif"] {
 .outer-top-n {
   margin-top: 0px!important;
 }
-
 
 .outer-top-small {
   margin-top: 50px;
@@ -2736,6 +2765,7 @@ age-container #owl-main .owl-next {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
   background: #fdd922 ;
+
 }
 .product .cart .action ul li.lnk {
   margin: 10px 0px;
