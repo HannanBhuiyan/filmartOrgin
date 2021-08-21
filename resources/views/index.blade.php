@@ -384,31 +384,24 @@
                                                             <div class="action">
                                                                 <ul class="list-unstyled">
                                                                     <li class="add-cart-button btn-group">
-                                                                        @if(session()->get('language') == 'bangle')
-                                                                            <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="কার্ড যুক্ত করুন">
-                                                                                <a href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_bn) }}">
-                                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                                </a>
-                                                                            </button>
-                                                                        @else
-                                                                            <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="Add Cart">
-                                                                                <a href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_en ) }}">
-                                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                                </a>
-                                                                            </button>
-                                                                        @endif
+                                                                        <button data-toggle="modal" data-target="#cardModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $tabAllProduct->id }}" onclick="cardView(this.id)">
+                                                                            <i class="fa fa-shopping-cart"></i>
+                                                                        </button>
+
                                                                     </li>
+
+                                                                {{-- tab slider wishlis --}}
                                                                     <li class="lnk wishlist">
-                                                                        @if(session()->get('language') == 'bangle')
-                                                                            <a data-toggle="tooltip" class="add-to-cart" href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_bn) }}" title="ইচ্ছেতালিকা">
+                                                                        <a style="cursor:pointer" class="icon" id="{{ $tabAllProduct->id }}" onclick="addWishList(this.id)">
                                                                                 <i class="icon fa fa-heart"></i>
                                                                             </a>
-                                                                        @else
-                                                                            <a data-toggle="tooltip" class="add-to-cart" href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_en) }}" title="Wishlist">
-                                                                                <i class="icon fa fa-heart"></i>
-                                                                            </a>
-                                                                        @endif
+                                                                        </a>
                                                                     </li>
+                                                                    {{-- tab slider wishlis --}}
+
+
+
+
                                                                     <li class="lnk">
                                                                         @if(session()->get('language') == 'bangle')
                                                                             <a data-toggle="tooltip" class="add-to-cart" href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_bn) }}" title="তুলনা করা">
@@ -420,16 +413,18 @@
                                                                             </a>
                                                                         @endif
                                                                     </li>
+
+
                                                                 </ul>
-                                                            </div><!-- /.action -->
-                                                        </div><!-- /.cart -->
-                                                    </div><!-- /.product -->
-                                                </div><!-- /.products -->
-                                            </div><!-- /.item -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
-                                    </div><!-- /.home-owl-carousel -->
-                                </div><!-- /.product-slider -->
-                            </div><!-- /.tab-pane -->
+                                    </div>
+                                </div>
+                            </div>
 
                             @foreach($tabcategorys as $cat)
                                 <div class="tab-pane" id="category{{ $cat->id }}">
@@ -500,31 +495,18 @@
                                                                 <div class="action">
                                                                     <ul class="list-unstyled">
                                                                         <li class="add-cart-button btn-group">
-                                                                            @if(session()->get('language') == 'bangle')
-                                                                                <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="কার্ড যুক্ত করুন">
-                                                                                    <a href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_bn) }}">
-                                                                                        <i class="fa fa-shopping-cart"></i>
-                                                                                    </a>
-                                                                                </button>
-                                                                            @else
-                                                                                <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="Add Cart">
-                                                                                    <a href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_en ) }}">
-                                                                                        <i class="fa fa-shopping-cart"></i>
-                                                                                    </a>
-                                                                                </button>
-                                                                            @endif
+                                                                            <button data-toggle="modal" data-target="#cardModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $tabAllProduct->id }}" onclick="cardView(this.id)">
+                                                                                <i class="fa fa-shopping-cart"></i>
+                                                                            </button>
                                                                         </li>
+                                                                        {{--    tab wishlist   --}}
                                                                         <li class="lnk wishlist">
-                                                                            @if(session()->get('language') == 'bangle')
-                                                                                <a data-toggle="tooltip" class="add-to-cart" href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_bn) }}" title="ইচ্ছেতালিকা">
-                                                                                    <i class="icon fa fa-heart"></i>
-                                                                                </a>
-                                                                            @else
-                                                                                <a data-toggle="tooltip" class="add-to-cart" href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_en) }}" title="Wishlist">
-                                                                                    <i class="icon fa fa-heart"></i>
-                                                                                </a>
-                                                                            @endif
+                                                                            <a style="cursor:pointer" class="icon" id="{{ $tabAllProduct->id }}" onclick="addWishList(this.id)">
+                                                                                <i class="icon fa fa-heart"></i>
+                                                                            </a>
+                                                                            </a>
                                                                         </li>
+                                                                        {{--    tab wishlist   --}}
                                                                         <li class="lnk">
                                                                             @if(session()->get('language') == 'bangle')
                                                                                 <a data-toggle="tooltip" class="add-to-cart" href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_bn) }}" title="তুলনা করা">
@@ -538,22 +520,22 @@
                                                                         </li>
                                                                     </ul>
                                                                 </div><!-- /.action -->
-                                                            </div><!-- /.cart -->
-                                                        </div><!-- /.product -->
+                                                            </div>
+                                                        </div>
                                                     </div><!-- /.products -->
-                                                </div><!-- /.item -->
+                                                </div>
                                                 @empty
                                                     <h3 class="text-danger font-weight-bold pb-3">
                                                         @if(session()->get('language') == 'bangle') কোন পণ্য পাওয়া যায় নি @else No Product Found @endif
                                                     </h3>
                                             @endforelse
-                                        </div><!-- /.home-owl-carousel -->
+                                        </div>
                                     </div><!-- /.product-slider -->
-                                </div><!-- /.tab-pane -->
+                                </div>
                             @endforeach
 
                         </div><!-- /.tab-content -->
-                    </div><!-- /.scroll-tabs -->
+                    </div>
                     <!-- ============================================== SCROLL TABS : END ============================================== -->
                     <!-- ============================================== WIDE PRODUCTS ============================================== -->
                     <div class="wide-banners wow fadeInUp outer-bottom-xs">
@@ -644,8 +626,8 @@
                                                         <span class="price-before-discount">${{ $featured->selling_price }}</span>
                                                     @endif
                                                 @endif
-                                            </div><!-- /.product-price -->
-                                        </div><!-- /.product-info -->
+                                            </div>
+                                        </div>
                                         <div class="cart clearfix animate-effect">
                                             <div class="action">
                                                 <ul class="list-unstyled">
@@ -654,32 +636,10 @@
                                                             <i class="fa fa-shopping-cart"></i>
                                                         </button>
 
-
-{{--                                                        @if(session()->get('language') == 'bangle')--}}
-{{--                                                            <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="কার্ড যুক্ত করুন">--}}
-{{--                                                                <a href="{{ url('/single/product/'. $featured->id . '/' .$featured->product_slug_bn) }}">--}}
-{{--                                                                    <i class="fa fa-shopping-cart"></i>--}}
-{{--                                                                </a>--}}
-{{--                                                            </button>--}}
-{{--                                                        @else--}}
-{{--                                                            <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="Add Cart">--}}
-{{--                                                                <a href="{{ url('/single/product/'. $featured->id . '/' .$featured->product_slug_en ) }}">--}}
-{{--                                                                    <i class="fa fa-shopping-cart"></i>--}}
-{{--                                                                </a>--}}
-{{--                                                            </button>--}}
-{{--                                                        @endif--}}
                                                     </li>
-                                                    <li class="lnk wishlist">
-                                                        @if(session()->get('language') == 'bangle')
-                                                            <a data-toggle="tooltip" class="add-to-cart" href="{{ url('/single/product/'. $featured->id . '/' .$featured->product_slug_bn) }}" title="ইচ্ছেতালিকা">
-                                                                <i class="icon fa fa-heart"></i>
-                                                            </a>
-                                                        @else
-                                                            <a data-toggle="tooltip" class="add-to-cart" href="{{ url('/single/product/'. $featured->id . '/' .$featured->product_slug_en) }}" title="Wishlist">
-                                                                <i class="icon fa fa-heart"></i>
-                                                            </a>
-                                                        @endif
-                                                    </li>
+                                   <button class="btn btn-primary icon" type="button" id="{{ $featured->id }}" onclick="addWishList(this.id)">
+                                                            <i class="icon fa fa-heart"></i>
+                                                    </button>
                                                     <li class="lnk">
                                                         @if(session()->get('language') == 'bangle')
                                                             <a data-toggle="tooltip" class="add-to-cart" href="{{ url('/single/product/'. $featured->id . '/' .$featured->product_slug_bn) }}" title="তুলনা করা">
@@ -692,25 +652,25 @@
                                                         @endif
                                                     </li>
                                                 </ul>
-                                            </div><!-- /.action -->
-                                        </div><!-- /.cart -->
-                                    </div><!-- /.product -->
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                </div><!-- /.products -->
-                            </div><!-- /.item -->
+                                </div>
+                            </div>
                             @empty
                                 <h4 style="color:red; font-weight:700"> @if (session()->get('language') == 'bangle') পণ্য পাওয়া যায় নি @else Product Not Found @endif </h4>
                             @endforelse
-                        </div><!-- /.home-owl-carousel -->
-                    </section><!-- /.section -->
+                        </div>
+                    </section>
 
 
 
 
 
 
-                    <!-- ============================================== FEATURED PRODUCTS : END ============================================== -->
-                    <!-- ============================================== WIDE PRODUCTS ============================================== -->
+                    <!-- ================ FEATURED PRODUCTS : END ================== -->
+                    <!-- ================== WIDE PRODUCTS =================== -->
                     <div class="wide-banners wow fadeInUp outer-bottom-xs">
                         <div class="row">
                             <div class="col-md-12">
@@ -732,9 +692,9 @@
 
                         </div><!-- /.row -->
                     </div><!-- /.wide-banners -->
-                    <!-- ============================================== WIDE PRODUCTS : END ============================================== -->
+                    <!-- ============= ======== WIDE PRODUCTS : END ======== =================== -->
 
-                    <!-- ============================================== BEST SELLER ============================================== -->
+                    <!-- ==================== BEST SELLER ======================= -->
 
                     <div class="best-deal wow fadeInUp outer-bottom-xs">
                         <h3 class="section-title">Best seller</h3>
@@ -763,8 +723,8 @@
                                                             </div><!-- /.product-price -->
                                                         </div>
                                                     </div><!-- /.col -->
-                                                </div><!-- /.product-micro-row -->
-                                            </div><!-- /.product-micro -->
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="product">
                                             <div class="product-micro">
@@ -775,30 +735,30 @@
                                                                 <a href="#">
                                                                     <img src="{{ asset('fontend') }}/assets/images/products/p21.jpg" alt="">
                                                                 </a>
-                                                            </div><!-- /.image -->
-                                                        </div><!-- /.product-image -->
-                                                    </div><!-- /.col -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="col2 col-xs-7">
                                                         <div class="product-info">
                                                             <h3 class="name"><a href="#">Floral Print Buttoned</a></h3>
                                                             <div class="rating rateit-small"></div>
                                                             <div class="product-price">
 				                                                <span class="price">$450.99</span>
-                                                            </div><!-- /.product-price -->
+                                                            </div>
                                                         </div>
-                                                    </div><!-- /.col -->
-                                                </div><!-- /.product-micro-row -->
-                                            </div><!-- /.product-micro -->
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- /.sidebar-widget-body -->
-                    </div><!-- /.sidebar-widget -->
-                    <!-- ============================================== BEST SELLER : END ============================================== -->
+                        </div>
+                    </div>
+                    <!-- ======= ====== BEST SELLER : END =========== -->
 
 
-                    <!-- ============================================== BLOG SLIDER ============================================== -->
+                    <!-- ============ BLOG SLIDER ================ -->
                     <section class="section latest-blog outer-bottom-vs wow fadeInUp">
                         <h3 class="section-title">latest form blog</h3>
                         <div class="blog-slider-container outer-top-xs">
@@ -817,36 +777,35 @@
                                             <span class="info">By Jone Doe &nbsp;|&nbsp; 21 March 2016 </span>
                                             <p class="text">Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
                                             <a href="#" class="lnk btn btn-primary">Read more</a>
-                                        </div><!-- /.blog-post-info -->
+                                        </div>
 
 
-                                    </div><!-- /.blog-post -->
-                                </div><!-- /.item -->
+                                    </div>
+                                </div>
                                 <div class="item">
                                     <div class="blog-post">
                                         <div class="blog-post-image">
                                             <div class="image">
                                                 <a href="blog.html"><img src="{{ asset('fontend') }}/assets/images/blog-post/post2.jpg" alt=""></a>
                                             </div>
-                                        </div><!-- /.blog-post-image -->
-
+                                        </div>
 
                                         <div class="blog-post-info text-left">
                                             <h3 class="name"><a href="#">Dolorem eum fugiat quo voluptas nulla pariatur</a></h3>
                                             <span class="info">By Saraha Smith &nbsp;|&nbsp; 21 March 2016 </span>
                                             <p class="text">Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
                                             <a href="#" class="lnk btn btn-primary">Read more</a>
-                                        </div><!-- /.blog-post-info -->
+                                        </div>
 
 
-                                    </div><!-- /.blog-post -->
-                                </div><!-- /.item -->
-                            </div><!-- /.owl-carousel -->
-                        </div><!-- /.blog-slider-container -->
-                    </section><!-- /.section -->
-                    <!-- ============================================== BLOG SLIDER : END ============================================== -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- =============== BLOG SLIDER : END =========== -->
 
-                    <!-- ============================================== FEATURED PRODUCTS ============================================== -->
+                    <!-- ============ FEATURED PRODUCTS ======== -->
                     <section class="section wow fadeInUp new-arriavls">
                         <h3 class="section-title">New Arrivals</h3>
                         <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
@@ -876,7 +835,7 @@
 
                                             </div><!-- /.product-price -->
 
-                                        </div><!-- /.product-info -->
+                                        </div>
                                         <div class="cart clearfix animate-effect">
                                             <div class="action">
                                                 <ul class="list-unstyled">

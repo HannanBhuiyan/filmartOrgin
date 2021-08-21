@@ -38,10 +38,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                            @php
+                                $i=1;
+                            @endphp
                             @foreach($items as $item)
                                 <tr>
-                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $i++ }}</td>
                                     <td>{{ $item->brand_name_bn }}</td>
                                     <td>{{ $item->brand_name_en }}</td>
                                     <td><img src="{{ asset($item->brand_image) }}" alt=""></td>

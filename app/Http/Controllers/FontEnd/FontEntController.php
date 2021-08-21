@@ -4,9 +4,12 @@ namespace App\Http\Controllers\FontEnd;
 
 use App\Http\Controllers\Controller;
 use App\Models\MultiImage;
+use App\Models\Wishlist;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 
 class FontEntController extends Controller
 {
@@ -69,11 +72,6 @@ class FontEntController extends Controller
         $products = Product::where('status', 1)->where('subsubcategory_id', $id)->orderBy('id','DESC')->paginate(10);
         return view('layouts.fontend.subcategory-product', compact('products', 'categorys'));
     }
-
-
-
-
-
 
 
 

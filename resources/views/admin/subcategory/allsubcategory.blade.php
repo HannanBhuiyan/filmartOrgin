@@ -39,7 +39,7 @@
                                 <tr>
 
                                     <td>{{  !empty($item->category->category_name_en) ? $item->category->category_name_en:'' }}</td>
-                                    <td>{{ $item->subcategory_name_bn }}</td>
+                                    <td>{{ $item->subcategory_name_bn }}  <span style="color:red; font-weight:700">({{ $item->subsubcategory->count()}} )</span></td>
                                     <td>{{ $item->subcategory_name_en }}</td>
                                     <td>
                                         @if($item->created_at == NULL)

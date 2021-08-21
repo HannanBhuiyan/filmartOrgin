@@ -4,8 +4,12 @@ namespace App\Http\Controllers\FontEnd;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Wishlist;
+use Carbon\Carbon;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CardController extends Controller
 {
@@ -30,6 +34,9 @@ class CardController extends Controller
     }
 
     public function productAddToCard(Request $request, $id){
+        if(Session::has('coupon')){
+            Session::forget('coupon');
+        }
         $product = Product::findOrFail($id);
         if($product->discount_price == NULL){
             Cart::add([
@@ -81,6 +88,10 @@ class CardController extends Controller
         $result = Cart::remove($rowId);
         return response()->json($result);
     }
+
+
+
+
 
 
 }

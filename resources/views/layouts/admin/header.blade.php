@@ -205,6 +205,16 @@
             font-size: 17px;
             border-radius: 5px;
         }
+        .innerItem p {
+            color: #00f3ff;
+        }
+        ul.nav.nav-treeview.menuRight {
+            margin-left: 16px;
+        }
+        li.nav-item.miniIcon i {
+            margin-right: 17px;
+            display: inline-block;
+        }
     </style>
 
 

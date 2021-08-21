@@ -38,11 +38,13 @@
                             </tr>
                             </thead>
                             <tbody>
-
+                            @php
+                                $i=1;
+                            @endphp
                             @foreach($items as $item)
 
                                 <tr>
-                                    <th>{{ $item->id }}</th>
+                                    <th>{{ $i++ }}</th>
                                     <th><img width="100px" height="100px" src="{{ asset($item->product_thumbnail) }}" alt=""></th>
                                     <td>{{ $item->product_name_en }}</td>
                                     <td>{{ $item->product_code }}</td>

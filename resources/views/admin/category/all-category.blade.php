@@ -36,11 +36,13 @@
                             </tr>
                             </thead>
                             <tbody>
-
+                            @php
+                                $i=1;
+                            @endphp
                             @foreach($categoryItems as $item)
                                 <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ $item->category_name_bn }}</td>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{{  $item->category_name_bn  }}  <span style="color:red; font-weight:700">({{ $item->subcategory->count()}} )</span></td>
                                     <td>{{ $item->category_name_en }}</td>
                                     <td><i class="{{ $item->category_icon }}"></i></td>
                                     <td>

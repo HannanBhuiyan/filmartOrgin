@@ -98,7 +98,7 @@
             outline:none !important;
         }
         input[type=text] {
-            border:none;
+            /*border:none;*/
             background:transparent;
             margin-top: 10px;
         }
@@ -195,8 +195,8 @@
             <div class="header-top-inner">
                 <div class="cnt-account">
                     <ul class="list-unstyled">
-                        <li><a href="#"><i class="icon fa fa-heart"></i>Wishlist</a></li>
-                        <li><a href="#"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
+                        <li><a href="{{ url('wishListPageView') }}"><i class="icon fa fa-heart"></i>Wishlist</a></li>
+                        <li><a href="{{ route('cart') }}"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
                         <li><a href="#"><i class="icon fa fa-check"></i>Checkout</a></li>
                         <li><a href="{{ route('user.dashboard') }}"><i class="icon fa fa-user"></i>
 
@@ -313,9 +313,7 @@
                                 <div class="basket-item-count"><span class="count" id="miniCartQuantity"></span></div>
                                 <div class="total-price-basket">
                                     <span class="lbl">cart -</span>
-                                    <span class="total-price">
-						<span class="sign">$</span><span class="value" id="miniCartTotal"></span>
-					</span>
+                                    <span class="total-price"><span class="sign">$</span><span class="value" id="miniCartTotal"></span></span>
                                 </div>
 
 
@@ -333,6 +331,7 @@
                                     <div class="pull-right">
 
                                         <span class="text">Sub Total :</span><span class='price' id="miniCartTotal"></span>
+
 
                                     </div>
                                     <div class="clearfix"></div>

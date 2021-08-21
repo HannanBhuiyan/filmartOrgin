@@ -13,7 +13,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Brand</a></li>
+                            <li class="breadcrumb-item"><a href="#">Coupon</a></li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -24,48 +24,42 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12 m-auto">
-
+                    <div class="col-md-10 m-auto">
                         <table class="table table-bordered text-center" id="table_id">
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>SubTitle En</th>
-                                <th>SubTitle Bn</th>
-                                <th>Title En</th>
-                                <th>Title Bn</th>
-                                <th>Description En</th>
-                                <th>Description Bn</th>
-                                <th>Image</th>
-                                <th>Status</th>
+                                <th>Coupon Name</th>
+                                <th>Coupon Discount</th>
+                                <th>Coupon Validate</th>
+                                <th>Coupon Validity Status</th>
+                                <th>Coupon Status</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @php
-                                $i=1;
-                            @endphp
-                            @foreach($items as $item)
+                            @foreach($coupons as $item)
                                 <tr>
-                                    <td>{{ $i++ }}</td>
-                                    <td>{{ $item->subTitle_en }}</td>
-                                    <td>{{ $item->subTitle_bn }}</td>
-                                    <td>{{ $item->title_en }}</td>
-                                    <td>{{ $item->title_bn }}</td>
-                                    <td>{{ $item->description_en }}</td>
-                                    <td>{{ $item->description_bn }}</td>
-                                    <td><img width="200px" height="150px" src="{{ asset($item->sliderImage) }}" alt=""></td>
+                                    <td>{{ $item->coupon_name }}</td>
+                                    <td>{{ $item->coupon_discount }}</td>
+                                    <td>{{ $item->coupon_validity }}</td>
                                     <td>
-                                        @if( $item->status == 1)
-                                            <a href="{{ route('sliders.inactive', ['id' => $item->id]) }}"  class="btn btn-success">Inactive</a>
+                                        @if( $item->coupon_validity >=\Carbon\Carbon::now()->format('Y-m-d'))
+                                            <span class="badge badge-fill badge-success">Valid</span>
                                         @else
-                                            <a href="{{ route('sliders.active', ['id' => $item->id]) }}" class="btn btn-primary">active</a>
+                                            <span class="badge badge-fill badge-danger">Invalid</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <span class="d-flex justify-content-between">
-                                        <a href=" {{ route('sliders.edit', $item->id) }} " class="btn btn-info">Edit</a>
-                                        <form action="{{ route('sliders.destroy', $item->id) }}" method="POST" >
+                                        @if( $item->status == 1 )
+                                            <a href="{{ route('coupon.active', ['id' => $item->id]) }}" class="btn btn-warning">Active</a>
+                                        @else
+                                            <a href="{{ route('coupon.inactive', ['id' => $item->id]) }}"  class="btn btn-success">Inactive</a>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <span class="d-flex justify-content-around">
+                                        <a href=" {{ route('coupon.edit', $item->id) }} " class="btn btn-info">Edit</a>
+                                        <form action="{{ route('coupon.destroy', $item->id) }}" method="POST" >
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" onclick="return confirm('Are u sure to delete this item?')" class="btn btn-danger">Delete</button>

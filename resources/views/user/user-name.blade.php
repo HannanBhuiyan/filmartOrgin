@@ -1,7 +1,6 @@
 
 @include('layouts.fontend.inc.header');
 
-
 {{--user profile section start here --}}
 
 <div class="profile_section">
@@ -12,9 +11,8 @@
                     <div class="user-profile-image">
                         <div class="overlay"></div>
                         <form action="">
-                            <img id="img_id" src="{{ asset('fontend') }}/assets/images/profile_img.png" alt="img">
-                            <input type="file" class="profile_file" onchange="document.getElementById('img_id').src=window.URL.createObjectURL(this.files[0])" >
-
+                            <img id="img_id" src="{{ asset(Auth::user()->image) }}" alt="img">
+                            <input type="file" id="imageInput" class="profile_file">
                         </form>
                     </div>
                     <div class="profile_name">
@@ -40,8 +38,11 @@
             <div class="col-md-8">
 
             </div>
+        </div>
+    </div>
+</div>
 
-@include('layouts.fontend.inc.footer');
+@include('layouts.fontend.inc.footer')
 
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\SubCategory;
 use Carbon\Carbon;
 
 class CategoryController extends Controller
@@ -126,11 +127,13 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $result = Category::findOrFail($id)->forceDelete();
-        if($result){
+        $count = SubCategory::where('category_id', $id)->count();
+        if($count > 0){
+            return redirect()->back()->with('fail', "District available ! you can't delete");
+        }
+        else {
+            Category::findOrFail($id)->forceDelete();
             return redirect()->back()->with('success', 'Data Delete success');
-        }else {
-            return redirect()->back()->with('fail', 'Data delete failed');
         }
     }
 }

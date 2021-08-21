@@ -38,13 +38,15 @@
                             </tr>
                             </thead>
                             <tbody>
-
+                            @php
+                                $i=1;
+                            @endphp
                             @if ($barndCount <= 0)
                                 <p style="color:red; font-weight:700; font-size:20px">No Data Found</p>
                             @else
                                 @foreach($brandTrashs as $item)
                                     <tr>
-                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $i++ }}</td>
                                         <td>{{ $item->brand_name_bn }}</td>
                                         <td>{{ $item->brand_name_en }}</td>
                                         <td><img src="{{ asset($item->brand_image) }}" alt=""></td>

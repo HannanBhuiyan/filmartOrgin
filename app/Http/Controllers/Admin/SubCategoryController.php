@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Carbon\Carbon;
+use App\Models\SubSubCategory;
 
 class SubCategoryController extends Controller
 {
@@ -129,11 +130,13 @@ class SubCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $result = SubCategory::findOrFail($id)->forceDelete();
-        if($result){
+        $count = SubSubCategory::where('subcategory_id', $id)->count();
+        if($count > 0){
+            return redirect()->back()->with('fail', "District available ! you can't delete");
+        }
+        else {
+            SubCategory::findOrFail($id)->forceDelete();
             return redirect()->back()->with('success', 'Data Delete Successfully');
-        }else {
-            return redirect()->back()->with('fail', 'Data delete failed');
         }
     }
 }

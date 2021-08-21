@@ -11,12 +11,18 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\SubSubCategoryController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\DivisionController;
+use App\Http\Controllers\Admin\DistrictController;
+use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\FontEnd\LanguageController;
 use App\Http\Controllers\FontEnd\CardController;
 
 
 // fontEnd route
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\wishlistController;
+use App\Http\Controllers\User\CartPageController;
 use App\Http\Controllers\FontEnd\FontEntController;
 
 
@@ -87,6 +93,24 @@ Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function(
     Route::get('sliders/inactive/{id}', [SliderController::class, 'inactive'])->name('sliders.inactive');
     Route::get('sliders/active/{id}', [SliderController::class, 'active'])->name('sliders.active');
 
+    // coupon
+    Route::resource('coupon', CouponController::class);
+    Route::get('coupon/active/{id}', [CouponController::class, 'couponActive'])->name('coupon.active');
+    Route::get('coupon/inactive/{id}', [CouponController::class, 'couponInActive'])->name('coupon.inactive');
+
+    // Division
+    Route::resource('division', DivisionController::class);
+    Route::get('division/active/{id}', [DivisionController::class, 'divisionActive'])->name('division.active');
+    Route::get('division/inactive/{id}', [DivisionController::class, 'divisionInActive'])->name('division.inactive');
+    // District
+    Route::resource('district', DistrictController::class);
+    Route::get('district/active/{id}', [DistrictController::class, 'districtActive'])->name('district.active');
+    Route::get('district/inactive/{id}', [DistrictController::class, 'districtInActive'])->name('district.inactive');
+    // state
+    Route::resource('state', StateController::class);
+    Route::get('district-get/ajax/{division_id}', [StateController::class, 'distinctAjaxLoad']);
+    Route::get('state/active/{id}', [StateController::class, 'stateActive'])->name('state.active');
+    Route::get('state/inactive/{id}', [StateController::class, 'stateInActive'])->name('state.inactive');
 
 });
 
@@ -104,36 +128,57 @@ Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>
     //user image upload
     Route::post('/photoUpload', [UserController::class, 'photoUpload'])->name('file.Upload');
 
+    // cardPage
+    Route::get('/my-cart', [CartPageController::class, 'cartIndex'])->name('cart');
+    Route::get('/get-shoppingCart/', [CartPageController::class, 'getShoppingCart'])->name('getShoppingCart');
+    Route::post('/shoppingCart/remove/{rowId}', [CartPageController::class, 'shoppingCartRemove']);
+    Route::get('/shoppingCart/increment/{rowId}', [CartPageController::class, 'shoppingCartIncrement']);
+    Route::get('/shoppingCart/decrement/{rowId}', [CartPageController::class, 'shoppingCartDecrement']);
+    //==== apply coupon =======
+    Route::post('/create-coupon/', [CartPageController::class, 'applyCoupon']);
+    Route::get('coupon-calculate/', [CartPageController::class, 'couponCalculationField']);
+    Route::get('couponRemove/', [CartPageController::class, 'couponRemove']);
+
+
 });
+
+
 
 Route::get('/', [FontEntController::class, 'index']);
 Route::get('/single/product/{id}/{slug}', [FontEntController::class, 'singleProduct']);
 
 
-// ====================== card settings start ================================
+// ====================== card settings start ======================
 
 Route::get('/product/card/view/{id}', [CardController::class, 'productCardView']);
 Route::post('/product/card/add/{id}', [CardController::class, 'productAddToCard']);
 Route::get('/ProductMiniCardView/', [CardController::class, 'ProductMiniCardView']);
 Route::get('/miniCartRemove/{rowId}', [CardController::class, 'miniCartRemove']);
 
-
-// ==================== card settings end ==============================
+// ==================== card settings end ============================
 
 
 //==================== tag wise product show ==========================
 Route::get('/product/tags/{tag}', [FontEntController::class, 'tagWiseProductsShow']);
 
 
-
-
-// ============================ subCategory wise product show ====================================
+// ============================ subCategory wise product show =========
 Route::get('subCategory/product/{id}', [FontEntController::class, 'subcategoryWiseProductShow']);
 Route::get('subSubCategory/product/{id}', [FontEntController::class, 'subSubcategoryWiseProductShow']);
 
-// ===================== Frontend Language route ======================================================
+// ===================== Frontend Language route =======================
 
 Route::get('/bangle/language/', [LanguageController::class, 'Bangle'])->name('bangle.language');
 Route::get('/english/language/', [LanguageController::class, 'English'])->name('english.language');
+
+//========================= wishlist start ==============================
+Route::get('/wishListPageView/', [wishlistController::class, 'wishlistPageView']);
+Route::get('/getWishListData/', [wishlistController::class, 'getWishListData']);
+Route::get('/removeWishlistData/{id}', [wishlistController::class, 'removeWishlistData']);
+Route::post('/add-to-userWishList/{product_id}', [wishlistController::class, 'addWishlist']);
+
+//========================= wishlist end ==================================
+
+
 
 
