@@ -209,6 +209,8 @@
             dataType:'json',
             url:'/miniCartRemove/'+rowId,
             success:function(){
+                couponCalculationField();
+                shoppingCart();
                 viewMiniCard();
                 toastr.success("Cart remove success");
             },
@@ -313,10 +315,8 @@
             dataType:'json',
             url:'{{ route('getShoppingCart') }}',
             success:function(response){
-                console.log(response)
                 let shoppingCardData = '';
                 $.each(response.carts, function(key, value){
-                    console.log(value.subtotal);
                     shoppingCardData += `
                           <tr>
 
@@ -551,3 +551,115 @@
 
 </script>
 
+<script type="text/javascript">
+    //================ select District ===============
+    $('select[name="district_id"]').attr('disabled','disabled');
+    $('select[name="division_id"]').on('change', function (event){
+        event.preventDefault();
+        let division_id = $(this).val();
+        $('select[name="state"]').empty();
+        axios.get('/user/checkout/districtGet/ajax'+division_id)
+        .then(function(response){
+            if(response.status === 200){
+                $('select[name="district_id"]').removeAttr('disabled');
+                $('select[name="district_id"]').empty();
+                $('select[name="state_id"]').empty();
+                $('select[name="district_id"]').append('<option value="" selected disabled>Choose Your Area</option>');
+                $('select[name="state_id"]').append('<option value="" selected disabled>Choose Your City</option>');
+                $.each(response.data, function(key, value){
+                   $('select[name="district_id"]').append('<option value="'+ value.id +'">'+value.district_name+'</option>'
+                   );
+                });
+            }
+        })
+        .catch(function(){
+            toastr.error("Somthing Wrong! Please try again");
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+    //================ select District ===============
+    $('select[name="state_id"]').attr('disabled','disabled');
+    $('select[name="district_id"]').on('change', function (event){
+        event.preventDefault();
+        let district_id = $(this).val();
+        axios.get('/user/checkout/stateGet/ajax'+district_id)
+            .then(function(response){
+                if(response.status === 200){
+                    $('select[name="state_id"]').removeAttr('disabled');
+                    $('select[name="state_id"]').empty();
+                    $('select[name="state_id"]').append('<option value="" disabled selected>Choose Your City</option>');
+                    $.each(response.data, function(key, value){
+                        $('select[name="state_id"]').append('<option value="'+ value.id +'">'+value.state_name+'</option>'
+                        );
+                    });
+                }
+            })
+            .catch(function(){
+                toastr.error("Somthing Wrong! Please try again");
+            })
+    });
+</script>
+
+<script type="text/javascript">
+    $(".PaymentPageLoader").css("display", "none")
+    $(".paymentParents").css("display", "none")
+    $('#paymentForm').on('submit', function (event){
+        event.preventDefault();
+        let name = $("#shipping_name").val();
+        let phone = $("#shipping_phone").val();
+        let email = $("#shipping_email").val();
+        let postCode = $("#postCode").val();
+        let division_id = $("#division_id").val();
+        let district_id = $("#district_id").val();
+        let state_id = $("#state_id").val();
+        let address = $("#shipping_address").val();
+        let authID = $("#authID").val();
+        let payment_method =  $('input:radio[name=payment_method]:checked').val();
+        axios.post('/user/payment-store/',{
+            shipping_name: name,
+            shipping_phone: phone,
+            shipping_email: email,
+            postcode: postCode,
+            division_id: division_id,
+            district_id: district_id,
+            state_id: state_id,
+            shipping_address: address,
+            authID: authID,
+            payment_method: payment_method,
+        })
+        .then(function(response){
+            if(response.status === 200){
+                $("#shipping_name").val('');
+                $("#shipping_phone").val('');
+                $("#shipping_email").val('');
+                $("#postCode").val('');
+                $("#division_id").val('');
+                $("#district_id").val('');
+                $("#state_id").val('');
+                $("#shipping_address").val('');
+                $('input:radio[name=payment_method]:checked').val('');
+                $(".PaymentPageLoader").css("display", "block")
+                $(".paymentParents").css("display", "block")
+                setInterval(function(){
+                    $(".PaymentPageLoader").css("display", "none")
+                    if(response.data.payment_method === "stripe"){
+                        window.location.href = '/user/payment-stripe-page/';
+                    }
+                },2000)
+            }
+
+        })
+        .catch(function(error){
+            console.log(error)
+        })
+    })
+
+    // get payment data by ajax
+
+
+
+
+</script>

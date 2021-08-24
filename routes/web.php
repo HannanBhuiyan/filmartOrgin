@@ -15,14 +15,16 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DivisionController;
 use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\StateController;
-use App\Http\Controllers\FontEnd\LanguageController;
-use App\Http\Controllers\FontEnd\CardController;
 
-
-// fontEnd route
+// user route
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\wishlistController;
 use App\Http\Controllers\User\CartPageController;
+use App\Http\Controllers\User\StripeController;
+
+// fontEnd route
+use App\Http\Controllers\FontEnd\LanguageController;
+use App\Http\Controllers\FontEnd\CardController;
 use App\Http\Controllers\FontEnd\FontEntController;
 
 
@@ -129,7 +131,6 @@ Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>
     Route::post('/photoUpload', [UserController::class, 'photoUpload'])->name('file.Upload');
 
     // cardPage
-    Route::get('/my-cart', [CartPageController::class, 'cartIndex'])->name('cart');
     Route::get('/get-shoppingCart/', [CartPageController::class, 'getShoppingCart'])->name('getShoppingCart');
     Route::post('/shoppingCart/remove/{rowId}', [CartPageController::class, 'shoppingCartRemove']);
     Route::get('/shoppingCart/increment/{rowId}', [CartPageController::class, 'shoppingCartIncrement']);
@@ -139,6 +140,14 @@ Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>
     Route::get('coupon-calculate/', [CartPageController::class, 'couponCalculationField']);
     Route::get('couponRemove/', [CartPageController::class, 'couponRemove']);
 
+    // get district data by ajax
+    Route::get('checkout/districtGet/ajax{division_id}', [CartPageController::class, 'getCheckoutDataGetAjax']);
+    Route::get('checkout/stateGet/ajax{district_id}', [CartPageController::class, 'getStateDataGetAjax']);
+
+    // payment route
+     Route::post('payment-store/', [CartPageController::class, 'paymentStore']);
+     Route::get('payment-stripe-page/', [StripeController::class, 'paymentStripePageView']);
+     Route::post('payment/stripe/', [StripeController::class, 'stripePaymentStore'])->name('stripe.order');
 
 });
 
@@ -178,7 +187,6 @@ Route::get('/removeWishlistData/{id}', [wishlistController::class, 'removeWishli
 Route::post('/add-to-userWishList/{product_id}', [wishlistController::class, 'addWishlist']);
 
 //========================= wishlist end ==================================
-
-
-
+Route::get('my-cart/', [CartPageController::class, 'cartIndex'])->name('cart');
+Route::get('checkout', [CartPageController::class, 'checkout'])->name('checkout');
 

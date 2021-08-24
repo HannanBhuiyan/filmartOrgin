@@ -20,6 +20,9 @@
 
     <!-- Customizable CSS -->
     <link rel="stylesheet" href=" {{ asset('fontend') }}/assets/css/main.css">
+
+    <link rel="stylesheet" href=" {{ asset('fontend') }}/assets/css/bootstrap.min.css">
+
     <link rel="stylesheet" href=" {{ asset('fontend') }}/assets/css/blue.css">
     <link rel="stylesheet" href=" {{ asset('fontend') }}/assets/css/owl.carousel.css">
     <link rel="stylesheet" href=" {{ asset('fontend') }}/assets/css/owl.transitions.css">
@@ -28,7 +31,6 @@
     <link rel="stylesheet" href=" {{ asset('fontend') }}/assets/css/bootstrap-select.min.css">
     <link rel="stylesheet" href=" {{ asset('fontend') }}/assets/css/toastr.min.css">
 
-
     <!-- Icons/Glyphs -->
     <link rel="stylesheet" href=" {{ asset('fontend') }}/assets/css/font-awesome.css">
 
@@ -36,6 +38,7 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,600italic,700,700italic,800' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
 
         .profile_section {
@@ -129,11 +132,11 @@
 
         }
 
-        input[type="text"] {
-            font-size: 16px;
-            font-weight: 700;
-            outline:none;
-        }
+        /*input[type="text"] {*/
+        /*    font-size: 16px;*/
+        /*    font-weight: 700;*/
+        /*    outline:none;*/
+        /*}*/
         .profile_name i {
             color:red;
         }
@@ -187,6 +190,7 @@
 </head>
 <body class="cnt-home">
 <!-- ============================================== HEADER ============================================== -->
+
 <header class="header-style-1">
 
     <!-- ============================================== TOP MENU ============================================== -->
@@ -197,13 +201,13 @@
                     <ul class="list-unstyled">
                         <li><a href="{{ url('wishListPageView') }}"><i class="icon fa fa-heart"></i>Wishlist</a></li>
                         <li><a href="{{ route('cart') }}"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
-                        <li><a href="#"><i class="icon fa fa-check"></i>Checkout</a></li>
                         <li><a href="{{ route('user.dashboard') }}"><i class="icon fa fa-user"></i>
 
                                 @if(session()->get('language') == 'bangle')
                                     আমার প্রোফাইল
                                 @else
                                     My Account
+
                                 @endif
                             </a></li>
                         <li>
@@ -336,7 +340,7 @@
                                     </div>
                                     <div class="clearfix"></div>
 
-                                    <a href="checkout.html" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a>
+                                    <a href="{{ route('cart') }}" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a>
                                 </div><!-- /.cart-total-->
 
 

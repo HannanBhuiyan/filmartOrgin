@@ -139,7 +139,7 @@
                     if(response.status === 200){
                         $('select[name="district_id"]').empty();
                         $.each(response.data, function(key, value){
-                            $('select[name="district_id"]').append( '<option value="'+ value.id +'">'+ value.district_name+'</option>')
+                            $('select[name="district_id"]').append('<option value="'+ value.id +'">'+ value.district_name+'</option>')
                         })
                     }
                 })

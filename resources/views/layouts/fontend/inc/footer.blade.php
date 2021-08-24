@@ -129,6 +129,9 @@
         </div>
     </div>
 </footer>
+
+
+
 <!-- ============================================================= FOOTER : END============================================================= -->
 
 
@@ -139,12 +142,9 @@
 
 <!-- JavaScripts placed at the end of the document so the pages load faster -->
 <script src=" {{ asset('fontend') }}/assets/js/jquery-1.11.1.min.js"></script>
-
 <script src=" {{ asset('fontend') }}/assets/js/bootstrap.min.js"></script>
-
 <script src=" {{ asset('fontend') }}/assets/js/bootstrap-hover-dropdown.min.js"></script>
 <script src=" {{ asset('fontend') }}/assets/js/owl.carousel.min.js"></script>
-
 <script src=" {{ asset('fontend') }}/assets/js/echo.min.js"></script>
 <script src=" {{ asset('fontend') }}/assets/js/jquery.easing-1.3.min.js"></script>
 <script src=" {{ asset('fontend') }}/assets/js/bootstrap-slider.min.js"></script>
@@ -156,6 +156,7 @@
 <script src=" {{ asset('fontend') }}/assets/js/axios.min.js"></script>
 <script src=" {{ asset('fontend') }}/assets/js/scripts.js"></script>
 <script src=" {{ asset('fontend') }}/assets/js/sweetalert2@8.js"></script>
+<script src=" {{ asset('fontend') }}/assets/js/jquery.form-validator.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
 @yield('scripts')
 
@@ -169,6 +170,12 @@
         toastr.error("{!! Session::get('fail') !!}");
     </script>
 @endif
+
+<script type="text/javascript">
+    $.validate({
+        modules : 'date, security'
+    });
+</script>
 </body>
 
 </html>

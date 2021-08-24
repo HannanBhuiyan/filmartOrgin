@@ -86,6 +86,9 @@ class CardController extends Controller
 
     public function miniCartRemove($rowId){
         $result = Cart::remove($rowId);
+        if(Session::has('coupon')){
+            Session::forget('coupon');
+        }
         return response()->json($result);
     }
 
