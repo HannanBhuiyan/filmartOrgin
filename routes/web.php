@@ -65,7 +65,7 @@ Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function(
     Route::get('multipleImage/restore/{id}', [StoreRoomController::class, 'multipleImageRestore'])->name('multiImage.restore');
     // product store
     Route::get('Product/restore/view', [StoreRoomController::class, 'ProductRestoreView'])->name('ProductView');
-     Route::get('Product/restore/{id}', [StoreRoomController::class, 'ProductRestore'])->name('product.restore');
+    Route::get('Product/restore/{id}', [StoreRoomController::class, 'ProductRestore'])->name('product.restore');
     Route::get('Product/permanentDelete/{id}', [StoreRoomController::class, 'ProductImagePermanentDelete'])->name('product.permanentDelete');
     // =================== Store Room All route ===================================
 
@@ -157,7 +157,8 @@ Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>
      Route::get('SSLPayment/', [SSLHostController::class, 'SSLPayment']);
 
     // Order Route
-    Route::get('/orderView/', [OrderController::class, 'ViewOrder']);
+    Route::get('/orderView/{order_id}', [OrderController::class, 'ViewOrder']);
+    Route::get('/downloadInvoice/{invoice_id}', [OrderController::class, 'downloadInvoice']);
 
 
 });

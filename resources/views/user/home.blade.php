@@ -29,11 +29,9 @@
                         <input type="text" value="{{ Auth::user()->email }}">
                         <a  href="{{ route('emailGet-Id' , [ 'id' => Auth::user()->id])}}" class="nameEdit"></a>
                     </div>
-
                     <div class="profile_email">
                         <a class="btn btn-primary" href="{{ route('updatePassword-Show')}}" >Update Password</a>
                     </div>
-
                     <div class="profile_item">
                         <h4>Total Buy: <span style="color:green; font-weight:700">4 Items</span></h4>
                     </div>
@@ -52,18 +50,14 @@
                             <th class="text-center" scope="col">Action</th>
                         </tr>
                     @endif
-
                     </thead>
                     <tbody>
-
                     @forelse($orders as $order)
-
                         <tr>
-                            <td scope="row">{{ $order->order_date }}</td>
+                            <td>{{ $order->order_date }}</td>
                             <td>{{ $order->	amount }}TK</td>
                             <td>{{ $order->payment_method }}</td>
                             <td> {{ $order->invoice_no }}</td>
-
                             <td>
                                 @if($order->status == "Processing")
                                     <span class="badge badge-danger" style="background-color:red">
@@ -74,15 +68,13 @@
                                         {{ $order->status}}
                                     </span>
                                 @endif
-
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="" style="margin-bottom: 10px"><i class="fas fa-eye"></i> View</a>
+                                <a class="btn btn-primary" href="{{ url("user/orderView/".$order->id) }}" style="margin-bottom: 10px"><i class="fas fa-eye"></i> View</a>
                                 <br>
-                                <a class="btn btn-danger" href=""><i class="fas fa-angle-double-down"></i> Invoice</a>
+                                <a class="btn btn-danger" href="{{ url("user/downloadInvoice", $order->id) }}"><i class="fas fa-angle-double-down"></i> Invoice</a>
                             </td>
                         </tr>
-
                         @empty
                         <h1 style="color:red; font-weight: 700; margin-top:100px; text-align:center">Order Empty</h1>
                     @endforelse
@@ -93,10 +85,7 @@
     </div>
 </div>
 
-
-
 @section('scripts')
-
     <script type="text/javascript">
          $('#imageInput').change(function (){
             let Reader = new FileReader();

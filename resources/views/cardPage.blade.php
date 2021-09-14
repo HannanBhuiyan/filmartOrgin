@@ -2,7 +2,6 @@
 @section('title', 'Home')
 @section('content')
 
-
     <!-- ============================================== HEADER : END ============================================== -->
     <div class="breadcrumb">
         <div class="container">

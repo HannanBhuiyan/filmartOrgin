@@ -47,16 +47,17 @@
                                                     </div>
                                                         <div class="form-group">
                                                             <label class="info-title" for="name">Name <span>*</span></label>
-                                                            <input type="text" data-validation="required" class="selectClass form-control " id="shipping_name" name="shipping_name" placeholder="Full Name">
+                                                            <input type="text" value="{{ Auth::user()->name }}" data-validation="required" class="selectClass form-control " id="shipping_name" name="shipping_name" placeholder="Full Name">
                                                         </div>
+                                                    <div class="form-group">
+                                                        <label class="info-title" for="email">Email<span>*</span></label>
+                                                        <input value="{{ Auth::user()->email }}" type="text" data-validation="required" name="shipping_email" class="form-control selectClass" id="shipping_email" placeholder="Email">
+                                                    </div>
                                                         <div class="form-group">
                                                             <label class="info-title" for="phone">Phone Number <span>*</span></label>
                                                             <input type="text" data-validation="required" name="shipping_phone" class="selectClass form-control" id="shipping_phone" placeholder="Number">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="info-title" for="email">Email<span>*</span></label>
-                                                            <input type="text" data-validation="required" name="shipping_email" class="form-control selectClass" id="shipping_email" placeholder="Email">
-                                                        </div>
+
                                                         <div class="form-group">
                                                             <label class="info-title" for="postCode">Post Code<span>*</span></label>
                                                             <input type="text" data-validation="required" name="postCode" class="form-control selectClass" id="postCode" placeholder="Post Code">

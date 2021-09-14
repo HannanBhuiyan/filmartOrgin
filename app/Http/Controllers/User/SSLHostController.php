@@ -18,7 +18,7 @@ class SSLHostController extends Controller
             $totalAmount = round(Cart::total());
         }
 
-        $shipping = Shipping::where('authID', Auth::id())->first();
+        $shipping = Shipping::orderBy('id', 'DESC')->first();;
 
         return view('layouts.fontend.payment.SSLEasyPayment', compact('totalAmount', 'shipping'));
     }

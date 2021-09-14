@@ -44,7 +44,6 @@ class UserController extends Controller
     }
 
     // update password
-
     public function updatePasswordShow(){
         return view('user.update-password');
     }

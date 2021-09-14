@@ -11,6 +11,20 @@ class Order extends Model
 
     protected $guarded = [];
 
+    public function division(){
+        return $this->belongsTo(Division::class);
+    }
+    public function district(){
+        return $this->belongsTo(District::class);
+    }
+    public function state(){
+        return $this->belongsTo(State::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 
 
 }
