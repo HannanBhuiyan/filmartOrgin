@@ -2,7 +2,14 @@
 @include('layouts.fontend.inc.header');
 
 {{--user profile section start here --}}
-
+<style>
+    input[type="text"] {
+        border: none;
+    }
+    .nameUpdateBtnGroup a {
+        text-decoration: none;
+    }
+</style>
 <div class="profile_section">
     <div class="container">
         <div class="row">

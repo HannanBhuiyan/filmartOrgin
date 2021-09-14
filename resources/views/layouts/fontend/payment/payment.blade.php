@@ -23,6 +23,9 @@
         }
         .StripeElement--webkit-autofill {
             background-color: #fefde5 !important;}
+        .stripePaymetBody {
+            padding:70px !important;
+        }
     </style>
     <!-- ============================================== HEADER : END ============================================== -->
     <div class="breadcrumb">
@@ -41,26 +44,15 @@
             <div class="checkout-box ">
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="panel-group checkout-steps" id="accordion">
-                            <!-- checkout-step-01  -->
-                            <div class="panel panel-default checkout-step-01">
-                                <!-- panel-heading -->
-                                <div class="panel-heading">
-                                    <h4 class="unicase-checkout-title">
-                                        <a data-toggle="collapse" class="" data-parent="#accordion" href="#collapseOne">
-                                            <span>1</span>Checkout Method
-                                        </a>
-                                    </h4>
-                                </div>
+                        <!-- checkout-step-01  -->
+                        <div class="panel panel-default checkout-step-01">
+
                                 <!-- panel-heading -->
                                 <div id="collapseOne" class="panel-collapse collapse in">
                                     <!-- panel-body  -->
-                                    <div class="panel-body">
-                                         <h4>something like</h4>
-
+                                    <div class="panel-body stripePaymetBody">
                                         <form action="{{ route('stripe.order') }}" method="post" id="payment-form">
                                             @csrf
-
                                             <div class="form-row">
                                                 <input type="hidden" name="user_id" value="{{ $shipping->authID }}">
                                                 <input type="hidden" name="division_id" value="{{ $shipping->division_id }}">
@@ -74,7 +66,6 @@
                                                 <label for="card-element">
                                                     Credit or debit card
                                                 </label>
-
                                                 <div id="card-element">
                                                     <!-- A Stripe Element will be inserted here. -->
                                                 </div>
@@ -89,7 +80,6 @@
 
                                 </div><!-- row -->
                             </div>
-                        </div><!-- /.checkout-steps -->
                     </div>
                     <div class="col-md-4">
                         <!-- checkout-progress-sidebar -->

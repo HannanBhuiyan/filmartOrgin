@@ -72,111 +72,113 @@
 
 @include('layouts.fontend.inc.footer')
 
-<script type="text/javascript">
 
-    $.ajaxSetup({
-        headers:{
-            'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+
+    <script type="text/javascript">
+
+        $.ajaxSetup({
+            headers:{
+                'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+            }
+        })
+        function cardView(id){
+            $.ajax({
+                type:"GET",
+                dataType:"json",
+                url:"/product/card/view/"+id,
+                success: function(response){
+                    $("#Pname").text(response.product.product_name_en);
+                    $("#Pcode").text(response.product.product_code);
+                    $("#Pcategory").text(response.product.category.category_name_en);
+                    $("#Pstock").text(response.product.product_qty);
+                    $("#Pimage").attr('src','/'+response.product.product_thumbnail);
+                    $("#product_id").val(id);
+                    $("#quantity").val(1);
+                    $("#color").empty();
+                    $("#size").empty();
+                    $.each(response.color, function(key, value){
+                        if(response.color == ""){
+                            $("#colorArea").hide();
+                        }else {
+                            $("#colorArea").show();
+                        }
+                        $("#color").append('<option '+value+' >'+value+'</option>');
+                    });
+                    $.each(response.size, function(key, value){
+                        $("#size").append('<option '+value+' >'+value+'</option>');
+                        if(response.size == ""){
+                            $("#sizeArea").hide();
+                        }else {
+                            $("#sizeArea").show();
+                        }
+                    });
+
+                    // price settings
+                    if(response.product.discount_price == null){
+                        $("#productSellingPrice").empty();
+                        $("#productDIscountPprice").empty();
+                        $("#productSellingPrice").text(response.product.selling_price);
+                    }else {
+                        $("#productSellingPrice").empty();
+                        $("#productDIscountPprice").empty();
+                        $("#productSellingPrice").text(response.product.discount_price);
+                        $("#productDIscountPprice").text(response.product.selling_price);
+                    }
+
+                    // product quantity
+                    if(response.product.product_qty > 0){
+                        $("#stockIn").empty()
+                        $("#stockOut").empty()
+                        $("#stockIn").text('StockIn');
+                    }else {
+                        $("#stockOut").empty()
+                        $("#stockIn").empty()
+                        $("#stockOut").text('StockOut');
+                    }
+
+                }
+            })
         }
-    })
-    function cardView(id){
-        $.ajax({
-            type:"GET",
-            dataType:"json",
-            url:"/product/card/view/"+id,
-            success: function(response){
-                $("#Pname").text(response.product.product_name_en);
-                $("#Pcode").text(response.product.product_code);
-                $("#Pcategory").text(response.product.category.category_name_en);
-                $("#Pstock").text(response.product.product_qty);
-                $("#Pimage").attr('src','/'+response.product.product_thumbnail);
-                $("#product_id").val(id);
-                $("#quantity").val(1);
-                $("#color").empty();
-                $("#size").empty();
-                $.each(response.color, function(key, value){
-                    if(response.color == ""){
-                        $("#colorArea").hide();
-                    }else {
-                        $("#colorArea").show();
-                    }
-                    $("#color").append('<option '+value+' >'+value+'</option>');
-                });
-                $.each(response.size, function(key, value){
-                    $("#size").append('<option '+value+' >'+value+'</option>');
-                    if(response.size == ""){
-                        $("#sizeArea").hide();
-                    }else {
-                        $("#sizeArea").show();
-                    }
-                });
 
-                // price settings
-                if(response.product.discount_price == null){
-                    $("#productSellingPrice").empty();
-                    $("#productDIscountPprice").empty();
-                    $("#productSellingPrice").text(response.product.selling_price);
-                }else {
-                    $("#productSellingPrice").empty();
-                    $("#productDIscountPprice").empty();
-                    $("#productSellingPrice").text(response.product.discount_price);
-                    $("#productDIscountPprice").text(response.product.selling_price);
+        function addToCard(){
+            var name = $("#Pname").text();
+            var id = $("#product_id").val();
+            var color = $("#color option:selected").text();
+            var size = $("#size option:selected").text();
+            var quantity = $("#quantity").val();
+            $.ajax({
+                type:'POST',
+                dataType:'json',
+                data:{
+                    color:color,
+                    size:size,
+                    quantity:quantity,
+                    productName: name,
+                },
+                url:'/product/card/add/'+id,
+                success: function(response){
+                    viewMiniCard()
+                    $("#cardModal").modal('hide');
+                    toastr.success("Card Added Success");
+                },
+                error: function(error){
+                    toastr.error("Something went wrong! Card not added");
                 }
+            })
+        }
 
-                // product quantity
-                if(response.product.product_qty > 0){
-                    $("#stockIn").empty()
-                    $("#stockOut").empty()
-                    $("#stockIn").text('StockIn');
-                }else {
-                    $("#stockOut").empty()
-                    $("#stockIn").empty()
-                    $("#stockOut").text('StockOut');
-                }
-
-            }
-        })
-    }
-
-    function addToCard(){
-        var name = $("#Pname").text();
-        var id = $("#product_id").val();
-        var color = $("#color option:selected").text();
-        var size = $("#size option:selected").text();
-        var quantity = $("#quantity").val();
-        $.ajax({
-            type:'POST',
-            dataType:'json',
-            data:{
-                color:color,
-                size:size,
-                quantity:quantity,
-                productName: name,
-            },
-            url:'/product/card/add/'+id,
-            success: function(response){
-                viewMiniCard()
-                $("#cardModal").modal('hide');
-                toastr.success("Card Added Success");
-            },
-            error: function(error){
-                toastr.error("Something went wrong! Card not added");
-            }
-        })
-    }
-
-    // view mini card
-    function viewMiniCard(){
-        $.ajax({
-            type:'GET',
-            dataType: 'json',
-            url: '/ProductMiniCardView/',
-            success: function(response){
-                $("#miniCartQuantity").text(response.cartQty);
-                $("span[id='miniCartTotal']").text(response.cartTotal);
-                var miniCardData = "";
-                $.each(response.carts, function(key, value){
-                    miniCardData += `
+        // view mini card
+        function viewMiniCard(){
+            $.ajax({
+                type:'GET',
+                dataType: 'json',
+                url: '/ProductMiniCardView/',
+                success: function(response){
+                    $("#miniCartQuantity").text(response.cartQty);
+                    $("span[id='miniCartTotal']").text(response.cartTotal);
+                    var miniCardData = "";
+                    $.each(response.carts, function(key, value){
+                        miniCardData += `
                         <div class="cart-item product-summary">
                             <div class="row">
                                 <div class="col-xs-4">
@@ -195,80 +197,80 @@
                         </div>
                         <hr>
                     `
-                });
-                $("#miniCart").html(miniCardData);
-            }
-        });
-    }
-    viewMiniCard();
-
-    // mini cart remove
-    function miniCartRemoveFun(rowId){
-        $.ajax({
-            type:"GET",
-            dataType:'json',
-            url:'/miniCartRemove/'+rowId,
-            success:function(){
-                couponCalculationField();
-                shoppingCart();
-                viewMiniCard();
-                toastr.success("Cart remove success");
-            },
-            error:function(){
-                toastr.error("Opps! card not removed");
-            }
-        })
-    }
-
-    //========================== add wishlist ================================
-    function addWishList(product_id){
-        $.ajax({
-            type:"POST",
-            dataType:'json',
-            url : "{{ url('/add-to-userWishList/') }}/"+product_id,
-            success:function(data){
-                //  start message
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                })
-                if($.isEmptyObject(data.error)){
-                    Toast.fire({
-                        type: 'success',
-                        title: data.success
-                    })
-                }else{
-                    Toast.fire({
-                        type: 'error',
-                        title: data.error
-                    })
+                    });
+                    $("#miniCart").html(miniCardData);
                 }
-                //  end message
-            }
-        })
-    }
+            });
+        }
+        viewMiniCard();
 
-    //================= get wishlist data =========================
-    function getWishListData(){
-        $.ajax({
-            type:'GET',
-            dataType: 'json',
-            url: '/getWishListData/',
-            success: function(response){
-                var wishlistCardData = "";
-                $.each(response, function(key, value){
-                    wishlistCardData += `
+        // mini cart remove
+        function miniCartRemoveFun(rowId){
+            $.ajax({
+                type:"GET",
+                dataType:'json',
+                url:'/miniCartRemove/'+rowId,
+                success:function(){
+                    couponCalculationField();
+                    shoppingCart();
+                    viewMiniCard();
+                    toastr.success("Cart remove success");
+                },
+                error:function(){
+                    toastr.error("Opps! card not removed");
+                }
+            })
+        }
+
+        //========================== add wishlist ================================
+        function addWishList(product_id){
+            $.ajax({
+                type:"POST",
+                dataType:'json',
+                url : "{{ url('/add-to-userWishList/') }}/"+product_id,
+                success:function(data){
+                    //  start message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if($.isEmptyObject(data.error)){
+                        Toast.fire({
+                            type: 'success',
+                            title: data.success
+                        })
+                    }else{
+                        Toast.fire({
+                            type: 'error',
+                            title: data.error
+                        })
+                    }
+                    //  end message
+                }
+            })
+        }
+
+        //================= get wishlist data =========================
+        function getWishListData(){
+            $.ajax({
+                type:'GET',
+                dataType: 'json',
+                url: '/getWishListData/',
+                success: function(response){
+                    var wishlistCardData = "";
+                    $.each(response, function(key, value){
+                        wishlistCardData += `
                         <tr>
                             <td class="col-md-2"><img src="${value.product.product_thumbnail}" alt="imga"></td>
                             <td class="col-md-7">
                                 <div class="product-name"><a href="#">${value.product.product_name_en}</a></div>
                                 <div class="price">
                                 ${value.product.discount_price == null
-                                    ? `$${value.product.selling_price}`
-                                    : `$${value.product.discount_price}  <span>$${value.product.selling_price}</span>`
-                                }
+                            ? `$${value.product.selling_price}`
+                            : `$${value.product.discount_price}  <span>$${value.product.selling_price}</span>`
+                        }
                                 </div>
                             </td>
                             <td class="col-md-2">
@@ -281,43 +283,43 @@
                             </td>
                         </tr>
                     `
-                });
-                $("#wishlistBody").html(wishlistCardData);
-            }
-        });
-    }
-    getWishListData();
+                    });
+                    $("#wishlistBody").html(wishlistCardData);
+                }
+            });
+        }
+        getWishListData();
 
 
-    //================ remove wishlist ================
-    function removeWishListData(id){
-        $.ajax({
-            type:"GET",
-            dataType:'json',
-            url:'/removeWishlistData/'+id,
-            success:function(){
-                getWishListData();
-                toastr.success("Wishlist product remove success");
-            },
-            error:function(){
-                toastr.error("Opps! Product not removed");
-            }
-        })
-    }
+        //================ remove wishlist ================
+        function removeWishListData(id){
+            $.ajax({
+                type:"GET",
+                dataType:'json',
+                url:'/removeWishlistData/'+id,
+                success:function(){
+                    getWishListData();
+                    toastr.success("Wishlist product remove success");
+                },
+                error:function(){
+                    toastr.error("Opps! Product not removed");
+                }
+            })
+        }
 
 
-    //========== my cart page =====================
+        //========== my cart page =====================
 
-    function shoppingCart(){
+        function shoppingCart(){
 
-        $.ajax({
-            type:'GET',
-            dataType:'json',
-            url:'{{ route('getShoppingCart') }}',
-            success:function(response){
-                let shoppingCardData = '';
-                $.each(response.carts, function(key, value){
-                    shoppingCardData += `
+            $.ajax({
+                type:'GET',
+                dataType:'json',
+                url:'{{ route('getShoppingCart') }}',
+                success:function(response){
+                    let shoppingCardData = '';
+                    $.each(response.carts, function(key, value){
+                        shoppingCardData += `
                           <tr>
 
                                 <td class="cart-image">
@@ -332,10 +334,10 @@
                                       <div style="margin-bottom: 10px !important;">
                                         <span class="product-color" >COLOR:<span style="font-size:15px" >
                                         ${value.options.color == null
-                                            ? `<span style="color: red; font-size: 15px">No Color Found</span>`
-                                            :
-                                            `${value.options.color }`
-                                        }
+                            ? `<span style="color: red; font-size: 15px">No Color Found</span>`
+                            :
+                            `${value.options.color }`
+                        }
                                         </span></span>
                                         </div>
                                          <div class="price">
@@ -345,18 +347,18 @@
                                 </td>
                                 <td class="cart-product-edit">
                                    ${value.options.size == null
-                                    ? `<span style="color: red; font-size: 15px">No Size Found</span>`
-                                    :
-                                    `${value.options.size}`
-                                    }
+                            ? `<span style="color: red; font-size: 15px">No Size Found</span>`
+                            :
+                            `${value.options.size}`
+                        }
                                     </td>
                                 <td class="cart-product-quantity">
                                     <div class="cart-quantity">
                                       ${value.qty > 1
-                                            ? `<button type="submit" class="btn btn-danger" id="${value.rowId}" onclick="cartDecrement(this.id)">-</button>`
-                                            :
-                                            `<button type="submit" disabled class="btn btn-danger" id="${value.rowId}" onclick="cartDecrement(this.id)">-</button>`
-                                        }
+                            ? `<button type="submit" class="btn btn-danger" id="${value.rowId}" onclick="cartDecrement(this.id)">-</button>`
+                            :
+                            `<button type="submit" disabled class="btn btn-danger" id="${value.rowId}" onclick="cartDecrement(this.id)">-</button>`
+                        }
 
                                         <input style="width:50px; padding:3px 15px 6px" type="text" min="1" value="${value.qty}">
                                         <button type="submit" class="btn btn-primary" id="${value.rowId}" onclick="cartIncrement(this.id)">+</button>
@@ -369,125 +371,125 @@
                           </tr>
                          `
 
-                });
-                $("#shoppingCart").html(shoppingCardData)
+                    });
+                    $("#shoppingCart").html(shoppingCardData)
 
-            }
-
-        })
-
-    }
-    shoppingCart()
-
-    //================== shoping cart remove ==================
-
-    function shoppingCartRemove(rowId){
-         $.ajax({
-             type:"POST",
-             dataType:'json',
-             url:'/user/shoppingCart/remove/'+rowId,
-             success: function(){
-                 couponCalculationField();
-                 viewMiniCard();
-                 shoppingCart();
-                 $("#coupon_area").show();
-                 $("#appliedCoupon").hide()
-                 toastr.success("shopping Cart Remove successfully");
-             },
-             error: function(){
-                 toastr.error("Opps! shoppingCart Not Remove");
-             }
-         })
-    }
-
-    //=============== cart increment ===============
-
-    function cartIncrement(rowId){
-        $.ajax({
-            type:"GET",
-            dataType:'json',
-            url:'/user/shoppingCart/increment/'+rowId,
-            success: function(){
-                couponCalculationField();
-                viewMiniCard();
-                shoppingCart();
-            },
-            error: function(){
-                toastr.error("Opps! shoppingCart Not Increment");
-            }
-        })
-    }
-    //=============== cart Decrement ===============
-    function cartDecrement(rowId){
-        $.ajax({
-            type:"GET",
-            dataType:'json',
-            url:'/user/shoppingCart/decrement/'+rowId,
-            success: function(){
-                couponCalculationField();
-                viewMiniCard();
-                shoppingCart();
-            },
-            error: function(){
-                toastr.error("Opps! shoppingCart Not Decrement");
-            }
-        })
-    }
-
-</script>
-
-<script type="text/javascript">
-    //=========== apply coupon ===================
-    $("#appliedCoupon").hide()
-    function applyCoupon(){
-        let coupon_name = $("#coupon_name").val()
-        $.ajax({
-            type:"POST",
-            dataType:'json',
-            data: { coupon_name: coupon_name},
-            url: '/user/create-coupon/',
-            success: function(data){
-                couponCalculationField();
-                //  start message
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                })
-                if($.isEmptyObject(data.error)){
-                    $("#coupon_area").hide()
-                    $("#appliedCoupon").show()
-                    $("#coupon_name").val('')
-                    Toast.fire({
-                        type: 'success',
-                        title: data.success
-                    })
-                }else{
-                    $("#coupon_name").val('')
-                    Toast.fire({
-                        type: 'error',
-                        title: data.error
-                    })
                 }
-                //  end message
-            },
-        })
-    }
-</script>
+
+            })
+
+        }
+        shoppingCart()
+
+        //================== shoping cart remove ==================
+
+        function shoppingCartRemove(rowId){
+            $.ajax({
+                type:"POST",
+                dataType:'json',
+                url:'/user/shoppingCart/remove/'+rowId,
+                success: function(){
+                    couponCalculationField();
+                    viewMiniCard();
+                    shoppingCart();
+                    $("#coupon_area").show();
+                    $("#appliedCoupon").hide()
+                    toastr.success("shopping Cart Remove successfully");
+                },
+                error: function(){
+                    toastr.error("Opps! shoppingCart Not Remove");
+                }
+            })
+        }
+
+        //=============== cart increment ===============
+
+        function cartIncrement(rowId){
+            $.ajax({
+                type:"GET",
+                dataType:'json',
+                url:'/user/shoppingCart/increment/'+rowId,
+                success: function(){
+                    couponCalculationField();
+                    viewMiniCard();
+                    shoppingCart();
+                },
+                error: function(){
+                    toastr.error("Opps! shoppingCart Not Increment");
+                }
+            })
+        }
+        //=============== cart Decrement ===============
+        function cartDecrement(rowId){
+            $.ajax({
+                type:"GET",
+                dataType:'json',
+                url:'/user/shoppingCart/decrement/'+rowId,
+                success: function(){
+                    couponCalculationField();
+                    viewMiniCard();
+                    shoppingCart();
+                },
+                error: function(){
+                    toastr.error("Opps! shoppingCart Not Decrement");
+                }
+            })
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        //=========== apply coupon ===================
+        $("#appliedCoupon").hide()
+        function applyCoupon(){
+            let coupon_name = $("#coupon_name").val()
+            $.ajax({
+                type:"POST",
+                dataType:'json',
+                data: { coupon_name: coupon_name},
+                url: '/user/create-coupon/',
+                success: function(data){
+                    couponCalculationField();
+                    //  start message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if($.isEmptyObject(data.error)){
+                        $("#coupon_area").hide()
+                        $("#appliedCoupon").show()
+                        $("#coupon_name").val('')
+                        Toast.fire({
+                            type: 'success',
+                            title: data.success
+                        })
+                    }else{
+                        $("#coupon_name").val('')
+                        Toast.fire({
+                            type: 'error',
+                            title: data.error
+                        })
+                    }
+                    //  end message
+                },
+            })
+        }
+    </script>
 
 
-<script type="text/javascript">
-    //================ get coupon calculation field =======================
-    function couponCalculationField(){
+    <script type="text/javascript">
+        //================ get coupon calculation field =======================
+        function couponCalculationField(){
 
-        $.ajax({
-            type:"GET",
-            dataType:'json',
-            url: '/user/coupon-calculate/',
-            success: function(data){
-                if(data.total){
-                    $('#couponCalField').html(`
+            $.ajax({
+                type:"GET",
+                dataType:'json',
+                url: '/user/coupon-calculate/',
+                success: function(data){
+                    if(data.total){
+                        $('#couponCalField').html(`
                          <tr>
                             <th>
                                 <div class="cart-sub-total">
@@ -499,8 +501,8 @@
                             </th>
                         </tr>
                     `)
-                }else {
-                    $('#couponCalField').html(`
+                    }else {
+                        $('#couponCalField').html(`
                          <tr>
                             <th>
                                  <div class="cart-sub-total mt-3">
@@ -521,145 +523,145 @@
                             </th>
                         </tr>
                     `)
-                }
-            }
-        });
-    }
-    couponCalculationField();
-</script>
-
-<script type="text/javascript">
-    //================ coupon remove ===============
-    function couponRemove(){
-        $.ajax({
-            type:'GET',
-            dataType:'json',
-            url:'/user/couponRemove',
-            success: function(){
-                couponCalculationField();
-                $("#coupon_area").show()
-                $("#appliedCoupon").hide()
-                toastr.success('Coupon Remove Success');
-            },
-            error: function(){
-                couponCalculationField();
-                $("#coupon_area").show()
-                toastr.error('Opps! Coupon not removed');
-            }
-        })
-    }
-
-</script>
-
-<script type="text/javascript">
-    //================ select District ===============
-    $('select[name="district_id"]').attr('disabled','disabled');
-    $('select[name="division_id"]').on('change', function (event){
-        event.preventDefault();
-        let division_id = $(this).val();
-        $('select[name="state"]').empty();
-        axios.get('/user/checkout/districtGet/ajax'+division_id)
-        .then(function(response){
-            if(response.status === 200){
-                $('select[name="district_id"]').removeAttr('disabled');
-                $('select[name="district_id"]').empty();
-                $('select[name="state_id"]').empty();
-                $('select[name="district_id"]').append('<option value="" selected disabled>Choose Your Area</option>');
-                $('select[name="state_id"]').append('<option value="" selected disabled>Choose Your City</option>');
-                $.each(response.data, function(key, value){
-                   $('select[name="district_id"]').append('<option value="'+ value.id +'">'+value.district_name+'</option>'
-                   );
-                });
-            }
-        })
-        .catch(function(){
-            toastr.error("Somthing Wrong! Please try again");
-        })
-    });
-</script>
-
-
-<script type="text/javascript">
-    //================ select District ===============
-    $('select[name="state_id"]').attr('disabled','disabled');
-    $('select[name="district_id"]').on('change', function (event){
-        event.preventDefault();
-        let district_id = $(this).val();
-        axios.get('/user/checkout/stateGet/ajax'+district_id)
-            .then(function(response){
-                if(response.status === 200){
-                    $('select[name="state_id"]').removeAttr('disabled');
-                    $('select[name="state_id"]').empty();
-                    $('select[name="state_id"]').append('<option value="" disabled selected>Choose Your City</option>');
-                    $.each(response.data, function(key, value){
-                        $('select[name="state_id"]').append('<option value="'+ value.id +'">'+value.state_name+'</option>'
-                        );
-                    });
-                }
-            })
-            .catch(function(){
-                toastr.error("Somthing Wrong! Please try again");
-            })
-    });
-</script>
-
-<script type="text/javascript">
-    $(".PaymentPageLoader").css("display", "none")
-    $(".paymentParents").css("display", "none")
-    $('#paymentForm').on('submit', function (event){
-        event.preventDefault();
-        let name = $("#shipping_name").val();
-        let phone = $("#shipping_phone").val();
-        let email = $("#shipping_email").val();
-        let postCode = $("#postCode").val();
-        let division_id = $("#division_id").val();
-        let district_id = $("#district_id").val();
-        let state_id = $("#state_id").val();
-        let address = $("#shipping_address").val();
-        let authID = $("#authID").val();
-        let payment_method =  $('input:radio[name=payment_method]:checked').val();
-        axios.post('/user/payment-store/',{
-            shipping_name: name,
-            shipping_phone: phone,
-            shipping_email: email,
-            postcode: postCode,
-            division_id: division_id,
-            district_id: district_id,
-            state_id: state_id,
-            shipping_address: address,
-            authID: authID,
-            payment_method: payment_method,
-        })
-        .then(function(response){
-            if(response.status === 200){
-                $("#shipping_name").val('');
-                $("#shipping_phone").val('');
-                $("#shipping_email").val('');
-                $("#postCode").val('');
-                $("#division_id").val('');
-                $("#district_id").val('');
-                $("#state_id").val('');
-                $("#shipping_address").val('');
-                $('input:radio[name=payment_method]:checked').val('');
-                $(".PaymentPageLoader").css("display", "block")
-                $(".paymentParents").css("display", "block")
-                setInterval(function(){
-                    $(".PaymentPageLoader").css("display", "none")
-                    if(response.data.payment_method === "stripe"){
-                        window.location.href = '/user/payment-stripe-page/';
                     }
-                },2000)
-            }
+                }
+            });
+        }
+        couponCalculationField();
+    </script>
 
+    <script type="text/javascript">
+        //================ coupon remove ===============
+        function couponRemove(){
+            $.ajax({
+                type:'GET',
+                dataType:'json',
+                url:'/user/couponRemove',
+                success: function(){
+                    couponCalculationField();
+                    $("#coupon_area").show()
+                    $("#appliedCoupon").hide()
+                    toastr.success('Coupon Remove Success');
+                },
+                error: function(){
+                    couponCalculationField();
+                    $("#coupon_area").show()
+                    toastr.error('Opps! Coupon not removed');
+                }
+            })
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        //================ select District ===============
+        $('select[name="district_id"]').attr('disabled','disabled');
+        $('select[name="division_id"]').on('change', function (event){
+            event.preventDefault();
+            let division_id = $(this).val();
+            $('select[name="state"]').empty();
+            axios.get('/user/checkout/districtGet/ajax'+division_id)
+                .then(function(response){
+                    if(response.status === 200){
+                        $('select[name="district_id"]').removeAttr('disabled');
+                        $('select[name="district_id"]').empty();
+                        $('select[name="state_id"]').empty();
+                        $('select[name="district_id"]').append('<option value="" selected disabled>Choose Your Area</option>');
+                        $('select[name="state_id"]').append('<option value="" selected disabled>Choose Your City</option>');
+                        $.each(response.data, function(key, value){
+                            $('select[name="district_id"]').append('<option value="'+ value.id +'">'+value.district_name+'</option>'
+                            );
+                        });
+                    }
+                })
+                .catch(function(){
+                    toastr.error("Somthing Wrong! Please try again");
+                })
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        //================ select District ===============
+        $('select[name="state_id"]').attr('disabled','disabled');
+        $('select[name="district_id"]').on('change', function (event){
+            event.preventDefault();
+            let district_id = $(this).val();
+            axios.get('/user/checkout/stateGet/ajax'+district_id)
+                .then(function(response){
+                    if(response.status === 200){
+                        $('select[name="state_id"]').removeAttr('disabled');
+                        $('select[name="state_id"]').empty();
+                        $('select[name="state_id"]').append('<option value="" disabled selected>Choose Your City</option>');
+                        $.each(response.data, function(key, value){
+                            $('select[name="state_id"]').append('<option value="'+ value.id +'">'+value.state_name+'</option>'
+                            );
+                        });
+                    }
+                })
+                .catch(function(){
+                    toastr.error("Somthing Wrong! Please try again");
+                })
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(".PaymentPageLoader").css("display", "none")
+        $(".paymentParents").css("display", "none")
+        $('#paymentForm').on('submit', function (event){
+            event.preventDefault();
+            let name = $("#shipping_name").val();
+            let phone = $("#shipping_phone").val();
+            let email = $("#shipping_email").val();
+            let postCode = $("#postCode").val();
+            let division_id = $("#division_id").val();
+            let district_id = $("#district_id").val();
+            let state_id = $("#state_id").val();
+            let address = $("#shipping_address").val();
+            let authID = $("#authID").val();
+            let payment_method =  $('input:radio[name=payment_method]:checked').val();
+            axios.post('/user/payment-store/',{
+                shipping_name: name,
+                shipping_phone: phone,
+                shipping_email: email,
+                postcode: postCode,
+                division_id: division_id,
+                district_id: district_id,
+                state_id: state_id,
+                shipping_address: address,
+                authID: authID,
+                payment_method: payment_method,
+            })
+                .then(function(response){
+                    if(response.status === 200){
+                        $("#shipping_name").val('');
+                        $("#shipping_phone").val('');
+                        $("#shipping_email").val('');
+                        $("#postCode").val('');
+                        $("#division_id").val('');
+                        $("#district_id").val('');
+                        $("#state_id").val('');
+                        $("#shipping_address").val('');
+                        $('input:radio[name=payment_method]:checked').val('');
+                        $(".PaymentPageLoader").css("display", "block")
+                        $(".paymentParents").css("display", "block")
+                        setInterval(function(){
+                            $(".PaymentPageLoader").css("display", "none")
+                            if(response.data.payment_method === "stripe"){
+                                window.location.href = '/user/payment-stripe-page/';
+                            }else if(response.data.payment_method === "sshost"){
+                                window.location.href = '/user/SSLPayment/';
+                            }
+                        },2000)
+                    }
+
+                })
+                .catch(function(error){
+                    console.log(error)
+                })
         })
-        .catch(function(error){
-            console.log(error)
-        })
-    })
-
-    // get payment data by ajax
+    </script>
 
 
 
 
-</script>

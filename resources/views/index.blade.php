@@ -637,9 +637,14 @@
                                                         </button>
 
                                                     </li>
-                                   <button class="btn btn-primary icon" type="button" id="{{ $featured->id }}" onclick="addWishList(this.id)">
+
+                                                    <li class="lnk wishlist">
+                                                        <a style="cursor:pointer" class="icon" id="{{ $featured->id }}" onclick="addWishList(this.id)">
                                                             <i class="icon fa fa-heart"></i>
-                                                    </button>
+                                                        </a>
+                                                        </a>
+                                                    </li>
+
                                                     <li class="lnk">
                                                         @if(session()->get('language') == 'bangle')
                                                             <a data-toggle="tooltip" class="add-to-cart" href="{{ url('/single/product/'. $featured->id . '/' .$featured->product_slug_bn) }}" title="তুলনা করা">

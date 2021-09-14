@@ -3,7 +3,11 @@
 
 
 {{--user profile section start here --}}
-
+<style>
+    input[type="text"] {
+        border: none;
+    }
+</style>
 <div class="profile_section">
     <div class="container">
 

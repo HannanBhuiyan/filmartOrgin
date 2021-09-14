@@ -19,6 +19,14 @@
                 <div class="row">
                     <!-- Sign-in -->
                     <div class="col-md-12 col-sm-12 sign-in m-auto ">
+
+                        @if(session('status'))
+                            <div class="alert alert-success">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
+
                         <form class="register-form outer-top-xs" method="POST" action="{{ route('password.email') }} ">
                             @csrf
                             <div class="form-group">

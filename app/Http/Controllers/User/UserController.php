@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -13,7 +14,8 @@ use Intervention\Image\Facades\Image;
 class UserController extends Controller
 {
     public function index(){
-        return view('user.home');
+        $orders = Order::where('user_id', Auth::id())->orderBy("id", "DESC")->get();
+        return view('user.home', compact('orders'));
     }
     public function userNameGetId($id){
         $data = User::findOrFail($id);

@@ -21,11 +21,15 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\wishlistController;
 use App\Http\Controllers\User\CartPageController;
 use App\Http\Controllers\User\StripeController;
+use App\Http\Controllers\User\SSLHostController;
+use App\Http\Controllers\User\OrderController;
 
 // fontEnd route
 use App\Http\Controllers\FontEnd\LanguageController;
 use App\Http\Controllers\FontEnd\CardController;
-use App\Http\Controllers\FontEnd\FontEntController;
+use App\Http\Controllers\FontEnd\FontEndController;
+
+use App\Http\Controllers\SslCommerzPaymentController;
 
 
 Auth::routes();
@@ -144,17 +148,38 @@ Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>
     Route::get('checkout/districtGet/ajax{division_id}', [CartPageController::class, 'getCheckoutDataGetAjax']);
     Route::get('checkout/stateGet/ajax{district_id}', [CartPageController::class, 'getStateDataGetAjax']);
 
-    // payment route
+    // Stripe payment route
      Route::post('payment-store/', [CartPageController::class, 'paymentStore']);
      Route::get('payment-stripe-page/', [StripeController::class, 'paymentStripePageView']);
      Route::post('payment/stripe/', [StripeController::class, 'stripePaymentStore'])->name('stripe.order');
 
+     // ssl easy payment route
+     Route::get('SSLPayment/', [SSLHostController::class, 'SSLPayment']);
+
+    // Order Route
+    Route::get('/orderView/', [OrderController::class, 'ViewOrder']);
+
+
 });
 
+Route::group([ 'middleware'=> ['user', 'auth']], function() {
+    // SSLCOMMERZ Start
+    Route::get('/example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout']);
+    Route::get('/example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout']);
 
+    Route::post('/pay', [SslCommerzPaymentController::class, 'index']);
+    Route::post('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
 
-Route::get('/', [FontEntController::class, 'index']);
-Route::get('/single/product/{id}/{slug}', [FontEntController::class, 'singleProduct']);
+    Route::post('/success', [SslCommerzPaymentController::class, 'success']);
+    Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
+    Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
+
+    Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
+//SSLCOMMERZ END
+});
+
+Route::get('/', [FontEndController::class, 'index']);
+Route::get('/single/product/{id}/{slug}', [FontEndController::class, 'singleProduct']);
 
 
 // ====================== card settings start ======================
@@ -168,12 +193,12 @@ Route::get('/miniCartRemove/{rowId}', [CardController::class, 'miniCartRemove'])
 
 
 //==================== tag wise product show ==========================
-Route::get('/product/tags/{tag}', [FontEntController::class, 'tagWiseProductsShow']);
+Route::get('/product/tags/{tag}', [FontEndController::class, 'tagWiseProductsShow']);
 
 
 // ============================ subCategory wise product show =========
-Route::get('subCategory/product/{id}', [FontEntController::class, 'subcategoryWiseProductShow']);
-Route::get('subSubCategory/product/{id}', [FontEntController::class, 'subSubcategoryWiseProductShow']);
+Route::get('subCategory/product/{id}', [FontEndController::class, 'subcategoryWiseProductShow']);
+Route::get('subSubCategory/product/{id}', [FontEndController::class, 'subSubcategoryWiseProductShow']);
 
 // ===================== Frontend Language route =======================
 
@@ -189,4 +214,5 @@ Route::post('/add-to-userWishList/{product_id}', [wishlistController::class, 'ad
 //========================= wishlist end ==================================
 Route::get('my-cart/', [CartPageController::class, 'cartIndex'])->name('cart');
 Route::get('checkout', [CartPageController::class, 'checkout'])->name('checkout');
+
 

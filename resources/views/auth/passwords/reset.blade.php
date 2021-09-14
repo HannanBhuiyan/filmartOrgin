@@ -1,11 +1,25 @@
-@extends('layouts.app')
+@extends('layouts.fontend.fontend-master')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+    <div class="breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-inner">
+                <ul class="list-inline list-unstyled">
+                    <li><a href="home.html">Home</a></li>
+                    <li class='active'>Reset Password</li>
+                </ul>
+            </div><!-- /.breadcrumb-inner -->
+        </div><!-- /.container -->
+    </div><!-- /.breadcrumb -->
+
+    <div class="body-content">
+        <div class="container">
+            <div class="sign-in-page register-page" style="margin: 80px 0px 100px 0px">
+                <div class="row m-auto">
+                    <div class="col-md-2"></div>
+                    <!-- create a new account -->
+                    <div class="col-md-8 col-sm-8 create-new-account m-auto" style="padding:50px 0px">
+                        <div class="card">
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('password.update') }}">
@@ -59,7 +73,12 @@
                     </form>
                 </div>
             </div>
-        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================== BRANDS CAROUSEL ============================================== -->
+        <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->	    </div><!-- /.container -->
     </div>
-</div>
+
+
 @endsection

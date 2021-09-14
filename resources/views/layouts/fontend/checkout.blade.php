@@ -98,7 +98,7 @@
                                                         <div class="payment_item">
                                                             <ul>
                                                                 <li>
-                                                                    <input id="ssl" type="radio" name="payment_method" value="ssl">
+                                                                    <input id="ssl" type="radio" name="payment_method" value="sshost">
                                                                     <label for="ssl"><img width="200px" src="{{ asset('fontend/assets/images/ssl.png') }}" alt=""></label>
                                                                 </li>
                                                                 <li>

@@ -3,9 +3,13 @@
 
 
 {{--user profile section start here --}}
-
-<div class="profile_section">
-    <div class="container">
+<style>
+    input[type="text"] {
+        border: none;
+    }
+</style>
+<div class="profile_section" style="margin: 50px 100px">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-inner text-center" >
@@ -36,7 +40,54 @@
                 </div>
             </div>
             <div class="col-md-8">
+                <table class="table table-bordered text-center">
+                    <thead>
+                    @if (count($orders) > 0)
+                        <tr style="font-size:18px;">
+                            <th class="text-center" scope="col">Data</th>
+                            <th class="text-center" scope="col">Total</th>
+                            <th class="text-center" scope="col">Payment</th>
+                            <th class="text-center" scope="col">Invoice</th>
+                            <th class="text-center" scope="col">Order</th>
+                            <th class="text-center" scope="col">Action</th>
+                        </tr>
+                    @endif
 
+                    </thead>
+                    <tbody>
+
+                    @forelse($orders as $order)
+
+                        <tr>
+                            <td scope="row">{{ $order->order_date }}</td>
+                            <td>{{ $order->	amount }}TK</td>
+                            <td>{{ $order->payment_method }}</td>
+                            <td> {{ $order->invoice_no }}</td>
+
+                            <td>
+                                @if($order->status == "Processing")
+                                    <span class="badge badge-danger" style="background-color:red">
+                                        {{ $order->status}}
+                                    </span>
+                                @else
+                                    <span class="badge badge-danger" style="background-color:green">
+                                        {{ $order->status}}
+                                    </span>
+                                @endif
+
+                            </td>
+                            <td>
+                                <a class="btn btn-primary" href="" style="margin-bottom: 10px"><i class="fas fa-eye"></i> View</a>
+                                <br>
+                                <a class="btn btn-danger" href=""><i class="fas fa-angle-double-down"></i> Invoice</a>
+                            </td>
+                        </tr>
+
+                        @empty
+                        <h1 style="color:red; font-weight: 700; margin-top:100px; text-align:center">Order Empty</h1>
+                    @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -46,9 +97,7 @@
 
 @section('scripts')
 
-
     <script type="text/javascript">
-
          $('#imageInput').change(function (){
             let Reader = new FileReader();
                 Reader.readAsDataURL(this.files[0]);
@@ -72,15 +121,8 @@
                  .catch(function(error){
                      toastr.error('Image Update Fail');
                  })
-
          })
-
-
-
-
     </script>
-
-
 @endsection
 {{-- user profile section ending here --}}
 

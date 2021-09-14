@@ -131,15 +131,6 @@
 </footer>
 
 
-
-<!-- ============================================================= FOOTER : END============================================================= -->
-
-
-<!-- For demo purposes – can be removed on production -->
-
-
-<!-- For demo purposes – can be removed on production : End -->
-
 <!-- JavaScripts placed at the end of the document so the pages load faster -->
 <script src=" {{ asset('fontend') }}/assets/js/jquery-1.11.1.min.js"></script>
 <script src=" {{ asset('fontend') }}/assets/js/bootstrap.min.js"></script>
@@ -158,6 +149,7 @@
 <script src=" {{ asset('fontend') }}/assets/js/sweetalert2@8.js"></script>
 <script src=" {{ asset('fontend') }}/assets/js/jquery.form-validator.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+
 @yield('scripts')
 
 @if(Session::has('success'))
@@ -176,6 +168,7 @@
         modules : 'date, security'
     });
 </script>
+
 </body>
 
 </html>

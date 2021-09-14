@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Division;
 use App\Models\Shipping;
 use App\Models\Order;
+use App\Mail\OrderMail;
 use App\Models\OrderItem;
 use Carbon\Carbon;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 
@@ -26,13 +28,11 @@ class StripeController extends Controller
 
 
     public function stripePaymentStore(Request $request){
-
         if(Session::has('coupon')){
             $totalAmount = Session::get('coupon')['total_amount'];
         }else {
             $totalAmount = round(Cart::total());
         }
-
         \Stripe\Stripe::setApiKey('sk_test_51JRdqsL1ewd4d4iDWkyjvQR4v0tCAMX73Kafu7UcwvJY5HNxuCv2mD0sayH4oqVsVQRslLgqraJjOboCRveLAdo200Ysl4KW7K');
         $token = $_POST['stripeToken'];
         $charge = \Stripe\Charge::create([
@@ -42,7 +42,6 @@ class StripeController extends Controller
             'source' => $token,
             'metadata' => ['order_id' => uniqid()],
         ]);
-
         $order_id = Order::insertGetId([
             'user_id' => $request->user_id,
             'division_id' => $request->division_id,
@@ -53,8 +52,8 @@ class StripeController extends Controller
             'phone' => $request->phone,
             'postCode' => $request->postCode,
             'address' => $request->address,
-            'payment_type' =>'Stripe',
-            'payment_method' => $charge->payment_method,
+            'payment_type' =>$charge->payment_method,
+            'payment_method' => 'Stripe',
             'transaction_id' => $charge->balance_transaction,
             'currency' => $charge->currency,
             'amount' => $totalAmount,
@@ -66,6 +65,15 @@ class StripeController extends Controller
             'status' => 'Pending' ,
             'created_at' => Carbon::now(),
         ]);
+
+        // mail settings start
+        $invoice = Order::findOrFail($order_id);
+        $data = [
+            'invoice_no' => $invoice->invoice_no,
+            'amount' => $totalAmount,
+        ];
+        Mail::to($request->email)->send(new OrderMail($data));
+        // mail settings end
 
         $carts = Cart::content();
         foreach($carts as $cart){
@@ -83,12 +91,7 @@ class StripeController extends Controller
             Session::forget('coupon');
         }
         Cart::destroy();
-        return redirect()->back()->with('success', 'Order Success');
-
-
+        return redirect()->route('user.dashboard')->with('success', 'Order Success');
     }
-
-
-
 
 }

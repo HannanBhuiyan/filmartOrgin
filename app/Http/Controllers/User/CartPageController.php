@@ -43,7 +43,6 @@ class CartPageController extends Controller
             Session::forget('coupon');
         }
         return response()->json($result);
-
     }
     // ============ increment =====================
     public function shoppingCartIncrement($rowId){
@@ -147,9 +146,7 @@ class CartPageController extends Controller
     }
 
     //
-
     public function paymentStore(Request $request){
-
         $data = new Shipping();
         $data->shipping_name = $request->shipping_name;
         $data->shipping_phone = $request->shipping_phone;

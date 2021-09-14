@@ -96,6 +96,20 @@ label.labelcash {
 }
 
 /*==================== payment page css end =======================*/
+
+button.btn.btn-primary.cart-btn {
+    border: none;
+}
+button.btn.btn-primary.cart-btn a {
+    padding: 2px !important;
+
+}
+.btn-primary {
+    border: none !important;
+    outline: none !important;
+    border-radius: 0px !important;
+}
+
 .paymentBtnNext {
     background: #070235;
     padding: 15px 79px;
@@ -253,20 +267,20 @@ img[src="assets/images/blank.gif"] {
 #hero .btn-primary {background: #ffc53a;}
 
 .btn-primary {
-  -webkit-transition: all linear 0.2s;
-  -moz-transition: all linear 0.2s;
-  -ms-transition: all linear 0.2s;
-  -o-transition: all linear 0.2s;
-  transition: all linear 0.2s;
-  background: #66ad44;
-  color: #fff;
-  border: none;
-  font-size: 13px;
-  line-height: 22px;
-  border-radius:0;
-  padding: 6px 14px;
-  font-family: 'Montserrat', sans-serif;
-  border-radius:2px
+    -webkit-transition: all linear 0.2s;
+    -moz-transition: all linear 0.2s;
+    -ms-transition: all linear 0.2s;
+    -o-transition: all linear 0.2s;
+    transition: all linear 0.2s;
+    background: #75bb54 !important;
+    color: #fff;
+    border: none;
+    font-size: 13px;
+    line-height: 22px;
+    border-radius:0;
+    padding: 6px 14px;
+    font-family: 'Montserrat', sans-serif;
+    border-radius:2px
 
 }
 .btn-black {
@@ -1352,7 +1366,8 @@ header{background:#333333}
   display: inline-block;
   line-height: 44px;
   background: #f6f6f6;
-  border-radius:3px 0px 0px 3px
+  border-radius:3px 0px 0px 3px;
+  margin-bottom: -10px !important;
 }
 .main-header .top-search-holder .search-area .categories-filter a {
   padding: 0 10px;
@@ -2934,10 +2949,12 @@ age-container #owl-main .owl-next {
   float: left;
 }
 .cart .action .add-cart-button .btn.btn-primary.icon {
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 0;
-  background: #fdd922 ;
-  color:#333
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    background: #fdd922 !important;
+    color: #333;
+    border: none !important;
+    padding: 8px 14px;
 }
 
 
