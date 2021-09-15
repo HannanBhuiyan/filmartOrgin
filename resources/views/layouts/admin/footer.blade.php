@@ -62,6 +62,27 @@
 <script src="{{ asset('backend') }}/dist/js/axios.min.js"></script>
 <script src="{{ asset('backend') }}/dist/js/bootstrap-tagsinput.min.js"></script>
 
+<script>
+   $("#confirm").click(function (e){
+       e.preventDefault();
+       var link = $(this).attr('href');
+       swal({
+           title: "Are you sure?",
+           icon: "warning",
+           buttons: true,
+           dangerMode: true,
+       })
+       .then((willDelete) => {
+           if (willDelete) {
+               window.location.href = link;
+           } else {
+               swal("Your imaginary file is safe!");
+           }
+       });
+   })
+</script>
+
+
 @yield('scripts')
 
 @if(Session::has('success'))

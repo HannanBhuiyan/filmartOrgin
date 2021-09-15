@@ -118,6 +118,32 @@ Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function(
     Route::get('state/active/{id}', [StateController::class, 'stateActive'])->name('state.active');
     Route::get('state/inactive/{id}', [StateController::class, 'stateInActive'])->name('state.inactive');
 
+    // admin order settings
+    Route::get("/pending/view", [OrderController::class, 'pendingOrder'])->name("order.pending");
+    Route::get("/confirm/view", [OrderController::class, 'confirmOrder'])->name("order.confirm");
+    Route::get("/processing/view", [OrderController::class, 'processingOrder'])->name("order.processing");
+    Route::get("/picked/view", [OrderController::class, 'pickedOrder'])->name("order.picked");
+    Route::get("/shipped/view", [OrderController::class, 'shippedOrder'])->name("order.shipped");
+    Route::get("/delivered/view", [OrderController::class, 'deliveredOrder'])->name("order.delivered");
+    Route::get("/order/view/{order_id}", [OrderController::class, 'orderView'])->name("order.view");
+    Route::get("/pending-to-confirm/{order_id}", [OrderController::class, 'pendingToConfirm']);
+    Route::get("/confirm-to-processing/{order_id}", [OrderController::class, 'confirmToProcessing']);
+    Route::get("/processing-to-picked/{order_id}", [OrderController::class, 'processingToPicked']);
+    Route::get("/picked-to-shipped/{order_id}", [OrderController::class, 'pickedToShipped']);
+    Route::get("/shipped-to-deliver/{order_id}", [OrderController::class, 'shippedToDelivered']);
+    Route::get("/orderInvoiceDownload/{order_id}", [OrderController::class, 'orderInvoiceDownload'])->name("orderInvoiceDownload");
+
+
+
+
+
+
+
+
+
+
+
+
 });
 
 Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>'User'], function() {

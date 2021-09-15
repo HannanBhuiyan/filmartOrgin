@@ -246,6 +246,54 @@
                     </ul>
                 </li>
 
+                <li class="nav-item @yield('Order')">
+                    <a href="#" class="nav-link @yield('paddingActive')">
+                        <i class=" nav-icon  fab fa-first-order"></i>
+                        <p>
+                            Orders
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview menuRight">
+                        <li class="nav-item miniIcon">
+                            <a href="{{ route("order.pending") }}" class="nav-link @yield('paddingActive')">
+                                <i class="fab fa-openid"></i>
+                                <p>Pending Orders</p>
+                            </a>
+                        </li>
+                        <li class="nav-item miniIcon">
+                            <a href="{{ route("order.confirm") }}" class="nav-link @yield('confirmActive')">
+                                <i class="fas fa-clipboard-check"></i>
+                                <p>Confirmed Orders</p>
+                            </a>
+                        </li>
+                        <li class="nav-item miniIcon">
+                            <a href="{{ route("order.processing") }}" class="nav-link @yield('processingActive')">
+                                <i class="fas fa-microchip"></i>
+                                <p>Processing Orders</p>
+                            </a>
+                        </li>
+                        <li class="nav-item miniIcon">
+                            <a href="{{ route("order.picked") }}" class="nav-link @yield('pickedActive')">
+                                <i class="fas fa-crosshairs"></i>
+                                <p>Picked Orders</p>
+                            </a>
+                        </li>
+                        <li class="nav-item miniIcon">
+                            <a href="{{ route("order.shipped") }}" class="nav-link @yield('shippedActive')">
+                                <i class="fas fa-dolly"></i>
+                                <p>Shipped Orders</p>
+                            </a>
+                        </li>
+                        <li class="nav-item miniIcon">
+                            <a href="{{ route("order.delivered") }}" class="nav-link @yield('deliveredActive')">
+                                <i class="fas fa-truck"></i>
+                                <p>Delivered Orders</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
