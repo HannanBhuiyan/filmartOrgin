@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DivisionController;
 use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\StateController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\RoleController;
 
 // user route
 use App\Http\Controllers\User\UserController;
@@ -31,10 +33,7 @@ use App\Http\Controllers\FontEnd\FontEndController;
 
 use App\Http\Controllers\SslCommerzPaymentController;
 
-
 Auth::routes();
-
-
 
 Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function() {
 
@@ -132,17 +131,14 @@ Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function(
     Route::get("/picked-to-shipped/{order_id}", [OrderController::class, 'pickedToShipped']);
     Route::get("/shipped-to-deliver/{order_id}", [OrderController::class, 'shippedToDelivered']);
     Route::get("/orderInvoiceDownload/{order_id}", [OrderController::class, 'orderInvoiceDownload'])->name("orderInvoiceDownload");
+    Route::get("/orderReport/", [ReportController::class, 'orderReport'])->name("report");
+    Route::post("/reportByDataTime/", [ReportController::class, 'reportByDataTime'])->name("reportByDataTime");
+    Route::post("/reportByMonth/", [ReportController::class, 'reportByMonth'])->name("reportByMonth");
+    Route::post("/reportByYear/", [ReportController::class, 'reportByYear'])->name("reportByYear");
 
+    // admin all user
 
-
-
-
-
-
-
-
-
-
+    Route::get("/allUser/", [RoleController::class, 'allUserIndex'])->name("allUser");
 
 });
 
@@ -185,6 +181,8 @@ Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>
     // Order Route
     Route::get('/orderView/{order_id}', [OrderController::class, 'ViewOrder']);
     Route::get('/downloadInvoice/{invoice_id}', [OrderController::class, 'downloadInvoice']);
+    // return order
+    Route::post("/return/order/{order_id}", [OrderController::class, 'returnOrder'])->name('order.return');
 
 
 });

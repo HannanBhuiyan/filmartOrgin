@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Coupon Discount</label>
-                                        <input type="date" class="form-control @error('coupon_validity') is-invalid @enderror " value="{{ old('coupon_validity') }}" name="coupon_validity" min="{{ \Carbon\Carbon::now()->format('Y-m-d')}}">
+                                        <input type="date" class="form-control @error('coupon_validity') is-invalid @enderror " value="{{ old('coupon_validity') }}" name="coupon_validity" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
 
                                         @error('coupon_validity')
                                             <p style="color: red; font-weight:700">{{ $message }}</p>

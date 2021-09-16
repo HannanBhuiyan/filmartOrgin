@@ -91,7 +91,6 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-
                         <h3 class="bg-success" style="padding:20px; font-weight:700">Product Details</h3>
                         <div class="product_table" style="background-color:#ddd; margin-top: 30px; padding: 35px 0px 20px 25px">
                         <table class="table table-bordered" style="margin-top: 50px">
@@ -134,9 +133,29 @@
                         </table>
                         </div>
                     </div>
+                    @if($orders->status == "Delivered")
+                        <div class="col-md-12">
+                            <div class="return_orders">
+                                <form action="{{ route("order.return", $orders->id ) }}" method="post">
+                                    @csrf
+                                    <div class="input-group">
+                                        <label style="margin-bottom:10px; margin-top: 60px;">Do you want to return this order?</label>
+                                        <textarea  class="form-control @error('return_reason') is-invalid @enderror" name="return_reason" id="" cols="198" rows="10" placeholder="Message"></textarea>
+                                    </div>
+                                   <div>
+                                       @error('return_reason')
+                                       <span style="color:red; font-weight:700; font-size:18px"> {{ $message }}</span>
+                                       @enderror
+                                   </div>
+                                    <button type="submit" class="btn btn-primary" style="margin-top: 20px">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
+
     </div>
 
 

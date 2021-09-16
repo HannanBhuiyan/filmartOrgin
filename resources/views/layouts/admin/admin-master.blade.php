@@ -1,4 +1,5 @@
 @include('layouts.admin.header')
+@section('dashboard') active @endsection()
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
     <!-- Preloader -->

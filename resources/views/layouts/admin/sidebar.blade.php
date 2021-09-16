@@ -30,7 +30,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link active">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link @yield('dashboard')">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
@@ -294,7 +294,12 @@
                     </ul>
                 </li>
 
-
+                <li class="nav-item">
+                    <a href="{{ route('report') }}" class="nav-link @yield('reportActive')">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Reports</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-book"></i>
@@ -323,19 +328,6 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('admin.profile') }}" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>My Profile</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link" target="_blank">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Visit Site</p>
-                    </a>
                 </li>
             </ul>
         </nav>

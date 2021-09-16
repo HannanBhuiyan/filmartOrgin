@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
+use Carbon\Carbon;
 
 
 
@@ -28,6 +29,20 @@ class OrderController extends Controller
             'chroot' => public_path(),
         ]);
         return $pdf->download('invoice.pdf');
+    }
+
+    public function returnOrder(Request $request, $order_id){
+
+        $request->validate([
+            'return_reason' => 'required',
+        ]);
+
+        Order::findOrFail($order_id)->update([
+           'status' => 'Return',
+           'return_date' => Carbon::now()->format('d F Y'),
+            'return_reason' => $request->return_reason,
+        ]);
+        return redirect()->route('user.dashboard')->with('success', 'Order Return successfully');
     }
 
     //================ admin order settings =======================

@@ -60,11 +60,31 @@
                             <td> {{ $order->invoice_no }}</td>
                             <td>
                                 @if($order->status == "Processing")
+                                    <span class="badge badge-success" style="background-color:deeppink">
+                                        {{ $order->status}}
+                                    </span>
+                                @elseif($order->status == "Delivered")
+                                    <span class="badge badge-danger" style="background-color:green">
+                                        {{ $order->status}}
+                                    </span>
+                                @elseif($order->status == "Return")
                                     <span class="badge badge-danger" style="background-color:red">
                                         {{ $order->status}}
                                     </span>
-                                @else
-                                    <span class="badge badge-danger" style="background-color:green">
+                                @elseif($order->status == "Shipped")
+                                    <span class="badge badge-danger" style="background-color:#070333">
+                                        {{ $order->status}}
+                                    </span>
+                                @elseif($order->status == "Picked")
+                                    <span class="badge badge-danger" style="background-color:#c6cd30">
+                                        {{ $order->status}}
+                                    </span>
+                                @elseif($order->status == "Pending")
+                                    <span class="badge badge-danger" style="background-color:#0809d1">
+                                        {{ $order->status}}
+                                    </span>
+                                    @else
+                                    <span class="badge badge-danger" style="background-color:#75bb54">
                                         {{ $order->status}}
                                     </span>
                                 @endif
