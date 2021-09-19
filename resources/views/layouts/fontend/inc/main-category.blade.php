@@ -31,9 +31,9 @@
                                         @foreach($subCategorys as $subcat)
                                             <li>
                                                 @if(session()->get('language') == 'bangle')
-                                                    <a href="#">{{ $subcat->subcategory_name_bn }}</a>
+                                                    <a href="{{  url('subCategory/product/'.$subcat->id) }}">{{ $subcat->subcategory_name_bn }}</a>
                                                 @else
-                                                    <a href="#">{{ $subcat->subcategory_name_en }}</a>
+                                                    <a href="{{ url('subCategory/product/'.$subcat->id) }}">{{ $subcat->subcategory_name_en }}</a>
                                                 @endif
                                             </li>
                                         @endforeach

@@ -13,6 +13,7 @@ Text Domain:  Flipmart
 /*===================================================================================*/
 
 
+
 .paymentParents {
     position: fixed;
     top:0;
@@ -5913,13 +5914,13 @@ age-container #owl-main .owl-next {
 .body-content .sign-in-page .sign-in .social-sign-in a i {
   padding-right: 6px;
 }
-.body-content .sign-in-page .sign-in .social-sign-in .facebook-sign-in {
-  background-color: #3d5c98;
+.body-content .sign-in-page .sign-in .social-sign-in .github-sign-in {
+  background-color: #03001c;
   margin-right: 10px;
 }
-.body-content .sign-in-page .sign-in .social-sign-in .facebook-sign-in:hover,
-.body-content .sign-in-page .sign-in .social-sign-in .facebook-sign-in:focus {
-  background-color: #153470;
+.body-content .sign-in-page .sign-in .social-sign-in .github-sign-in:hover,
+.body-content .sign-in-page .sign-in .social-sign-in .github-sign-in:focus {
+  background-color: #03001c;
 }
 .body-content .sign-in-page .sign-in .social-sign-in .twitter-sign-in {
   background-color: #22aadf;

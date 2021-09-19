@@ -367,19 +367,16 @@
                                                             <div class="action">
                                                                 <ul class="list-unstyled">
                                                                     <li class="add-cart-button btn-group">
-                                                                        <button class="btn btn-primary icon">
-                                                                            @if(session()->get('language') == 'bangle')
-                                                                                <a href="{{ url('/single/product/'. $product->id . '/' . $product->product_slug_bn ) }}"><i class="fa fa-shopping-cart"></i></a>
-                                                                            @else
-                                                                                <a href="{{ url('/single/product/'.$product->id. '/' . $product->product_slug_en ) }}"><i class="fa fa-shopping-cart"></i></a>
-                                                                            @endif
+                                                                        <button data-toggle="modal" data-target="#cardModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $product->id }}" onclick="cardView(this.id)">
+                                                                            <i class="fa fa-shopping-cart"></i>
                                                                         </button>
                                                                     </li>
                                                                     <li class="lnk wishlist">
-                                                                        <a class="add-to-cart" href="detail.html" title="Wishlist">
+                                                                        <a style="cursor:pointer" class="icon" id="{{ $product->id }}" onclick="addWishList(this.id)">
                                                                             <i class="icon fa fa-heart"></i>
                                                                         </a>
                                                                     </li>
+
                                                                     <li class="lnk">
                                                                         <a class="add-to-cart" href="detail.html" title="Compare">
                                                                             <i class="fa fa-signal"></i>
@@ -456,17 +453,14 @@
                                                                     <div class="action">
                                                                         <ul class="list-unstyled">
                                                                             <li class="add-cart-button btn-group">
-                                                                                <button class="btn btn-primary icon">
-                                                                                    @if(session()->get('language') == 'bangle')
-                                                                                        <a href="{{ url('/single/product/'. $product->id . '/' . $product->product_slug_bn ) }}"><i class="fa fa-shopping-cart"></i></a>
-                                                                                    @else
-                                                                                        <a href="{{ url('/single/product/'.$product->id. '/' . $product->product_slug_en ) }}"><i class="fa fa-shopping-cart"></i></a>
-                                                                                    @endif
+                                                                                <button data-toggle="modal" data-target="#cardModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $product->id }}" onclick="cardView(this.id)">
+                                                                                    <i class="fa fa-shopping-cart"></i>
                                                                                 </button>
                                                                             </li>
                                                                             <li class="lnk wishlist">
-                                                                                <a class="add-to-cart" href="detail.html" title="Wishlist">
+                                                                                <a style="cursor:pointer" class="icon" id="{{ $product->id }}" onclick="addWishList(this.id)">
                                                                                     <i class="icon fa fa-heart"></i>
+                                                                                </a>
                                                                                 </a>
                                                                             </li>
                                                                             <li class="lnk">

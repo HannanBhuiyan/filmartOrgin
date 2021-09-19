@@ -25,11 +25,13 @@ use App\Http\Controllers\User\CartPageController;
 use App\Http\Controllers\User\StripeController;
 use App\Http\Controllers\User\SSLHostController;
 use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\Auth\LoginController;
 
 // fontEnd route
 use App\Http\Controllers\FontEnd\LanguageController;
 use App\Http\Controllers\FontEnd\CardController;
 use App\Http\Controllers\FontEnd\FontEndController;
+use App\Http\Controllers\FontEnd\OrderTrackController;
 
 use App\Http\Controllers\SslCommerzPaymentController;
 
@@ -124,8 +126,10 @@ Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function(
     Route::get("/picked/view", [OrderController::class, 'pickedOrder'])->name("order.picked");
     Route::get("/shipped/view", [OrderController::class, 'shippedOrder'])->name("order.shipped");
     Route::get("/delivered/view", [OrderController::class, 'deliveredOrder'])->name("order.delivered");
+    Route::get("/cancel/order/view/", [OrderController::class, 'cancelOrderView'])->name("order.cancel");
     Route::get("/order/view/{order_id}", [OrderController::class, 'orderView'])->name("order.view");
     Route::get("/pending-to-confirm/{order_id}", [OrderController::class, 'pendingToConfirm']);
+    Route::get("/pending-to-cancel/{order_id}", [OrderController::class, 'pendingToCancel']);
     Route::get("/confirm-to-processing/{order_id}", [OrderController::class, 'confirmToProcessing']);
     Route::get("/processing-to-picked/{order_id}", [OrderController::class, 'processingToPicked']);
     Route::get("/picked-to-shipped/{order_id}", [OrderController::class, 'pickedToShipped']);
@@ -137,8 +141,11 @@ Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function(
     Route::post("/reportByYear/", [ReportController::class, 'reportByYear'])->name("reportByYear");
 
     // admin all user
-
     Route::get("/allUser/", [RoleController::class, 'allUserIndex'])->name("allUser");
+    Route::get("/user/banned/{banned_id}", [RoleController::class, 'userBanned'])->name("user.banned");
+    Route::get("/user/userUnBanned/{unbanned_id}", [RoleController::class, 'userUnBanned'])->name("user.unbanned");
+    Route::get("/user/adminRoleChange/{admin_role_change_id}", [RoleController::class, 'adminRoleChange'])->name("admin.role.change");
+    Route::get("/user/userRleChange/{role_change_id}", [RoleController::class, 'userRoleChange'])->name("user.role.change");
 
 });
 
@@ -205,39 +212,35 @@ Route::group([ 'middleware'=> ['user', 'auth']], function() {
 
 Route::get('/', [FontEndController::class, 'index']);
 Route::get('/single/product/{id}/{slug}', [FontEndController::class, 'singleProduct']);
-
-
 // ====================== card settings start ======================
-
 Route::get('/product/card/view/{id}', [CardController::class, 'productCardView']);
 Route::post('/product/card/add/{id}', [CardController::class, 'productAddToCard']);
 Route::get('/ProductMiniCardView/', [CardController::class, 'ProductMiniCardView']);
 Route::get('/miniCartRemove/{rowId}', [CardController::class, 'miniCartRemove']);
-
 // ==================== card settings end ============================
-
-
 //==================== tag wise product show ==========================
 Route::get('/product/tags/{tag}', [FontEndController::class, 'tagWiseProductsShow']);
-
-
 // ============================ subCategory wise product show =========
 Route::get('subCategory/product/{id}', [FontEndController::class, 'subcategoryWiseProductShow']);
 Route::get('subSubCategory/product/{id}', [FontEndController::class, 'subSubcategoryWiseProductShow']);
-
 // ===================== Frontend Language route =======================
-
 Route::get('/bangle/language/', [LanguageController::class, 'Bangle'])->name('bangle.language');
 Route::get('/english/language/', [LanguageController::class, 'English'])->name('english.language');
-
 //========================= wishlist start ==============================
 Route::get('/wishListPageView/', [wishlistController::class, 'wishlistPageView']);
 Route::get('/getWishListData/', [wishlistController::class, 'getWishListData']);
 Route::get('/removeWishlistData/{id}', [wishlistController::class, 'removeWishlistData']);
 Route::post('/add-to-userWishList/{product_id}', [wishlistController::class, 'addWishlist']);
-
 //========================= wishlist end ==================================
 Route::get('my-cart/', [CartPageController::class, 'cartIndex'])->name('cart');
 Route::get('checkout', [CartPageController::class, 'checkout'])->name('checkout');
+// social login route
+Route::get('login/google', [LoginController::class, 'loginWithGoogle'])->name('login.google');
+Route::get('login/google/callback/', [LoginController::class, 'loginWithGoogleCallback']);
+Route::get('login/github', [LoginController::class, 'loginWithGithub'])->name('login.facebook');
+Route::get('login/github/callback/', [LoginController::class, 'loginWithGithubCallback']);
+// order tracking route
+Route::post('order/track/', [OrderTrackController::class, 'orderTrack'])->name('order.track');
+
 
 

@@ -390,7 +390,7 @@
 
                                                                     </li>
 
-                                                                {{-- tab slider wishlis --}}
+                                                                    {{-- tab slider wishlis --}}
                                                                     <li class="lnk wishlist">
                                                                         <a style="cursor:pointer" class="icon" id="{{ $tabAllProduct->id }}" onclick="addWishList(this.id)">
                                                                                 <i class="icon fa fa-heart"></i>

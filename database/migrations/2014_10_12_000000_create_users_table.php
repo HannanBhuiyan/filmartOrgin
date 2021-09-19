@@ -17,11 +17,14 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('role_id')->default(2);
+            $table->tinyInteger('Isban')->default(0);
+            $table->string('last_seen')->nullable();
             $table->string('email')->unique();
-            $table->string('phone');
+            $table->string('phone')->nullable();
+            $table->string('provider_id')->nullable();
             $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

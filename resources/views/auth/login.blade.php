@@ -18,13 +18,17 @@
             <div class="sign-in-page">
                 <div class="row">
                     <!-- Sign-in -->
+
                     <div class="col-md-2"></div>
                     <div class="col-md-8 col-sm-12 sign-in">
+                        @error('Banned')
+                            <h4 class="alert alert-danger">{{ $message }}</h4>
+                        @enderror
                         <h4 class="">Sign in</h4>
                         <p class="">Hello, Welcome to your account.</p>
                         <div class="social-sign-in outer-top-xs">
-                            <a href="#" class="facebook-sign-in"><i class="fa fa-facebook"></i> Sign In with Facebook</a>
-                            <a href="#" class="twitter-sign-in"><i class="fa fa-twitter"></i> Sign In with Twitter</a>
+                            <a href="{{ route('login.facebook') }}" class="github-sign-in"><i class="fab fa-github"></i> Sign In with GitHub</a>
+                            <a href="{{ route('login.google') }}" class="twitter-sign-in"><i class="fab fa-google"></i> Sign In with Google</a>
                         </div>
                         <form class="register-form outer-top-xs" method="POST" action="{{ route('login') }} ">
                             @csrf

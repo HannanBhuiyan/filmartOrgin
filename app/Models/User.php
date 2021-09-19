@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Cache;
 
 class User extends Authenticatable
 {
@@ -23,6 +24,8 @@ class User extends Authenticatable
         'phone',
         'image',
         'password',
+        'Isban',
+        'last_seen',
 
     ];
 
@@ -47,5 +50,9 @@ class User extends Authenticatable
 
     public function role(){
         return $this->belongsTo('App\Models\Role');
+    }
+
+    public function userIsOnline(){
+        return Cache::has('isOnline'. $this->id);
     }
 }

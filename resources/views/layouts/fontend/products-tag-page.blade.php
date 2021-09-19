@@ -283,11 +283,6 @@
                                                     <li role="presentation"><a href="#">3</a></li>
                                                     <li role="presentation"><a href="#">4</a></li>
                                                     <li role="presentation"><a href="#">5</a></li>
-                                                    <li role="presentation"><a href="#">6</a></li>
-                                                    <li role="presentation"><a href="#">7</a></li>
-                                                    <li role="presentation"><a href="#">8</a></li>
-                                                    <li role="presentation"><a href="#">9</a></li>
-                                                    <li role="presentation"><a href="#">10</a></li>
                                                 </ul>
                                             </div>
                                         </div><!-- /.fld -->
@@ -310,14 +305,14 @@
                                                 <div class="products">
                                                     <div class="product">
                                                         <div class="product-image">
+
                                                             <div class="image">
                                                                 @if(session()->get('language') == 'bangle')
                                                                     <a href="{{ url('/single/product/'. $product->id . '/' .$product->product_slug_bn) }}"><img  src="{{ asset($product->product_thumbnail) }}" alt=""></a>
                                                                 @else
                                                                     <a href="{{ url('/single/product/'. $product->id . '/' .$product->product_slug_en) }}"><img  src="{{ asset($product->product_thumbnail) }}" alt=""></a>
                                                                 @endif
-                                                            </div><!-- /.image -->
-
+                                                            </div>
                                                             @php
                                                                 $amount = $product->selling_price - $product->discount_price;
                                                                 $persantage = ($amount / $product->selling_price)*100;
@@ -370,16 +365,13 @@
                                                             <div class="action">
                                                                 <ul class="list-unstyled">
                                                                     <li class="add-cart-button btn-group">
-                                                                        <button class="btn btn-primary icon">
-                                                                            @if(session()->get('language') == 'bangle')
-                                                                                <a href="{{ url('/single/product/'. $product->id . '/' . $product->product_slug_bn ) }}"><i class="fa fa-shopping-cart"></i></a>
-                                                                            @else
-                                                                                <a href="{{ url('/single/product/'.$product->id. '/' . $product->product_slug_en ) }}"><i class="fa fa-shopping-cart"></i></a>
-                                                                            @endif
+                                                                        <button data-toggle="modal" data-target="#cardModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $product->id }}" onclick="cardView(this.id)">
+                                                                            <i class="fa fa-shopping-cart"></i>
                                                                         </button>
+
                                                                     </li>
                                                                     <li class="lnk wishlist">
-                                                                        <a class="add-to-cart" href="detail.html" title="Wishlist">
+                                                                        <a style="cursor:pointer" class="icon" id="{{ $product->id }}" onclick="addWishList(this.id)">
                                                                             <i class="icon fa fa-heart"></i>
                                                                         </a>
                                                                     </li>
@@ -459,16 +451,12 @@
                                                                 <div class="action">
                                                                     <ul class="list-unstyled">
                                                                         <li class="add-cart-button btn-group">
-                                                                            <button class="btn btn-primary icon">
-                                                                                @if(session()->get('language') == 'bangle')
-                                                                                    <a href="{{ url('/single/product/'. $product->id . '/' . $product->product_slug_bn ) }}"><i class="fa fa-shopping-cart"></i></a>
-                                                                                @else
-                                                                                    <a href="{{ url('/single/product/'.$product->id. '/' . $product->product_slug_en ) }}"><i class="fa fa-shopping-cart"></i></a>
-                                                                                @endif
+                                                                            <button data-toggle="modal" data-target="#cardModal" class="btn btn-primary icon" type="button" title="Add Cart" id="{{ $product->id }}" onclick="cardView(this.id)">
+                                                                                <i class="fa fa-shopping-cart"></i>
                                                                             </button>
                                                                         </li>
                                                                         <li class="lnk wishlist">
-                                                                            <a class="add-to-cart" href="detail.html" title="Wishlist">
+                                                                            <a style="cursor:pointer" class="icon" id="{{ $product->id }}" onclick="addWishList(this.id)">
                                                                                 <i class="icon fa fa-heart"></i>
                                                                             </a>
                                                                         </li>

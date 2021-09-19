@@ -80,6 +80,23 @@
            }
        });
    })
+   $("#cancel").click(function (e){
+       e.preventDefault();
+       var link = $(this).attr('href');
+       swal({
+           title: "Are You Sure Cancel This Order?",
+           icon: "warning",
+           buttons: true,
+           dangerMode: true,
+       })
+       .then((willDelete) => {
+           if (willDelete) {
+               window.location.href = link;
+           } else {
+               swal("Your imaginary file is safe!");
+           }
+       });
+   })
 </script>
 
 

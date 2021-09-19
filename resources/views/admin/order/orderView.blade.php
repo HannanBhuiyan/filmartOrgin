@@ -92,7 +92,7 @@
 
                                     @if($orders->status == "Pending")
                                     <li class="list-group-item">
-                                        <a href=" {{ url("admin/pending-to-confirm/".$orders->id) }}" class="btn btn-primary d-block" id="confirm">Confirm Order</a> </li>
+                                        <a href=" {{ url("admin/pending-to-confirm/".$orders->id) }}" class="btn btn-primary d-block" id="confirm">Confirm Order</a>  <a href=" {{ url("admin/pending-to-cancel/".$orders->id) }}" class="btn btn-danger d-block" id="cancel" style="margin-top:10px">Cancel Order</a>
                                         @elseif($orders->status == "Confirm")
                                     <li class="list-group-item">
                                         <a href=" {{ url("admin/confirm-to-processing/".$orders->id) }}" class="btn btn-primary d-block" id="confirm">Processing Order</a> </li>

@@ -228,12 +228,8 @@
                 <div class="cnt-block">
                     <ul class="list-unstyled list-inline">
                         <li class="dropdown dropdown-small">
-                            <a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown"><span class="value">USD </span><b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">USD</a></li>
-                                <li><a href="#">INR</a></li>
-                                <li><a href="#">GBP</a></li>
-                            </ul>
+                            <a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="modal" data-target="#orderTrack"><span class="value"> Order Track </span><b class="caret"></b></a>
+
                         </li>
 
                         <li class="dropdown dropdown-small">
@@ -259,6 +255,26 @@
             </div><!-- /.header-top-inner -->
         </div><!-- /.container -->
     </div><!-- /.header-top -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="orderTrack" tabindex="-1" role="dialog" aria-labelledby="orderTrack" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body" style="padding:20px">
+                    <form action="{{ route('order.track') }}" method="post">
+                        @csrf
+                        <label> Invoice no</label>
+                        <input type="text" name="invoice_no" class="form-control" >
+                        <button type="submit" class="btn btn-primary" style="margin-top:10px">Track Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- ============================================== TOP MENU : END ============================================== -->
     <div class="main-header">
         <div class="container">

@@ -291,6 +291,12 @@
                                 <p>Delivered Orders</p>
                             </a>
                         </li>
+                        <li class="nav-item miniIcon">
+                            <a href="{{ route("order.cancel") }}" class="nav-link @yield('cancelActive')">
+                                <i class="fas fa-truck"></i>
+                                <p>Cancel Orders</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
