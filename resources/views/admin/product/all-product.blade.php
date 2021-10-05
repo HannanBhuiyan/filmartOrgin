@@ -71,7 +71,7 @@
                                     <td>
                                         <a href="{{ route('products.show', $item->id) }}" class="btn btn-warning">View</a>
                                         <a href="{{ route('subcategoryEdit', ['id' => $item->id]) }}" class="btn btn-info mx-2">Edit</a>
-                                        <a href="{{ route('softDelete.delete', ['id' => $item->id]) }}" class="btn btn-danger">Delete</a>
+                                        <button data-id="{{ $item->id }}" class="btn btn-danger productDeleteButton">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach

@@ -26,111 +26,109 @@ class SslCommerzPaymentController extends Controller
         return view('exampleHosted');
     }
 
-    public function index(Request $request)
-    {
-
-
-        $post_data = array();
-        $post_data['total_amount'] = $request->amount; # You cant not pay less than 10
-        $post_data['currency'] = "BDT";
-        $post_data['tran_id'] = uniqid(); // tran_id must be unique
-
-        # CUSTOMER INFORMATION
-        $post_data['cus_name'] = $request->name;
-        $post_data['cus_email'] = $request->email;
-        $post_data['cus_add1'] = 'Customer Address';
-        $post_data['cus_add2'] = "";
-        $post_data['cus_city'] = "";
-        $post_data['cus_state'] = "";
-        $post_data['cus_postcode'] = $request->postCode;
-        $post_data['cus_country'] = "Bangladesh";
-        $post_data['cus_phone'] =  $request->phone;
-        $post_data['cus_fax'] = "";
-        // custom code
-        $post_data['user_id'] = $request->user_id;
-        $post_data['division_id'] = $request->division_id;
-        $post_data['district_id'] = $request->district_id;
-        $post_data['state_id'] = $request->state_id;
-        $post_data['payment_method'] = "SSL Payment";
-        $post_data['invoice_no'] = 'SPM'.mt_rand(10000000,99999999);
-
-        # SHIPMENT INFORMATION
-        $post_data['ship_name'] = "Store Test";
-        $post_data['ship_add1'] = "Dhaka";
-        $post_data['ship_add2'] = "Dhaka";
-        $post_data['ship_city'] = "Dhaka";
-        $post_data['ship_state'] = "Dhaka";
-        $post_data['ship_postcode'] = "1000";
-        $post_data['ship_phone'] = "";
-        $post_data['ship_country'] = "Bangladesh";
-
-        $post_data['shipping_method'] = "NO";
-        $post_data['product_name'] = "Computer";
-        $post_data['product_category'] = "Goods";
-        $post_data['product_profile'] = "physical-goods";
-
-        # OPTIONAL PARAMETERS
-        $post_data['value_a'] = "ref001";
-        $post_data['value_b'] = "ref002";
-        $post_data['value_c'] = "ref003";
-        $post_data['value_d'] = "ref004";
-
-        #Before  going to initiate the payment order status need to insert or update as Pending.
-        $update_product = DB::table('orders')
-            ->where('transaction_id', $post_data['tran_id'])
-            ->updateOrInsert([
-                'user_id' => $post_data['user_id'],
-                'name' => $post_data['cus_name'],
-                'email' => $post_data['cus_email'],
-                'phone' => $post_data['cus_phone'],
-                'amount' => $post_data['total_amount'],
-                'status' => 'Pending',
-                'address' => $post_data['cus_add1'],
-                'transaction_id' => $post_data['tran_id'],
-                'currency' => $post_data['currency'],
-                'division_id' => $post_data['division_id'],
-                'district_id' => $post_data['district_id'],
-                'state_id' => $post_data['state_id'],
-                'payment_method' => $post_data['payment_method'],
-                'invoice_no' => $post_data['invoice_no'],
-                'postCode' => $post_data['cus_postcode'],
-                'order_date' => Carbon::now()->format('d F Y'),
-                'order_month' => Carbon::now()->format('F'),
-                'order_year' => Carbon::now()->format('Y'),
-                'created_at' => Carbon::now(),
-            ]);
-
-            $order_id = \Illuminate\Support\Facades\DB::getPdo()->lastInsertId();
-            $carts = Cart::content();
-            foreach($carts as $cart){
-                OrderItem::insert([
-                    'order_id' => $order_id ,
-                    'product_id' => $cart->id,
-                    'color' => $cart->options->color ,
-                    'size' => $cart->options->size,
-                    'qty' => $cart->qty,
-                    'price' => $cart->price,
-                    'created_at' => Carbon::now(),
-                ]);
-            }
-
-        $sslc = new SslCommerzNotification();
-        # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
-        $payment_options = $sslc->makePayment($post_data, 'hosted');
-
-        if (!is_array($payment_options)) {
-            print_r($payment_options);
-            $payment_options = array();
-        }
-
-    }
+//    public function index(Request $request)
+//    {
+//
+//
+//        $post_data = array();
+//        $post_data['total_amount'] = $request->amount; # You cant not pay less than 10
+//        $post_data['currency'] = "BDT";
+//        $post_data['tran_id'] = uniqid(); // tran_id must be unique
+//
+//        # CUSTOMER INFORMATION
+//        $post_data['cus_name'] = $request->name;
+//        $post_data['cus_email'] = $request->email;
+//        $post_data['cus_add1'] = 'Customer Address';
+//        $post_data['cus_add2'] = "";
+//        $post_data['cus_city'] = "";
+//        $post_data['cus_state'] = "";
+//        $post_data['cus_postcode'] = $request->postCode;
+//        $post_data['cus_country'] = "Bangladesh";
+//        $post_data['cus_phone'] =  $request->phone;
+//        $post_data['cus_fax'] = "";
+//        // custom code
+//        $post_data['user_id'] = $request->user_id;
+//        $post_data['division_id'] = $request->division_id;
+//        $post_data['district_id'] = $request->district_id;
+//        $post_data['state_id'] = $request->state_id;
+//        $post_data['payment_method'] = "SSL Payment";
+//        $post_data['invoice_no'] = 'SPM'.mt_rand(10000000,99999999);
+//
+//        # SHIPMENT INFORMATION
+//        $post_data['ship_name'] = "Store Test";
+//        $post_data['ship_add1'] = "Dhaka";
+//        $post_data['ship_add2'] = "Dhaka";
+//        $post_data['ship_city'] = "Dhaka";
+//        $post_data['ship_state'] = "Dhaka";
+//        $post_data['ship_postcode'] = "1000";
+//        $post_data['ship_phone'] = "";
+//        $post_data['ship_country'] = "Bangladesh";
+//
+//        $post_data['shipping_method'] = "NO";
+//        $post_data['product_name'] = "Computer";
+//        $post_data['product_category'] = "Goods";
+//        $post_data['product_profile'] = "physical-goods";
+//
+//        # OPTIONAL PARAMETERS
+//        $post_data['value_a'] = "ref001";
+//        $post_data['value_b'] = "ref002";
+//        $post_data['value_c'] = "ref003";
+//        $post_data['value_d'] = "ref004";
+//
+//        #Before  going to initiate the payment order status need to insert or update as Pending.
+//        $update_product = DB::table('orders')
+//            ->where('transaction_id', $post_data['tran_id'])
+//            ->updateOrInsert([
+//                'user_id' => $post_data['user_id'],
+//                'name' => $post_data['cus_name'],
+//                'email' => $post_data['cus_email'],
+//                'phone' => $post_data['cus_phone'],
+//                'amount' => $post_data['total_amount'],
+//                'status' => 'Pending',
+//                'address' => $post_data['cus_add1'],
+//                'transaction_id' => $post_data['tran_id'],
+//                'currency' => $post_data['currency'],
+//                'division_id' => $post_data['division_id'],
+//                'district_id' => $post_data['district_id'],
+//                'state_id' => $post_data['state_id'],
+//                'payment_method' => $post_data['payment_method'],
+//                'invoice_no' => $post_data['invoice_no'],
+//                'postCode' => $post_data['cus_postcode'],
+//                'order_date' => Carbon::now()->format('d F Y'),
+//                'order_month' => Carbon::now()->format('F'),
+//                'order_year' => Carbon::now()->format('Y'),
+//                'created_at' => Carbon::now(),
+//            ]);
+//
+//            $order_id = \Illuminate\Support\Facades\DB::getPdo()->lastInsertId();
+//            $carts = Cart::content();
+//            foreach($carts as $cart){
+//                OrderItem::insert([
+//                    'order_id' => $order_id ,
+//                    'product_id' => $cart->id,
+//                    'color' => $cart->options->color ,
+//                    'size' => $cart->options->size,
+//                    'qty' => $cart->qty,
+//                    'price' => $cart->price,
+//                    'created_at' => Carbon::now(),
+//                ]);
+//            }
+//
+//        $sslc = new SslCommerzNotification();
+//        # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
+//        $payment_options = $sslc->makePayment($post_data, 'hosted');
+//
+//        if (!is_array($payment_options)) {
+//            print_r($payment_options);
+//            $payment_options = array();
+//        }
+//
+//    }
 
     public function payViaAjax(Request $request)
     {
 
-
         $requestData = (array) json_decode($request->cart_json);
-
         $post_data = array();
         $post_data['total_amount'] = $requestData['amount']; # You cant not pay less than 10
         $post_data['currency'] = "BDT";
@@ -171,9 +169,6 @@ class SslCommerzPaymentController extends Controller
         $post_data['product_category'] = "Goods";
         $post_data['product_profile'] = "physical-goods";
 
-
-
-
         #Before  going to initiate the payment order status need to update as Pending.
         $update_product = DB::table('orders')
             ->where('transaction_id', $post_data['tran_id'])
@@ -200,7 +195,6 @@ class SslCommerzPaymentController extends Controller
             ]);
 
             $order_id = \Illuminate\Support\Facades\DB::getPdo()->lastInsertId();
-
             $carts = Cart::content();
             foreach($carts as $cart){
                 OrderItem::insert([
@@ -213,15 +207,12 @@ class SslCommerzPaymentController extends Controller
                     'created_at' => Carbon::now(),
                 ]);
             }
-
         $invoice = Order::findOrFail($order_id);
-
         # OPTIONAL PARAMETERS
         $post_data['value_a'] = $invoice->invoice_no ;
         $post_data['value_b'] = $post_data['cus_email'] ;
         $post_data['value_c'] = "ref003";
         $post_data['value_d'] = "ref004";
-
 
         $sslc = new SslCommerzNotification();
         # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
@@ -263,7 +254,6 @@ class SslCommerzPaymentController extends Controller
                     ->update(['status' => 'Processing']);
 
                 // mail settings start
-
                 $data = [
                     'invoice_no' => $request->value_a ,
                     'amount' =>  $amount,
@@ -296,8 +286,6 @@ class SslCommerzPaymentController extends Controller
             #That means something wrong happened. You can redirect customer to your product page.
             echo "Invalid Transaction";
         }
-
-
     }
 
     public function fail(Request $request)
@@ -340,9 +328,7 @@ class SslCommerzPaymentController extends Controller
             echo "Transaction is Invalid";
         }
 
-
     }
-
     public function ipn(Request $request)
     {
         #Received all the payement information from the gateway
@@ -398,5 +384,4 @@ class SslCommerzPaymentController extends Controller
             echo "Invalid Data";
         }
     }
-
 }

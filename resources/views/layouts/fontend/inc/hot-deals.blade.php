@@ -65,7 +65,21 @@
                                 <a href="{{ url('/single/product/'. $hot_deal->id . '/' .$hot_deal->product_slug_en) }}">{{ $hot_deal->product_title_en }}</a>
                             @endif
                         </h3>
-                        <div class="rating rateit-small"></div>
+
+                        {{--  rating --}}
+                        @if(\App\Models\ReviewModel::where('product_id', $hot_deal->id)->first())
+                            @php
+                                $reviewProducts = \App\Models\ReviewModel::where('product_id',  $hot_deal->id)->where('status', 'approved')->latest()->get();
+
+$rating = \App\Models\ReviewModel::where('product_id',  $hot_deal->id)->where('status', 'approved')->avg('rating');
+$avarageRating = number_format($rating, 1);
+                            @endphp
+                            @for($i=1; $i<=5; $i++)
+                                <span style="color:red" class="glyphicon glyphicon-star{{ $i <= $avarageRating ? "" : '-empty'}}"></span>
+                            @endfor
+                        @else
+                            <span style="color:red; font-weight-bold:700">No Rating</span>
+                        @endif
                         <div class="product-price">
                             @if( $hot_deal->discount_price == NULL)
                                 @if(session()->get('language') == 'bangle')

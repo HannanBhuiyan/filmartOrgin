@@ -67,7 +67,20 @@
                                                                     <a href="{{ url('/single/product/'. $spacial_offer->id . '/' .$spacial_offer->product_slug_en) }}">{{ $spacial_offer->product_title_en }}</a>
                                                                 @endif
                                                             </h3>
-                                                            <div class="rating rateit-small"></div>
+                                                            {{--  rating --}}
+                                                            @if(\App\Models\ReviewModel::where('product_id',  $spacial_offer->id)->first())
+                                                                @php
+                                                                    $reviewProducts = \App\Models\ReviewModel::where('product_id',  $spacial_offer->id)->where('status', 'approved')->latest()->get();
+
+                   $rating = \App\Models\ReviewModel::where('product_id',  $spacial_offer->id)->where('status', 'approved')->avg('rating');
+                   $avarageRating = number_format($rating, 1);
+                                                                @endphp
+                                                                @for($i=1; $i<=5; $i++)
+                                                                    <span style="color:red" class="glyphicon glyphicon-star{{ $i <= $avarageRating ? "" : '-empty'}}"></span>
+                                                                @endfor
+                                                            @else
+                                                                <span style="color:red; font-weight-bold:700">No Rating</span>
+                                                            @endif
                                                             <div class="product-price">
                                                                 @if($spacial_offer->discount_price == NULL)
                                                                     @if(session()->get('language') == 'bangle')
@@ -149,7 +162,20 @@
                                                                         <a href="{{ url('/single/product/'. $spacial_deal->id . '/' .$spacial_deal->product_slug_en) }}">{{ $spacial_deal->product_title_en }}</a>
                                                                     @endif
                                                                 </h3>
-                                                                <div class="rating rateit-small"></div>
+                                                                {{--  rating --}}
+                                                                @if(\App\Models\ReviewModel::where('product_id',  $spacial_deal->id)->first())
+                                                                    @php
+                                                                        $reviewProducts = \App\Models\ReviewModel::where('product_id',  $spacial_deal->id)->where('status', 'approved')->latest()->get();
+
+                       $rating = \App\Models\ReviewModel::where('product_id',  $spacial_deal->id)->where('status', 'approved')->avg('rating');
+                       $avarageRating = number_format($rating, 1);
+                                                                    @endphp
+                                                                    @for($i=1; $i<=5; $i++)
+                                                                        <span style="color:red" class="glyphicon glyphicon-star{{ $i <= $avarageRating ? "" : '-empty'}}"></span>
+                                                                    @endfor
+                                                                @else
+                                                                    <span style="color:red; font-weight-bold:700">No Rating</span>
+                                                                @endif
                                                                 <div class="product-price">
                                                                     @if($spacial_deal->discount_price == NULL)
                                                                         @if(session()->get('language') == 'bangle')
@@ -360,7 +386,27 @@
                                                                     <a href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_en) }}">{{ $tabAllProduct->product_title_en }}</a>
                                                                 @endif
                                                             </h3>
-                                                            <div class="rating rateit-small"></div>
+
+
+
+                                                            @if(\App\Models\ReviewModel::where('product_id', $tabAllProduct->id)->first())
+                                                                @php
+                                                                    $reviewProducts = \App\Models\ReviewModel::where('product_id',  $tabAllProduct->id)->where('status', 'approved')->latest()->get();
+
+        $rating = \App\Models\ReviewModel::where('product_id',  $tabAllProduct->id)->where('status', 'approved')->avg('rating');
+        $avarageRating = number_format($rating, 1);
+                                                                @endphp
+                                                                @for($i=1; $i<=5; $i++)
+                                                                    <span style="color:red" class="glyphicon glyphicon-star{{ $i <= $avarageRating ? "" : '-empty'}}"></span>
+                                                                @endfor
+                                                            @else
+                                                                <span style="color:red; font-weight-bold:700">No Rating</span>
+                                                            @endif
+
+
+
+
+
                                                             <div class="description"></div>
                                                             <div class="product-price">
                                                                 @if( $tabAllProduct->discount_price == NULL)
@@ -471,7 +517,21 @@
                                                                         <a href="{{ url('/single/product/'. $tabAllProduct->id . '/' .$tabAllProduct->product_slug_en) }}">{{ $tabAllProduct->product_title_en }}</a>
                                                                     @endif
                                                                 </h3>
-                                                                <div class="rating rateit-small"></div>
+                                                                {{--  rating  --}}
+                                                                @if(\App\Models\ReviewModel::where('product_id', $tabAllProduct->id)->first())
+                                                                    @php
+                                                                        $reviewProducts = \App\Models\ReviewModel::where('product_id',  $tabAllProduct->id)->where('status', 'approved')->latest()->get();
+
+            $rating = \App\Models\ReviewModel::where('product_id',  $tabAllProduct->id)->where('status', 'approved')->avg('rating');
+            $avarageRating = number_format($rating, 1);
+                                                                    @endphp
+                                                                    @for($i=1; $i<=5; $i++)
+                                                                        <span style="color:red" class="glyphicon glyphicon-star{{ $i <= $avarageRating ? "" : '-empty'}}"></span>
+                                                                    @endfor
+                                                                @else
+                                                                    <span style="color:red; font-weight-bold:700">No Rating</span>
+                                                                @endif
+
                                                                 <div class="description"></div>
                                                                 <div class="product-price">
                                                                     @if( $tabAllProduct->discount_price == NULL)
@@ -608,7 +668,22 @@
                                                     <a href="{{ url('/single/product/'. $featured->id . '/' .$featured->product_slug_en) }}">{{ $featured->product_title_en }}</a>
                                                 @endif
                                             </h3>
-                                            <div class="rating rateit-small"></div>
+
+                                        {{--  rating --}}
+                                            @if(\App\Models\ReviewModel::where('product_id', $tabAllProduct->id)->first())
+                                                @php
+                                                 $reviewProducts = \App\Models\ReviewModel::where('product_id',  $tabAllProduct->id)->where('status', 'approved')->latest()->get();
+
+$rating = \App\Models\ReviewModel::where('product_id',  $tabAllProduct->id)->where('status', 'approved')->avg('rating');
+$avarageRating = number_format($rating, 1);
+                                                @endphp
+                                                @for($i=1; $i<=5; $i++)
+                                                    <span style="color:red" class="glyphicon glyphicon-star{{ $i <= $avarageRating ? "" : '-empty'}}"></span>
+                                                @endfor
+                                            @else
+                                                <span style="color:red; font-weight-bold:700">No Rating</span>
+                                            @endif
+
                                             <div class="description"></div>
                                             <div class="product-price">
                                                 @if( $featured->discount_price == NULL)

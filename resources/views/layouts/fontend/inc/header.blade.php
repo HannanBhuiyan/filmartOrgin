@@ -13,6 +13,8 @@
     <meta name="keywords" content="MediaCenter, Template, eCommerce">
     <meta name="robots" content="all">
 
+    @yield('meta')
+
     <title>@yield('title')</title>
 
     <!-- Bootstrap Core CSS -->
@@ -185,15 +187,30 @@
             background: #fff;
             outline: none;
         }
-    </style>
 
+        .search-area {
+            position: relative;
+        }
+
+        #suggestProductSearch {
+            position: absolute;
+            top: 51px;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            z-index: 999;
+            box-shadow: -6px 8px 15px -3px rgb(174 159 159 / 75%);
+            -webkit-box-shadow: -6px 8px 15px -3px rgb(174 159 159 / 75%);
+            -moz-box-shadow: -6px 8px 15px -3px rgba(174,159,159,0.75);
+        }
+
+
+    </style>
 </head>
 <body class="cnt-home">
-<!-- ============================================== HEADER ============================================== -->
-
+<!-- =========== HEADER ================ -->
 <header class="header-style-1">
-
-    <!-- ============================================== TOP MENU ============================================== -->
+    <!-- ============ TOP MENU ================ -->
     <div class="top-bar animate-dropdown">
         <div class="container">
             <div class="header-top-inner">
@@ -202,12 +219,10 @@
                         <li><a href="{{ url('wishListPageView') }}"><i class="icon fa fa-heart"></i>Wishlist</a></li>
                         <li><a href="{{ route('cart') }}"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
                         <li><a href="{{ route('user.dashboard') }}"><i class="icon fa fa-user"></i>
-
                                 @if(session()->get('language') == 'bangle')
                                     আমার প্রোফাইল
                                 @else
                                     My Account
-
                                 @endif
                             </a></li>
                         <li>
@@ -220,18 +235,14 @@
                             @else
                                 <a href="{{ route('login') }}"><i class="icon fa fa-lock"></i>Login/Register</a>
                             @endauth
-
                         </li>
                     </ul>
                 </div><!-- /.cnt-account -->
-
                 <div class="cnt-block">
                     <ul class="list-unstyled list-inline">
                         <li class="dropdown dropdown-small">
                             <a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="modal" data-target="#orderTrack"><span class="value"> Order Track </span><b class="caret"></b></a>
-
                         </li>
-
                         <li class="dropdown dropdown-small">
                             <a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown"><span class="value">
                                     @if (session()->get('language') == 'bangle')
@@ -241,7 +252,6 @@
                                     @endif
                                 </span><b class="caret"></b></a>
                             <ul class="dropdown-menu">
-
                                 @if (session()->get('language') == 'bangle')
                                     <li><a href="{{ route('english.language') }}">English</a></li>
                                 @else
@@ -255,8 +265,6 @@
             </div><!-- /.header-top-inner -->
         </div><!-- /.container -->
     </div><!-- /.header-top -->
-
-
     <!-- Modal -->
     <div class="modal fade" id="orderTrack" tabindex="-1" role="dialog" aria-labelledby="orderTrack" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -265,17 +273,14 @@
                     <form action="{{ route('order.track') }}" method="post">
                         @csrf
                         <label> Invoice no</label>
-                        <input type="text" name="invoice_no" class="form-control" >
+                        <input type="text" name="invoice_no"  class="form-control" >
                         <button type="submit" class="btn btn-primary" style="margin-top:10px">Track Now</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-    <!-- ============================================== TOP MENU : END ============================================== -->
+    <!-- ============= TOP MENU : END ================== -->
     <div class="main-header">
         <div class="container">
             <div class="row">
@@ -287,44 +292,25 @@
                             <img src=" {{ asset('fontend') }}/assets/images/logo.png" alt="">
                         </a>
                     </div><!-- /.logo -->
-                    <!-- ======================= LOGO : END ================================ -->				</div><!-- /.logo-holder -->
-
+                    <!-- ======================= LOGO : END =============== -->
+                </div><!-- /.logo-holder -->
                 <div class="col-xs-12 col-sm-12 col-md-7 top-search-holder">
                     <!-- /.contact-row -->
-                    <!-- ============================================================= SEARCH AREA ============================================================= -->
+                    <!-- ================ SEARCH AREA ======================== -->
                     <div class="search-area">
-                        <form>
+                        <form action="{{ route('search.product') }}" method="GET">
                             <div class="control-group">
-
-                                <ul class="categories-filter animate-dropdown">
-                                    <li class="dropdown">
-
-                                        <a class="dropdown-toggle"  data-toggle="dropdown" href="category.html">Categories <b class="caret"></b></a>
-
-                                        <ul class="dropdown-menu" role="menu" >
-                                            <li class="menu-header">Computer</li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Clothing</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Electronics</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Shoes</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Watches</a></li>
-
-                                        </ul>
-                                    </li>
-                                </ul>
-
-                                <input class="search-field" placeholder="Search here..." />
-
-                                <a class="search-button" href="#" ></a>
-
+                                <input  class="search-field" onfocus="showSearchResult()" onblur="hideSearchResult()" id="search" name="search" placeholder="Search here..." >
+                                <button type="submit" class="search-button"></button>
                             </div>
                         </form>
+                        <div id="suggestProductSearch"></div>
                     </div><!-- /.search-area -->
-                    <!-- =============== ============= SEARCH AREA : END ==== ===================== -->
+                    <!-- ========== SEARCH AREA : END =========== -->
                 </div><!-- /.top-search-holder -->
 
                 <div class="col-xs-12 col-sm-12 col-md-2 animate-dropdown top-cart-row">
-                    <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
-
+                    <!-- =============== SHOPPING CART DROPDOWN ======================== -->
                     <div class="dropdown dropdown-cart">
                         <a href="#" class="dropdown-toggle lnk-cart" data-toggle="dropdown">
                             <div class="items-cart-inner">
@@ -336,36 +322,23 @@
                                     <span class="lbl">cart -</span>
                                     <span class="total-price"><span class="sign">$</span><span class="value" id="miniCartTotal"></span></span>
                                 </div>
-
-
                             </div>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
                                 <div id="miniCart"></div>
-
-
                                 <div class="clearfix"></div>
-
-
                                 <div class="clearfix cart-total">
                                     <div class="pull-right">
-
                                         <span class="text">Sub Total :</span><span class='price' id="miniCartTotal"></span>
-
-
                                     </div>
                                     <div class="clearfix"></div>
-
                                     <a href="{{ route('cart') }}" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a>
                                 </div><!-- /.cart-total-->
-
-
                             </li>
                         </ul><!-- /.dropdown-menu-->
                     </div><!-- /.dropdown-cart -->
-
-                    <!-- ============================================================= SHOPPING CART DROPDOWN : END============================================================= -->
+                    <!-- ================ SHOPPING CART DROPDOWN : END ================== -->
                 </div><!-- /.top-cart-row -->
             </div><!-- /.row -->
 
@@ -373,7 +346,7 @@
 
     </div><!-- /.main-header -->
 
-    <!-- ============================================== NAVBAR ============================================== -->
+    <!-- ============== NAVBAR =============== -->
     <div class="header-nav animate-dropdown">
         <div class="container">
             <div class="yamm navbar navbar-default" role="navigation">
@@ -392,11 +365,9 @@
                                 <li class="active dropdown yamm-fw">
                                     <a href="home.html" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">Home</a>
                                 </li>
-
                                 @php
                                     $categorys = \App\Models\Category::orderBy('category_name_en', 'ASC')->limit(5)->get();
                                 @endphp
-
                                 @foreach($categorys as $cat)
                                     <li class="dropdown yamm mega-menu">
                                             @if(session()->get('language') == 'bangle')
@@ -415,7 +386,6 @@
                                                         @php
                                                              $subCategorys = \App\Models\SubCategory::where('category_id', $cat->id)->orderBy('subcategory_name_en', 'ASC')->get();
                                                         @endphp
-
                                                         @foreach($subCategorys as $subcat)
                                                             <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
                                                                 <div class="subCatTitle">
@@ -441,10 +411,7 @@
                                                                     @endforeach
                                                                 </ul>
                                                             </div><!-- /.col -->
-
                                                         @endforeach
-
-
                                                         <div class="col-xs-12 col-sm-6 col-md-4 col-menu banner-image">
                                                             <img class="img-responsive" src="{{ asset('fontend') }}/assets/images/banners/top-menu-banner.jpg" alt="">
                                                         </div><!-- /.yamm-content -->
@@ -453,30 +420,18 @@
                                             </li>
                                         </ul>
                                     </li>
-
-
-
                                 @endforeach
-
-
-
-
                                 <li class="dropdown  navbar-right special-menu">
                                     <a href="#">Todays offer</a>
                                 </li>
-
-
                             </ul><!-- /.navbar-nav -->
                             <div class="clearfix"></div>
                         </div><!-- /.nav-outer -->
                     </div><!-- /.navbar-collapse -->
-
-
                 </div><!-- /.nav-bg-class -->
             </div><!-- /.navbar-default -->
         </div><!-- /.container-class -->
-
     </div><!-- /.header-nav -->
-    <!-- ============================================== NAVBAR : END ============================================== -->
-
+    <!-- =============== NAVBAR : END ============= -->
 </header>
+

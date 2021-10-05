@@ -3,9 +3,6 @@
 
 @yield('content')
 
-
-
-
 <!-- Card Modal -->
 <div class="modal fade bd-example-modal-lg" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -72,10 +69,7 @@
 
 @include('layouts.fontend.inc.footer')
 
-
-
     <script type="text/javascript">
-
         $.ajaxSetup({
             headers:{
                 'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
@@ -580,7 +574,6 @@
         });
     </script>
 
-
     <script type="text/javascript">
         //================ select District ===============
         $('select[name="state_id"]').attr('disabled','disabled');
@@ -632,35 +625,63 @@
                 authID: authID,
                 payment_method: payment_method,
             })
-                .then(function(response){
-                    if(response.status === 200){
-                        $("#shipping_name").val('');
-                        $("#shipping_phone").val('');
-                        $("#shipping_email").val('');
-                        $("#postCode").val('');
-                        $("#division_id").val('');
-                        $("#district_id").val('');
-                        $("#state_id").val('');
-                        $("#shipping_address").val('');
-                        $('input:radio[name=payment_method]:checked').val('');
-                        $(".PaymentPageLoader").css("display", "block")
-                        $(".paymentParents").css("display", "block")
-                        setInterval(function(){
-                            $(".PaymentPageLoader").css("display", "none")
-                            if(response.data.payment_method === "stripe"){
-                                window.location.href = '/user/payment-stripe-page/';
-                            }else if(response.data.payment_method === "sshost"){
-                                window.location.href = '/user/SSLPayment/';
-                            }
-                        },2000)
-                    }
+            .then(function(response){
+                if(response.status === 200){
+                    $("#shipping_name").val('');
+                    $("#shipping_phone").val('');
+                    $("#shipping_email").val('');
+                    $("#postCode").val('');
+                    $("#division_id").val('');
+                    $("#district_id").val('');
+                    $("#state_id").val('');
+                    $("#shipping_address").val('');
+                    $('input:radio[name=payment_method]:checked').val('');
+                    $(".PaymentPageLoader").css("display", "block")
+                    $(".paymentParents").css("display", "block")
+                    setInterval(function(){
+                        $(".PaymentPageLoader").css("display", "none")
+                        if(response.data.payment_method === "stripe"){
+                            window.location.href = '/user/payment-stripe-page/';
+                        }else if(response.data.payment_method === "sshost"){
+                            window.location.href = '/user/SSLPayment/';
+                        }
+                    },2000)
+                }
 
-                })
-                .catch(function(error){
-                    console.log(error)
-                })
+            })
+            .catch(function(error){
+                console.log(error)
+            })
         })
     </script>
+
+<script type="text/javascript">
+    $("body").on("keyup", "#search", function(){
+        let searchData = $("#search").val();
+        if(searchData.length > 0){
+            $.ajax({
+                type:"POST",
+                data: {  search: searchData },
+                url: "{{ url('searchProductByAjax') }}",
+                success: function(result){
+                    $("#suggestProductSearch").html(result)
+                },
+            })
+        }
+        if( searchData.length < 1)  $("#suggestProductSearch").html("");
+    })
+</script>
+
+<script type="text/javascript">
+
+    function showSearchResult(){
+        $("#suggestProductSearch").slideDown();
+    }
+    function hideSearchResult(){
+        $("#suggestProductSearch").slideUp();
+    }
+</script>
+
 
 
 

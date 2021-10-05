@@ -307,6 +307,43 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('review.index') }}" class="nav-link @yield('reviewOrder')">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Review</p>
+                    </a>
+                </li>
+
+
+
+                <li class="nav-item @yield('comment')">
+                    <a href="#" class="nav-link @yield('commentActive')">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>
+                            Comment
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('comments.store') }}" class="nav-link @yield('commentPending')">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Pending Comment</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('comments.approved.show') }}" class="nav-link @yield('commentApproved')">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Approved Comment</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+
+
+
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-book"></i>
                         <p>

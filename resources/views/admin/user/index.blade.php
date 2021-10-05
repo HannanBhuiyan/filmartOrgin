@@ -92,7 +92,9 @@
                                         @else
                                             <a href="{{ route('user.unbanned', $item->id) }}" class="btn btn-success">UnBanned</a>
                                         @endif
+                                            <button data-id="{{ $item->id }}" class="btn btn-danger userDeleteButton">Delete</button>
                                     </td>
+
                                 </tr>
                             @endforeach
                             </tbody>
@@ -107,16 +109,4 @@
 @endsection()
 
 
-@section('scripts')
-
-    <script type="text/javascript">
-
-        $(document).ready( function () {
-            $('#table_id').DataTable();
-        } );
-
-    </script>
-
-
-@endsection()
 

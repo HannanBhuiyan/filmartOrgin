@@ -13,6 +13,66 @@ Text Domain:  Flipmart
 /*===================================================================================*/
 
 
+.commentSection {
+    margin-bottom: 10px;
+}
+
+.comment_title {
+    border-bottom: 1px solid #ddd;
+}
+.comment_title p {
+     font-size: 15px;
+    font-weight: bold;
+}
+.comment_title h4 {
+     font-size: 13px
+}
+
+.comment_item {
+    border-bottom: 1px solid #ddd;
+    padding: 13px 0px;
+}
+.comment_item_group {
+    display: flex;
+    flex-wrap: wrap;
+}
+.user_comment_icon {
+    margin: 5px 20px 0px 0px;
+    color:  #25a5d8;
+    font-size: 30px;
+
+
+}
+.admin_comment_icon {
+    margin: 5px 20px 0px 0px;
+    color:#0000006b;
+    font-size: 30px;
+}
+
+.user_comment_text h4 {
+    color: black;
+    font-size:14px;
+    font-weight: bold;
+}
+.user_comment_text p {
+    color: #cacaca;
+    font-size:13px;
+    font-weight: bold;
+}
+.admin_comment_text h4 {
+    color: black;
+    font-size:14px;
+    font-weight: bold;
+}
+.admin_comment_text p {
+     color: #cacaca;
+     font-size:13px;
+     font-weight: bold;
+ }
+
+
+/*============ comment  ====================== */
+
 
 .paymentParents {
     position: fixed;
@@ -1360,6 +1420,7 @@ header{background:#333333}
   border-radius: 5px 0 0 5px;
   padding: 13px;
   width: 67%;
+  outline: none;
 }
 .main-header .top-search-holder .search-area .categories-filter {
   border-right: 1px solid #E0E0E0;

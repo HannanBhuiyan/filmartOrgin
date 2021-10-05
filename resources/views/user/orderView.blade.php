@@ -127,6 +127,9 @@
                                 </td>
                                 <td> {{ $orderItem->qty }}</td>
                                 <td> {{ $orderItem->price }}TK</td>
+                                @if($orders->status == "Delivered")
+                                    <td><a href="{{ route('review.create', $orderItem->product_id) }}">Write a review</a></td>
+                                @endif
                             </tr>
                                 @endforeach
                             </tbody>

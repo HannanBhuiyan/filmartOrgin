@@ -17,6 +17,9 @@ use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Admin\AdminCommentController;
+
 
 // user route
 use App\Http\Controllers\User\UserController;
@@ -25,6 +28,8 @@ use App\Http\Controllers\User\CartPageController;
 use App\Http\Controllers\User\StripeController;
 use App\Http\Controllers\User\SSLHostController;
 use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\ReviewController;
+use App\Http\Controllers\User\CommentController;
 use App\Http\Controllers\Auth\LoginController;
 
 // fontEnd route
@@ -32,6 +37,7 @@ use App\Http\Controllers\FontEnd\LanguageController;
 use App\Http\Controllers\FontEnd\CardController;
 use App\Http\Controllers\FontEnd\FontEndController;
 use App\Http\Controllers\FontEnd\OrderTrackController;
+use App\Http\Controllers\FontEnd\SearchController;
 
 use App\Http\Controllers\SslCommerzPaymentController;
 
@@ -146,6 +152,22 @@ Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function(
     Route::get("/user/userUnBanned/{unbanned_id}", [RoleController::class, 'userUnBanned'])->name("user.unbanned");
     Route::get("/user/adminRoleChange/{admin_role_change_id}", [RoleController::class, 'adminRoleChange'])->name("admin.role.change");
     Route::get("/user/userRleChange/{role_change_id}", [RoleController::class, 'userRoleChange'])->name("user.role.change");
+    Route::get("/user/delete/{id}", [RoleController::class, 'userDelete'])->name("user.delete");
+
+    // review
+    Route::get("/review/", [AdminReviewController::class, 'index'])->name("review.index");
+    Route::get("/review/approved/{id}", [AdminReviewController::class, 'reviewApproved'])->name("review.approved");
+    Route::get("/review/pending/{id}", [AdminReviewController::class, 'reviewPending'])->name("review.pending");
+    // admin comment controller
+    Route::get('comments', [AdminCommentController::class, 'adminCommentIndex'])->name('comments.store');
+    Route::get('comments/approved/show/', [AdminCommentController::class, 'adminApprovedCommentShow'])->name('comments.approved.show');
+    Route::get("/comments/approved/{id}", [AdminCommentController::class, 'commentsApproved'])->name("comments.approved");
+    Route::get("/comments/pending/{id}", [AdminCommentController::class, 'commentsPending'])->name("comments.pending");
+    Route::get("/comments/replay/{id}", [AdminCommentController::class, 'commentsReplay'])->name('adminComments.replay');
+    Route::post("/comments/replay/store", [AdminCommentController::class, 'commentsReplayStore'])->name('comments.replay.store');
+    Route::get("/comment/delete/{id}", [AdminCommentController::class, 'commentDelete'])->name('comments.delete');
+
+
 
 });
 
@@ -178,18 +200,25 @@ Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>
     Route::get('checkout/stateGet/ajax{district_id}', [CartPageController::class, 'getStateDataGetAjax']);
 
     // Stripe payment route
-     Route::post('payment-store/', [CartPageController::class, 'paymentStore']);
-     Route::get('payment-stripe-page/', [StripeController::class, 'paymentStripePageView']);
-     Route::post('payment/stripe/', [StripeController::class, 'stripePaymentStore'])->name('stripe.order');
+    Route::post('payment-store/', [CartPageController::class, 'paymentStore']);
+    Route::get('payment-stripe-page/', [StripeController::class, 'paymentStripePageView']);
+    Route::post('payment/stripe/', [StripeController::class, 'stripePaymentStore'])->name('stripe.order');
 
-     // ssl easy payment route
-     Route::get('SSLPayment/', [SSLHostController::class, 'SSLPayment']);
+    // ssl easy payment route
+    Route::get('SSLPayment/', [SSLHostController::class, 'SSLPayment']);
 
     // Order Route
     Route::get('/orderView/{order_id}', [OrderController::class, 'ViewOrder']);
     Route::get('/downloadInvoice/{invoice_id}', [OrderController::class, 'downloadInvoice']);
     // return order
     Route::post("/return/order/{order_id}", [OrderController::class, 'returnOrder'])->name('order.return');
+
+    // product review
+    Route::get("/product/review/{product_id}", [ReviewController::class, 'productReview'])->name('review.create');
+    Route::post("/review/store", [ReviewController::class, 'productReviewStore'])->name('review.store');
+    // product comment system
+    Route::post("/comment/store", [CommentController::class, 'commentStore'])->name('comment.store');
+    Route::post("/comment/index", [CommentController::class, 'commentIndex']);
 
 
 });
@@ -207,40 +236,42 @@ Route::group([ 'middleware'=> ['user', 'auth']], function() {
     Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
 
     Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
-//SSLCOMMERZ END
+    //SSLCOMMERZ END
 });
 
-Route::get('/', [FontEndController::class, 'index']);
-Route::get('/single/product/{id}/{slug}', [FontEndController::class, 'singleProduct']);
-// ====================== card settings start ======================
-Route::get('/product/card/view/{id}', [CardController::class, 'productCardView']);
-Route::post('/product/card/add/{id}', [CardController::class, 'productAddToCard']);
-Route::get('/ProductMiniCardView/', [CardController::class, 'ProductMiniCardView']);
-Route::get('/miniCartRemove/{rowId}', [CardController::class, 'miniCartRemove']);
-// ==================== card settings end ============================
-//==================== tag wise product show ==========================
-Route::get('/product/tags/{tag}', [FontEndController::class, 'tagWiseProductsShow']);
-// ============================ subCategory wise product show =========
-Route::get('subCategory/product/{id}', [FontEndController::class, 'subcategoryWiseProductShow']);
-Route::get('subSubCategory/product/{id}', [FontEndController::class, 'subSubcategoryWiseProductShow']);
-// ===================== Frontend Language route =======================
-Route::get('/bangle/language/', [LanguageController::class, 'Bangle'])->name('bangle.language');
-Route::get('/english/language/', [LanguageController::class, 'English'])->name('english.language');
-//========================= wishlist start ==============================
-Route::get('/wishListPageView/', [wishlistController::class, 'wishlistPageView']);
-Route::get('/getWishListData/', [wishlistController::class, 'getWishListData']);
-Route::get('/removeWishlistData/{id}', [wishlistController::class, 'removeWishlistData']);
-Route::post('/add-to-userWishList/{product_id}', [wishlistController::class, 'addWishlist']);
-//========================= wishlist end ==================================
-Route::get('my-cart/', [CartPageController::class, 'cartIndex'])->name('cart');
-Route::get('checkout', [CartPageController::class, 'checkout'])->name('checkout');
-// social login route
-Route::get('login/google', [LoginController::class, 'loginWithGoogle'])->name('login.google');
-Route::get('login/google/callback/', [LoginController::class, 'loginWithGoogleCallback']);
-Route::get('login/github', [LoginController::class, 'loginWithGithub'])->name('login.facebook');
-Route::get('login/github/callback/', [LoginController::class, 'loginWithGithubCallback']);
-// order tracking route
-Route::post('order/track/', [OrderTrackController::class, 'orderTrack'])->name('order.track');
-
+    Route::get('/', [FontEndController::class, 'index']);
+    Route::get('/single/product/{id}/{slug}', [FontEndController::class, 'singleProduct']);
+    // ====================== card settings start ======================
+    Route::get('/product/card/view/{id}', [CardController::class, 'productCardView']);
+    Route::post('/product/card/add/{id}', [CardController::class, 'productAddToCard']);
+    Route::get('/ProductMiniCardView/', [CardController::class, 'ProductMiniCardView']);
+    Route::get('/miniCartRemove/{rowId}', [CardController::class, 'miniCartRemove']);
+    // ==================== card settings end ============================
+    //==================== tag wise product show ==========================
+    Route::get('/product/tags/{tag}', [FontEndController::class, 'tagWiseProductsShow']);
+    // ============================ subCategory wise product show =========
+    Route::get('subCategory/product/{id}', [FontEndController::class, 'subcategoryWiseProductShow']);
+    Route::get('subSubCategory/product/{id}', [FontEndController::class, 'subSubcategoryWiseProductShow']);
+    // ===================== Frontend Language route =======================
+    Route::get('/bangle/language/', [LanguageController::class, 'Bangle'])->name('bangle.language');
+    Route::get('/english/language/', [LanguageController::class, 'English'])->name('english.language');
+    //========================= wishlist start ==============================
+    Route::get('/wishListPageView/', [wishlistController::class, 'wishlistPageView']);
+    Route::get('/getWishListData/', [wishlistController::class, 'getWishListData']);
+    Route::get('/removeWishlistData/{id}', [wishlistController::class, 'removeWishlistData']);
+    Route::post('/add-to-userWishList/{product_id}', [wishlistController::class, 'addWishlist']);
+    //========================= wishlist end ==================================
+    Route::get('my-cart/', [CartPageController::class, 'cartIndex'])->name('cart');
+    Route::get('checkout', [CartPageController::class, 'checkout'])->name('checkout');
+    // social login route
+    Route::get('login/google', [LoginController::class, 'loginWithGoogle'])->name('login.google');
+    Route::get('login/google/callback/', [LoginController::class, 'loginWithGoogleCallback']);
+    Route::get('login/github', [LoginController::class, 'loginWithGithub'])->name('login.facebook');
+    Route::get('login/github/callback/', [LoginController::class, 'loginWithGithubCallback']);
+    // order tracking route
+    Route::post('order/track/', [OrderTrackController::class, 'orderTrack'])->name('order.track');
+    // product search
+    Route::get('product-search', [SearchController::class, 'productSearch'])->name('search.product');
+    Route::post('searchProductByAjax', [SearchController::class, 'searchProductByAjax']);
 
 

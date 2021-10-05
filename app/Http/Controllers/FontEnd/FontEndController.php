@@ -4,7 +4,7 @@ namespace App\Http\Controllers\FontEnd;
 
 use App\Http\Controllers\Controller;
 use App\Models\MultiImage;
-use App\Models\Wishlist;
+use App\Models\ReviewModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -48,7 +48,12 @@ class FontEndController extends Controller
 
         $relatedProduct = Product::where("category_id", $cat_id)->where('id', '!=', $id)->orderBy('id', 'DESC')->get();
 
-        return view('single-page', compact('multiImg', 'product', 'product_color_en', 'product_color_bn', 'product_size_en', 'product_size_bn','relatedProduct',
+        $reviewProducts = ReviewModel::with('user')->where('product_id', $id)->where('status', 'approved')->latest()->get();
+
+        $rating = ReviewModel::where('product_id', $id)->where('status', 'approved')->avg('rating');
+        $avarageRating = number_format($rating, 1);
+
+        return view('single-page', compact('multiImg', 'product', 'product_color_en', 'product_color_bn', 'product_size_en', 'product_size_bn','relatedProduct','reviewProducts', 'avarageRating'
         ));
     }
 

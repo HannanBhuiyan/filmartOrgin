@@ -1,7 +1,6 @@
 @extends('layouts.admin.admin-master')
-@section('Order') menu-is-opening menu-open @endsection()
-@section('cancelActive') active @endsection()
-
+@section('comment') menu-is-opening menu-open @endsection()
+@section('commentApproved') active @endsection()
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -14,7 +13,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Pending Order</a></li>
+                            <li class="breadcrumb-item"><a href="#">Approved Comment</a></li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -29,31 +28,44 @@
                         <table class="table table-bordered text-center" id="table_id">
                             <thead>
                             <tr>
-                                <th>Data</th>
-                                <th>Invoice</th>
-                                <th>Amount</th>
-                                <th>TNX ID</th>
+                                <th>Name</th>
+                                <th>Product Thumbnail</th>
+                                <th>Comment</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($orders as $item)
+
+
+                            @foreach($comments as $item)
+
+                                @php
+                                    $commentsCount= App\Models\CommentReply::where('reply_id', $item->id)->count();
+                                @endphp
+
+
                                 <tr>
-                                    <td>{{ $item->order_date }}</td>
-                                    <td>{{ $item->invoice_no }}</td>
-                                    <td>{{ $item->amount }}</td>
-                                    <td>{{ $item->transaction_id }}</td>
-                                    <td>
-                                        @if( $item->status !==  "Cancel" )
+                                    <td>{{ $item->name }} ||
+                                        @if($commentsCount > 0)
+                                            <span class="text-info font-weight-bold" >( {{ $commentsCount }} Replay)</span>
                                         @else
-                                            <span class="badge badge-success">Cancel</span>
+                                            <span class="text-danger font-weight-bold" >( {{ $commentsCount }} Replay)</span>
                                         @endif
+
+
                                     </td>
                                     <td>
-                                        <span class="d-flex justify-content-around">
-                                        <a href=" {{ route('order.view', $item->id) }} " class="btn btn-info"><i class="far fa-eye"></i> View</a>
-                                        </span>
+                                        <img width="100px"  src="{{ asset( $item->product->product_thumbnail ) }}" alt="">
+                                    </td>
+
+                                    <td>{{ $item->description }}</td>
+                                    <td>
+                                        <span class="badge badge-success" >{{ $item->status }}</span>
+                                    </td>
+                                    <td>
+                                        <button data-id="{{$item->id }}" class="btn btn-danger commentsDeleteButton">Delete</button>
+                                        <a href="{{ route('adminComments.replay',$item->id) }}" class="btn btn-info">Replay</a>
                                     </td>
                                 </tr>
                             @endforeach

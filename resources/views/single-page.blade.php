@@ -1,6 +1,16 @@
 
 @extends('layouts.fontend.fontend-master')
-@section('title', 'Single Page')
+@section('title') {{ $product->product_name_en }} @endsection()
+
+@section('meta')
+    <meta property="og:title" content="{{ $product->product_name_en }}" />
+    <meta property="og:url" content="{{ Request::fullUrl() }}" />
+    <meta property="og:image" content="{{ URL::to($product->product_thumbnail) }}" />
+    <meta property="og:description" content="{{ $product->product_title_en }}" />
+    <meta property="og:site_name" content="ShareThis" />
+
+@endsection()
+
 @section('content')
 
     <!-- ============================================== HEADER : END ============================================== -->
@@ -77,11 +87,14 @@
                                     <div class="rating-reviews m-t-20">
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <div class="rating rateit-small"></div>
+                                                @for($i=1; $i<=5; $i++)
+                                                    <span style="color:red" class="glyphicon glyphicon-star{{ $i <= $avarageRating ? "" : '-empty'}}"></span>
+                                                @endfor
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="reviews">
-                                                    <a href="#" class="lnk">(13 Reviews)</a>
+                                                    <span >({{ count($reviewProducts) }} Reviews)</span>
+                                                    <span style="font-size: 20px; font-weight: 700; margin-left:10px" >5/{{$avarageRating}}</span>
                                                 </div>
                                             </div>
                                         </div><!-- /.row -->
@@ -149,15 +162,7 @@
 
                                             <div class="col-sm-6">
                                                 <div class="favorite-button m-t-10">
-                                                    <a class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="Wishlist" href="#">
-                                                        <i class="fa fa-heart"></i>
-                                                    </a>
-                                                    <a class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="Add to Compare" href="#">
-                                                        <i class="fa fa-signal"></i>
-                                                    </a>
-                                                    <a class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="E-mail" href="#">
-                                                        <i class="fa fa-envelope"></i>
-                                                    </a>
+                                                     <div class="sharethis-inline-share-buttons" data-href="{{ Request::url() }}"></div>
                                                 </div>
                                             </div>
 
@@ -243,7 +248,7 @@
                                 <ul id="product-tabs" class="nav nav-tabs nav-tab-cell">
                                     <li class="active"><a data-toggle="tab" href="#description">DESCRIPTION</a></li>
                                     <li><a data-toggle="tab" href="#review">REVIEW</a></li>
-                                    <li><a data-toggle="tab" href="#tags">TAGS</a></li>
+                                    <li><a data-toggle="tab" href="#tags">Comments</a></li>
                                 </ul>
                             </div>
                             <div class="col-sm-9">
@@ -265,130 +270,100 @@
                                     <div id="review" class="tab-pane">
                                         <div class="product-tab">
 
+                                            @foreach($reviewProducts as $review)
                                             <div class="product-reviews">
-                                                <h4 class="title">Customer Reviews</h4>
-
+                                                <h4 class="title">{{ ucwords($review->user->name) }}</h4>
                                                 <div class="reviews">
                                                     <div class="review">
-                                                        <div class="review-title"><span class="summary">We love this product</span><span class="date"><i class="fa fa-calendar"></i><span>1 days ago</span></span></div>
-                                                        <div class="text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aliquam suscipit."</div>
+                                                        <div class="review-title">
+                                                            <span class="summary">
+                                                                @for($i=1; $i<=5; $i++)
+                                                                <span style="color:red" class="glyphicon glyphicon-star{{ $i <= $review->rating ? "" : '-empty'}}"></span>
+                                                                @endfor
+                                                            </span>
+                                                            <span class="date"><i class="fa fa-calendar"></i><span>{{ $review->created_at->diffForHumans() }}</span></span></div>
+                                                        <div class="text">{{ $review->comment }}</div>
                                                     </div>
-
                                                 </div>
                                             </div>
-
-
+                                            @endforeach
 
                                             <div class="product-add-review">
-                                                <h4 class="title">Write your own review</h4>
-                                                <div class="review-table">
-                                                    <div class="table-responsive">
-                                                        <table class="table">
-                                                            <thead>
-                                                            <tr>
-                                                                <th class="cell-label">&nbsp;</th>
-                                                                <th>1 star</th>
-                                                                <th>2 stars</th>
-                                                                <th>3 stars</th>
-                                                                <th>4 stars</th>
-                                                                <th>5 stars</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td class="cell-label">Quality</td>
-                                                                <td><input type="radio" name="quality" class="radio" value="1"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="2"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="3"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="4"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="5"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="cell-label">Price</td>
-                                                                <td><input type="radio" name="quality" class="radio" value="1"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="2"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="3"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="4"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="5"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="cell-label">Value</td>
-                                                                <td><input type="radio" name="quality" class="radio" value="1"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="2"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="3"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="4"></td>
-                                                                <td><input type="radio" name="quality" class="radio" value="5"></td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div><!-- /.review-table -->
-
                                                 <div class="review-form">
                                                     <div class="form-container">
-                                                        <form role="form" class="cnt-form">
 
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-group">
-                                                                        <label for="exampleInputName">Your Name <span class="astk">*</span></label>
-                                                                        <input type="text" class="form-control txt" id="exampleInputName" placeholder="">
-                                                                    </div><!-- /.form-group -->
-                                                                    <div class="form-group">
-                                                                        <label for="exampleInputSummary">Summary <span class="astk">*</span></label>
-                                                                        <input type="text" class="form-control txt" id="exampleInputSummary" placeholder="">
-                                                                    </div><!-- /.form-group -->
-                                                                </div>
-
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="exampleInputReview">Review <span class="astk">*</span></label>
-                                                                        <textarea class="form-control txt txt-review" id="exampleInputReview" rows="4" placeholder=""></textarea>
-                                                                    </div><!-- /.form-group -->
-                                                                </div>
-                                                            </div><!-- /.row -->
-
-                                                            <div class="action text-right">
-                                                                <button class="btn btn-primary btn-upper">SUBMIT REVIEW</button>
-                                                            </div><!-- /.action -->
-
-                                                        </form><!-- /.cnt-form -->
                                                     </div><!-- /.form-container -->
                                                 </div><!-- /.review-form -->
-
                                             </div><!-- /.product-add-review -->
-
                                         </div><!-- /.product-tab -->
                                     </div><!-- /.tab-pane -->
+                                    @php
+                                        $comments = App\Models\Comment::where('product_single_id', $product->id)->where('status', 'approved')->orderBy('id', 'desc')->paginate(15);
+                                    @endphp
 
                                     <div id="tags" class="tab-pane">
                                         <div class="product-tag">
+                                           <div class="comment_title">
+                                               <h4><a class="text-info" href="{{ route('login') }}">Login</a> or <a  class="text-info" href="{{ route('register') }}">Register</a> to ask questions</h4>
+                                               <p>Total Question (100)</p>
+                                           </div>
+                                            <div class="commentSection">
+                                                @forelse($comments as $comment)
+                                                    <div class="comment_item">
+                                                        <div class="comment_item_group">
+                                                            <div class="user_comment_icon">
+                                                                <span><i class="fas fa-comment-medical"></i></span>
+                                                            </div>
 
-                                            <h4 class="title">Product Tags</h4>
-                                            <form role="form" class="form-inline form-cnt">
-                                                <div class="form-container">
-
-                                                    <div class="form-group">
-                                                        <label for="exampleInputTag">Add Your Tags: </label>
-                                                        <input type="email" id="exampleInputTag" class="form-control txt">
-
-
+                                                            <div class="user_comment_text">
+                                                                <h4>{{ $comment->description }}</h4>
+                                                                <p>{{ ucwords( $comment->name ) }} - {{ $comment->created_at->diffForHumans() }}</p>
+                                                            </div>
+                                                        </div>
+                                                        @php
+                                                            $adminComments = App\Models\CommentReply::where('reply_id',$comment->id)->get();
+                                                        @endphp
+                                                        @foreach( $adminComments as  $adminComment)
+                                                        <div class="comment_item_group">
+                                                            <div class="admin_comment_icon">
+                                                                <span><i class="fas fa-audio-description"></i></span>
+                                                            </div>
+                                                            <div class="admin_comment_text">
+                                                                <h4>{{ $adminComment->description }}</h4>
+                                                                <p>{{ $adminComment->name }} - {{ $adminComment->created_at }}</p>
+                                                            </div>
+                                                        </div>
+                                                        @endforeach
                                                     </div>
+                                                @empty
+                                                    <span style="color:red; font-weight:700">No Comment</span>
+                                                @endforelse
+                                            </div>
 
-                                                    <button class="btn btn-upper btn-primary" type="submit">ADD TAGS</button>
-                                                </div><!-- /.form-container -->
-                                            </form><!-- /.form-cnt -->
+                                          @if (Auth::check())
+                                              <form action="{{ route('comment.store') }}" method="POST">
+                                                  @csrf
+                                                  <input type="hidden" name="product_single_id" value="{{ $product->id }}">
+                                                  <input type="hidden" name="auth_name" value="{{ Auth::user()->name }}">
+                                                  <div class="form-group">
+                                                      <textarea name="description" id="" cols="30" rows="7" class="form-control" placeholder="Comment Here..." ></textarea>
+                                                      @error('description')
+                                                      <span class="text-danger font-weight-bold">{{ $message }}</span>
+                                                      @enderror
+                                                  </div>
 
-                                            <form role="form" class="form-inline form-cnt">
-                                                <div class="form-group">
-                                                    <label>&nbsp;</label>
-                                                    <span class="text col-md-offset-3">Use spaces to separate tags. Use single quotes (') for phrases.</span>
-                                                </div>
-                                            </form>
-
-                                        </div>
-                                    </div>
-
+                                                  <input type="submit" value="Comment" class="btn btn-info">
+                                              </form>
+                                          @endif
+                                           <div class="paginationSection pull-right">
+                                               <nav aria-label="Page navigation example">
+                                                   <ul class="pagination justify-content-end">
+                                                       {{ $comments->links() }}
+                                                   </ul>
+                                               </nav>
+                                           </div>
+                                        </div><!-- /.product-tab -->
+                                    </div><!-- /.tab-pane -->
                                 </div>
                             </div>
                         </div>
@@ -536,3 +511,14 @@
     <!-- ============================================================= FOOTER ============================================================= -->
 
 @endsection()
+
+
+@section('scripts')
+
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v12.0&appId=519249602090939&autoLogAppEvents=1" nonce="4SHUMDc0"></script>
+
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=615c7a6ed602b900198af761&product=inline-share-buttons" data-href="{{ Request::url() }}" async="async"></script>
+
+@endsection()
+
