@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\AdminCommentController;
+use App\Http\Controllers\Admin\StockManagement;
 
 
 // user route
@@ -167,11 +168,13 @@ Route::group(['prefix' => 'admin', 'middleware'=> ['admin', 'auth'] ], function(
     Route::post("/comments/replay/store", [AdminCommentController::class, 'commentsReplayStore'])->name('comments.replay.store');
     Route::get("/comment/delete/{id}", [AdminCommentController::class, 'commentDelete'])->name('comments.delete');
 
+    //stock management
+    Route::resource('stock', StockManagement::class);
 
 
 });
 
-Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'], 'namespace'=>'User'], function() {
+Route::group(['prefix' => 'user', 'middleware'=> ['user', 'auth'],], function() {
     Route::get('/dashboard', [UserController::class, 'index'])->name('user.dashboard');
     // user Name
     Route::get('/userNameGetId/{id}', [UserController::class, 'userNameGetId'])->name('userUpdate-Id');

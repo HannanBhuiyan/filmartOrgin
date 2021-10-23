@@ -65,10 +65,29 @@ class FontEndController extends Controller
     }
 
 
-    public function subcategoryWiseProductShow($id){
+    public function subcategoryWiseProductShow(Request $request, $id){
         $categorys = Category::orderBy('id', 'DESC')->get();
-        $products = Product::where('status', 1)->where('subcategory_id', $id)->orderBy('id','DESC')->paginate(10);
-        return view('layouts.fontend.subcategory-product', compact('products', 'categorys'));
+        $baseLink = 'subCategory/product';
+        $product_id = $id;
+        $sort = '';
+        if($request->sort != ""){
+            $sort = $request->sort;
+        }
+        if($baseLink == null || $product_id == null ){
+            return view('errors.404');
+        }elseif($sort == 'lowestPrice') {
+            $products = Product::where(['status' => 1, 'subcategory_id' => $id])->orderBy('selling_price','ASC')->paginate(10);
+        }elseif($sort == 'heightPrice') {
+            $products = Product::where(['status' => 1, 'subcategory_id' => $id])->orderBy('selling_price','DESC')->paginate(10);
+        }elseif($sort == 'priceAToZname') {
+            $products = Product::where(['status' => 1, 'subcategory_id' => $id])->orderBy('product_name_en','ASC')->paginate(10);
+        }elseif($sort == 'priceZToAname') {
+            $products = Product::where(['status' => 1, 'subcategory_id' => $id])->orderBy('product_name_en','DESC')->paginate(10);
+        }else {
+            $products = Product::where('status', 1)->where('subcategory_id', $id)->orderBy('id','DESC')->paginate(10);
+        }
+
+        return view('layouts.fontend.subcategory-product', compact('products', 'categorys', 'baseLink', 'product_id', 'sort'));
     }
 
     // sub sub category wise product show

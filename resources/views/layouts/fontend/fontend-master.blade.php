@@ -327,10 +327,7 @@
                                     <div class="cart-product-info">
                                       <div style="margin-bottom: 10px !important;">
                                         <span class="product-color" >COLOR:<span style="font-size:15px" >
-                                        ${value.options.color == null
-                            ? `<span style="color: red; font-size: 15px">No Color Found</span>`
-                            :
-                            `${value.options.color }`
+  ${value.options.color == null ? `<span style="color: red; font-size: 15px">No Color Found</span>`  :  `${value.options.color }`
                         }
                                         </span></span>
                                         </div>

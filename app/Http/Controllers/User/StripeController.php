@@ -8,6 +8,7 @@ use App\Models\Shipping;
 use App\Models\Order;
 use App\Mail\OrderMail;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Carbon\Carbon;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -87,6 +88,10 @@ class StripeController extends Controller
                 'created_at' => Carbon::now(),
             ]);
         }
+        foreach($carts as $pro){
+            Product::where('id', $pro->id)->decrement('product_qty', $pro->qty);
+        }
+
         if(Session::has('coupon')){
             Session::forget('coupon');
         }

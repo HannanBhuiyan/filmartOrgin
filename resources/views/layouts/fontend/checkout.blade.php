@@ -39,7 +39,7 @@
                                     <div class="panel-body">
                                         <div class="row">
 
-                                            <form  class="register-form" id="paymentForm">
+                                            <form class="register-form" id="paymentForm">
                                                 @csrf
                                                 <div class="col-md-6 col-sm-6 already-registered-login">
                                                     <div class="form-group">
